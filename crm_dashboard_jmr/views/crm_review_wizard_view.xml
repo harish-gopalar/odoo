@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_review_wizard_form" model="ir.ui.view">
+            <field name="name">Review Wizard Form</field>
+            <field name="model">review.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Review">
+                    <group>
+                        <field name="department_id" options="{ 'no_create' : True}"
+                               domain="[('parent','=',False), ('dept_main_category','=','Non Support')]"/>
+                        <field name="sales_target_user" domain="[('manager_user_relation_id','!=',False)]"/>
+                    </group>
+                    <group>
+                        <field name="country_id" invisible="1"/>
+                        <field name="menu" required="1"/>
+                        <field name="call_deal_quarter" attrs="{'invisible': [('menu','!=','6')]}"/>
+                    </group>
+                    <group>
+                        <button name="show_results" class="oe_highlight" string="FETCH" type="object" />
+                    </group>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="view_review_wizard_tree" model="ir.ui.view">
+            <field name="name">Review Wizard Tree</field>
+            <field name="model">review.wizard</field>
+            <field name="arch" type="xml">
+
+                <tree string="BU Pipeline Build">
+                    <field name="sales_target_user"/>
+                    <field name="department_id"/>
+                    <field name="country_id"/>
+                    <field name="menu"/>
+                </tree>
+
+            </field>
+        </record>
+
+        <record id="action_review_wizard" model="ir.actions.act_window">
+            <field name="name">Review</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">review.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="view_review_wizard_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="review_wizard_menu" name="GSS Review Dashboard" parent="main_crm_dashboard"
+                  action ="action_review_wizard" groups="base.group_crm_director" sequence="3"/>
+
+        <record id="view_seller_review_wizard_form" model="ir.ui.view">
+            <field name="name">Seller Review Wizard Form</field>
+            <field name="model">seller.review.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Review">
+                    <group>
+                        <field name="sales_target_user" required="1" domain="[('manager_user_relation_id','!=',False)]"/>
+                    </group>
+                    <group>
+                        <field name="country_id" invisible="1"/>
+                        <field name="menu" required="1"/>
+                        <field name="call_deal_quarter" attrs="{'invisible': [('menu','!=','4')]}"/>
+                    </group>
+                    <group>
+                        <button name="show_results" class="oe_highlight" string="FETCH" type="object" />
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_seller_review_wizard" model="ir.actions.act_window">
+            <field name="name">Seller Review</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">seller.review.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="view_seller_review_wizard_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="seller_review_wizard_menu" name="Seller Review Dashboard" parent="main_crm_dashboard"
+                  action ="action_seller_review_wizard" groups="base.group_inside_sales11_user" sequence="1"/>
+
+
+        <record id="view_bu_review_wizard_form" model="ir.ui.view">
+            <field name="name">BU Review Wizard Form</field>
+            <field name="model">bu.review.wizard</field>
+            <field name="arch" type="xml">
+                <form string="BU Review">
+                    <group>
+                        <field name="user_id" invisible="1"/>
+                        <field name="department_id" options="{ 'no_create' : True}"
+                               domain="[('parent','=',False), ('dept_main_category','=','Non Support'),
+                               ('manager_id.user_id','=',user_id)]" required="1"/>
+                    </group>
+                    <group>
+                        <field name="country_id" invisible="1"/>
+                        <field name="menu" required="1"/>
+                        <field name="call_deal_quarter" attrs="{'invisible': [('menu','!=','4')]}"/>
+                    </group>
+                    <group>
+                        <button name="show_results" class="oe_highlight" string="FETCH" type="object" />
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_bu_review_wizard" model="ir.actions.act_window">
+            <field name="name">BU Review</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bu.review.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="view_bu_review_wizard_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="bu_review_wizard_menu" name="BU Review Dashboard" parent="main_crm_dashboard"
+                  action ="action_bu_review_wizard" groups="base.group_crm_BU" sequence="2"/>
+
+        <record id="view_bdm_review_wizard_form" model="ir.ui.view">
+            <field name="name">BDM Review Wizard Form</field>
+            <field name="model">bdm.review.wizard</field>
+            <field name="arch" type="xml">
+                <form string="BDM Review">
+                    <group>
+                        <field name="user_id" invisible="1"/>
+                        <field name="department_id" options="{ 'no_create' : True}"
+                               domain="[('parent','=',False), ('dept_main_category','=','Non Support'),
+                               ('bdm_ids','in', [user_id])]" required="1"/>
+                    </group>
+                    <group>
+                        <field name="country_id" invisible="1"/>
+                        <field name="menu" required="1"/>
+                        <field name="call_deal_quarter" attrs="{'invisible': [('menu','!=','4')]}"/>
+                    </group>
+                    <group>
+                        <button name="show_results" class="oe_highlight" string="FETCH" type="object" />
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_bdm_review_wizard" model="ir.actions.act_window">
+            <field name="name">BDM Review</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bdm.review.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="view_bdm_review_wizard_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="bdm_review_wizard_menu" name="BDM Review Dashboard" parent="main_crm_dashboard"
+                  action ="action_bdm_review_wizard" groups="base.group_crm_bdm" sequence="2"/>
+
+    </data>
+</openerp>

@@ -1,0 +1,1418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+         <record id="view_res_partner_filter_dashboard" model="ir.ui.view">
+            <field name="name">Search</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <search string="Search Partner" position="inside">
+                    <field name="called_deal"/>
+                </search>
+                <group string="Group By" position="inside">
+                    <filter string="Called Deal BY" icon="terp-partner" domain="[]" context="{'group_by':'called_deal'}"/>
+                    <filter string="90Days By" icon="terp-partner" domain="[]" context="{'group_by':'ninety_days'}"/>
+                </group>
+             </field>
+        </record>
+        <record id="view_Account_activity_tree" model="ir.ui.view">
+            <field name="name">Account Activity Tree</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <tree string="Account Activity">
+                    <field name="name" string="Account Name"/>
+                    <field name="user_id"/>
+                    <field name="department_id"/>
+                    <field name="meeting_count"/>
+                    <field name="last_meeting_date"/>
+                    <field name="email_count"/>
+                    <field name="last_email_date"/>
+                    <field name="phonecall_count"/>
+                    <field name="last_phone_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_calendar_event_form_dashboard" model="ir.ui.view">
+            <field name="name">calendar.event.dashboard</field>
+            <field name="model">calendar.event</field>
+            <field name="inherit_id" ref="calendar.view_calendar_event_form" />
+            <field name="arch" type="xml">
+                <field name="location" position="after">
+                    <field name="ninety_days" invisible="1"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="crm_case_phone_form_view_dashboard" model="ir.ui.view">
+            <field name="name">CRM - Phone Calls Form Dashboard</field>
+            <field name="model">crm.phonecall</field>
+            <field name="inherit_id" ref="crm.crm_case_phone_form_view" />
+            <field name="arch" type="xml">
+                <field name="opportunity_id" position="after" >
+                    <field name="ninety_days" invisible="1"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- CRM Logged EMail Form View -->
+        <record model="ir.ui.view" id="crm_email_log_form_dashboard_view">
+            <field name="name">crm.email.log.form.dashboard</field>
+            <field name="model">crm.email.log</field>
+            <field name="inherit_id" ref="crm_jmr.crm_email_log_form_view" />
+            <field name="arch" type="xml">
+                <field name="opportunity_id" position="after" >
+                    <field name="ninety_days" invisible="1"/>
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="crm_opportunity_partner_filter_inherit">
+            <field name="name">crm.opportunity.partner.filter.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter"/>
+            <field name="arch" type="xml">
+                <field name="user_id" position="after">
+                    <field name="department_id" string="BU Name"/>
+                </field>
+                <filter string="Stage" position="after">
+                    <filter string="Call Deal Month" domain="[]" context="{'group_by':'seller_call_deal'}"/>
+                    <filter string="BU Call Deal Month" domain="[]" context="{'group_by':'bu_call_deal'}"/>
+                    <filter string="Call Deal Quarter" domain="[]" context="{'group_by':'call_deal_quarter'}"/>
+                    <filter string="BU Call Deal Quarter" domain="[]" context="{'group_by':'bu_call_deal_quarter'}"/>
+                </filter>
+            </field>
+        </record>
+
+            <!-- BU Pipeline Build-->
+
+        <record id="view_bu_pipeline_build_form" model="ir.ui.view">
+            <field name="name">BU Pipeline Build Form</field>
+            <field name="model">bu.pipeline.build</field>
+            <field name="arch" type="xml">
+                <form string="BU Pipeline Build">
+                    <group>
+                        <field name="department_id"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="opportunity_count"/>
+                            <field name="pipeline_build_value"/>
+                            <field name="pipeline_build_achievement"/>
+                        </group>
+                        <group>
+                            <field name="lead_count"/>
+                            <field name="opportunity_value"/>
+                            <field name="pipeline_build_variant"/>
+                        </group>
+                    </group>
+                    <field name="fiscalyear_id" invisible="1"/>
+                    <separator string="Quarter Wise Details"/>
+                    <field name="quarter_line">
+                        <tree string="BU Quarter Pipeline Build">
+                            <field name="ref_id" string="Business Unit" invisible="1"/>
+                            <field name="name"/>
+                            <field name="opportunity_count"/>
+                            <field name="lead_count"/>
+                            <field name="pipeline_build_value"/>
+                            <field name="opportunity_value"/>
+                            <field name="pipeline_build_variant"/>
+                            <field name="pipeline_build_achievement"/>
+                        </tree>
+                    </field>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_bu_pipeline_build_tree" model="ir.ui.view">
+            <field name="name">BU Pipeline Build Tree</field>
+            <field name="model">bu.pipeline.build</field>
+            <field name="arch" type="xml">
+                <tree string="BU Pipeline Build">
+                    <field name="department_id"/>
+                    <field name="opportunity_count"/>
+                    <field name="lead_count"/>
+                    <field name="pipeline_build_value"/>
+                    <field name="opportunity_value"/>
+                    <field name="pipeline_build_variant"/>
+                    <field name="pipeline_build_achievement"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_bu_pipeline_build_kanban" model="ir.ui.view">
+            <field name="name">BU Pipeline Build Kanban</field>
+            <field name="model">bu.pipeline.build</field>
+            <field name="arch" type="xml">
+                <kanban class="oe_background_grey" create="0">
+                    <field name="department_id"/>
+                    <field name="color"/>
+                    <field name="opportunity_count"/>
+                    <field name="lead_count"/>
+                    <field name="pipeline_build_value"/>
+                    <field name="opportunity_value"/>
+                    <field name="pipeline_build_achievement"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_dropdown_toggle oe_dropdown_kanban">
+                                    <span class="oe_e">í</span>
+                                    <ul class="oe_dropdown_menu">
+                                        <t t-if="widget.view.is_action_enabled('edit')"><li>
+                                            <ul class="oe_kanban_colorpicker" data-field="color"/></li></t>
+                                    </ul>
+                                </div>
+                                <div class="oe_kanban_content">
+                                    <h3 class="text-center"><strong><field name="department_id"/></strong></h3>
+                                    <div class="oe_items_list oe_kanban_ellipsis">
+                                        <div>
+                                             <strong>Opportunity Count:</strong><field name="opportunity_count"/>
+                                        </div>
+
+                                        <div>
+                                           <strong>Lead Count:</strong> <field name="lead_count"/>
+                                        </div>
+                                    </div>
+                                    <div class="oe_items_list oe_kanban_ellipsis">
+                                        <div>
+                                             <strong>Pipeline Build Target:</strong><field name="pipeline_build_value"/>
+                                        </div>
+
+                                        <div>
+                                           <strong>Pipeline Build Achievement:</strong> <field name="opportunity_value"/>
+                                        </div>
+                                    </div>
+                                    <div class="oe_picking_type_gauge">
+                                        <field name="pipeline_build_achievement" widget="gauge" style="width:150px; height: 110px;"
+                                               options="{'levelcolors': ['#a9d70b', '#f9c802', '#ff0000']}">Revenue Achievement (%%)</field>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+                <!--  Graph View -->
+        <record model="ir.ui.view" id="view_bu_pipeline_build_graph">
+            <field name="name">BU Pipeline Build</field>
+            <field name="model">bu.pipeline.build</field>
+            <field name="arch" type="xml">
+                <graph string="BU Pipeline Build" type="bar">
+                    <field name="department_id" type="row"/>
+                    <field name="q1_pipeline_target" string="Q1 Pipeline Build Target" type="measure"/>
+                    <field name="q1_pipeline_achievement" string="Q1 Pipeline Build Achievement" type="measure"/>
+                    <field name="q2_pipeline_target" string="Q2 Pipeline Build Target" type="measure"/>
+                    <field name="q2_pipeline_achievement" string="Q2 Pipeline Build Achievement" type="measure"/>
+                    <field name="q3_pipeline_target" string="Q3 Pipeline Build Target" type="measure"/>
+                    <field name="q3_pipeline_achievement" string="Q3 Pipeline Build Achievement" type="measure"/>
+                    <field name="q4_pipeline_target" string="Q4 Pipeline Build Target" type="measure"/>
+                    <field name="q4_pipeline_achievement" string="Q4 Pipeline Build Achievement" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="action_bu_pipeline_build" model="ir.actions.act_window">
+            <field name="name">BU Pipeline Build</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bu.pipeline.build</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="view_bu_pipeline_build_tree"/>
+        </record>
+
+            <!--BU Quarter wise Pipeline Build-->
+
+        <record id="view_bu_quarter_pipeline_build_form" model="ir.ui.view">
+            <field name="name">BU Quarter Pipeline Build Form</field>
+            <field name="model">bu.quarter.pipeline.build</field>
+            <field name="arch" type="xml">
+                <form string="BU Quarter Pipeline Build">
+                    <group>
+                        <field name="ref_id" string="Business Unit"/>
+                        <field name="fiscalyear_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="lead_count"/>
+                            <field name="opportunity_count"/>
+                            <field name="pipeline_build_value"/>
+                            <field name="opportunity_value"/>
+                            <field name="pipeline_build_variant"/>
+                            <field name="pipeline_build_achievement"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Opportunity Details">
+                            <field name="opportunity_line">
+                                <tree editable="1" colors="blue:multi_dept == True">
+                                    <field name="user_id"/>
+                                    <field name="department_id"/>
+                                    <field name="name" string="Opportunity"/>
+                                    <field name="partner_id" string="Customer"/>
+                                    <field name="country_id"/>
+                                    <field name="planned_revenue" sum="Expected OrderBooking"/>
+                                    <field name="bu_revenue" sum="BU Revenue"/>
+                                    <field name="bu_revenue_for"/>
+                                    <field name="stage_id"/>
+                                    <field name="zebra_rating"/>
+                                    <field name="date_deadline"/>
+                                    <field name="omm_id"/>
+                                    <field name="is_omm_mismatch"/>
+                                    <field name="seller_call_deal"/>
+                                    <field name="bu_call_deal"/>
+                                    <field name="call_deal_quarter"/>
+                                    <field name="bu_call_deal_quarter"/>
+                                    <field name="date_action"/>
+                                    <field name="title_action"/>
+                                    <field name="multi_dept" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Lead Details">
+                            <field name="lead_line">
+                                <tree editable="1">
+                                    <field name="user_id"/>
+                                    <field name="department_id"/>
+                                    <field name="name" string="Lead"/>
+                                    <field name="partner_id" string="Customer"/>
+                                    <field name="country_id"/>
+                                    <field name="stage_id"/>
+                                    <field name="zebra_rating"/>
+                                    <field name="date_deadline"/>
+                                    <field name="omm_id"/>
+                                    <field name="is_omm_mismatch"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_bu_opportunity_pipeline_build_tree" model="ir.ui.view">
+            <field name="name">BU Quarter Pipeline Build Tree</field>
+            <field name="model">bu.quarter.pipeline.build</field>
+            <field name="arch" type="xml">
+                <tree string="BU Quarter Pipeline Build">
+                    <field name="ref_id" string="Business Unit"/>
+                    <field name="opportunity_count"/>
+                    <field name="lead_count"/>
+                    <field name="pipeline_build_value"/>
+                    <field name="opportunity_value"/>
+                    <field name="pipeline_build_variant"/>
+                    <field name="pipeline_build_achievement"/>
+                </tree>
+            </field>
+        </record>
+
+            <!-- Opportunity Pipeline Build-->
+
+        <record id="view_opportunity_pipeline_build_form" model="ir.ui.view">
+            <field name="name">Opportunity Pipeline Build Form</field>
+            <field name="model">opportunity.pipeline.build</field>
+            <field name="arch" type="xml">
+                <form string="Opportunity Pipeline Build">
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="opportunity_count"/>
+                            <field name="pipeline_build_value"/>
+                            <field name="pipeline_build_variant"/>
+                        </group>
+                        <group>
+                            <field name="lead_count"/>
+                            <field name="opportunity_value"/>
+                            <field name="pipeline_build_achievement"/>
+                        </group>
+                    </group>
+                    <field name="fiscalyear_id" invisible="1"/>
+                    <separator string="Seller Details"/>
+                    <field name="seller_pipeline_build_line"/>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_opportunity_pipeline_build_tree" model="ir.ui.view">
+            <field name="name">Opportunity Pipeline Build Tree</field>
+            <field name="model">opportunity.pipeline.build</field>
+            <field name="arch" type="xml">
+                <tree string="Opportunity Pipeline Build">
+                    <field name="name"/>
+                    <field name="opportunity_count"/>
+                    <field name="lead_count"/>
+                    <field name="pipeline_build_value"/>
+                    <field name="opportunity_value"/>
+                    <field name="pipeline_build_variant"/>
+                    <field name="pipeline_build_achievement"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_opportunity_pipeline_build" model="ir.actions.act_window">
+            <field name="name">Opportunity Pipeline Build</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">opportunity.pipeline.build</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="view_opportunity_pipeline_build_tree"/>
+        </record>
+
+            <!--Seller Opportunity Pipeline Build-->
+
+        <record id="view_seller_opportunity_pipeline_build_form" model="ir.ui.view">
+            <field name="name">Seller Opportunity Pipeline Build Form</field>
+            <field name="model">seller.opportunity.pipeline.build</field>
+            <field name="arch" type="xml">
+                <form string="Seller Opportunity Pipeline Build">
+                    <group>
+                        <field name="sales_target_user"/>
+                        <field name="ref_id" string="Quarter"/>
+                        <field name="sales_manager" invisible="1"/>
+                        <field name="fiscalyear_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="opportunity_count"/>
+                            <field name="pipeline_build_value"/>
+                            <field name="pipeline_build_variant"/>
+                        </group>
+                        <group>
+                            <field name="lead_count"/>
+                            <field name="opportunity_value"/>
+                            <field name="pipeline_build_achievement"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Opportunity Details">
+                            <field name="opportunity_line">
+                                <tree editable="1">
+                                    <field name="user_id"/>
+                                    <field name="department_id"/>
+                                    <field name="name" string="Opportunity"/>
+                                    <field name="partner_id" string="Customer"/>
+                                    <field name="country_id"/>
+                                    <field name="planned_revenue" sum="Expected OrderBooking"/>
+                                    <field name="stage_id"/>
+                                    <field name="zebra_rating"/>
+                                    <field name="date_deadline"/>
+                                    <field name="omm_id"/>
+                                    <field name="is_omm_mismatch"/>
+                                    <field name="seller_call_deal"/>
+                                    <field name="bu_call_deal"/>
+                                    <field name="call_deal_quarter"/>
+                                    <field name="bu_call_deal_quarter"/>
+                                    <field name="date_action"/>
+                                    <field name="title_action"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Lead Details">
+                            <field name="lead_line">
+                                <tree editable="1">
+                                    <field name="user_id"/>
+                                    <field name="department_id"/>
+                                    <field name="name" string="Lead"/>
+                                    <field name="partner_id" string="Customer"/>
+                                    <field name="country_id"/>
+                                    <field name="stage_id"/>
+                                    <field name="zebra_rating"/>
+                                    <field name="date_deadline"/>
+                                    <field name="omm_id"/>
+                                    <field name="is_omm_mismatch"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_seller_opportunity_pipeline_build_tree" model="ir.ui.view">
+            <field name="name">Seller Opportunity Pipeline Build Tree</field>
+            <field name="model">seller.opportunity.pipeline.build</field>
+            <field name="arch" type="xml">
+                <tree string="Seller Opportunity Pipeline Build">
+                    <field name="ref_id" string="Quarter"/>
+                    <field name="sales_target_user"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_seller_opportunity_pipeline_build_kanban" model="ir.ui.view">
+            <field name="name">Seller Opportunity Pipeline Build Kanban</field>
+            <field name="model">seller.opportunity.pipeline.build</field>
+            <field name="arch" type="xml">
+                <kanban class="oe_background_grey" create="0">
+                    <field name="sales_target_user"/>
+                    <field name="color"/>
+                    <field name="ref_id"/>
+                    <field name="opportunity_count"/>
+                    <field name="lead_count"/>
+                    <field name="pipeline_build_value"/>
+                    <field name="opportunity_value"/>
+                    <field name="pipeline_build_variant"/>
+                    <field name="pipeline_build_achievement"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_dropdown_toggle oe_dropdown_kanban">
+                                    <span class="oe_e">í</span>
+                                    <ul class="oe_dropdown_menu">
+                                        <t t-if="widget.view.is_action_enabled('edit')"><li>
+                                            <ul class="oe_kanban_colorpicker" data-field="color"/></li></t>
+                                    </ul>
+                                </div>
+                                <div class="oe_kanban_content">
+                                    <h3 class="text-center"><strong><field name="sales_target_user"/></strong></h3>
+                                    <div class="oe_items_list oe_kanban_ellipsis">
+                                       <strong>Quarter:</strong> <field name="ref_id"/>
+                                    </div>
+                                    <div class="oe_items_list oe_kanban_ellipsis">
+                                        <div>
+                                             <strong>Opportunity Count:</strong><field name="opportunity_count"/>
+                                        </div>
+
+                                        <div>
+                                           <strong>Lead Count:</strong> <field name="lead_count"/>
+                                        </div>
+                                    </div>
+                                    <div class="oe_items_list oe_kanban_ellipsis">
+                                        <div>
+                                             <strong>Pipeline Build Target:</strong><field name="pipeline_build_value"/>
+                                        </div>
+
+                                        <div>
+                                           <strong>Pipeline Build Achievement:</strong> <field name="opportunity_value"/>
+                                        </div>
+                                    </div>
+                                    <div class="oe_picking_type_gauge">
+                                        <field name="pipeline_build_achievement" widget="gauge" style="width:150px; height: 110px;"
+                                               options="{'levelcolors': ['#a9d70b', '#f9c802', '#ff0000']}">Revenue Achievement (%%)</field>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+                <!--  Graph View -->
+        <record model="ir.ui.view" id="view_seller_opportunity_pipeline_build_graph">
+            <field name="name">Seller Opportunity Pipeline Build</field>
+            <field name="model">seller.opportunity.pipeline.build</field>
+            <field name="arch" type="xml">
+                <graph string="Seller Opportunity Pipeline Build" type="bar">
+                    <field name="sales_target_user" type="row"/>
+                    <field name="pipeline_build_value" string="Pipeline Build Target" type="measure"/>
+                    <field name="opportunity_value" string="Pipeline Build Achievement" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="action_seller_opportunity_pipeline_build" model="ir.actions.act_window">
+            <field name="name">Seller Opportunity Pipeline Build</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">seller.opportunity.pipeline.build</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="view_seller_opportunity_pipeline_build_tree"/>
+        </record>
+
+        <record id="crm_case_form_view_oppor_inherit_call_deal" model="ir.ui.view">
+            <field name="name">crm.lead.opportunity.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="crm_jmr.crm_case_form_view_oppor_inherit" />
+            <field name="arch" type="xml">
+                <field name="date_deadline" position="before">
+                    <field name="seller_call_deal" attrs="{'readonly': [('seller_check','=',True)]}"/>
+                    <field name="bu_call_deal" attrs="{'readonly': [('bu_check','=',True)]}"/>
+                    <field name="from_gss_menu" invisible="1"/>
+                </field>
+                <!--field name="currency_id" position="replace">
+                    <field name="currency_id" attrs="{'readonly': [('seller_check','=',True)]}"/>
+                </field-->
+                <field name="zebra_scale" position="after">
+                    <field name="seller_check" groups="base.group_crm_director"/>
+                    <field name="bu_check" groups="base.group_crm_director"/>
+                    <field name="focus_deal"/>
+                    <field name="is_omm_mismatch"/>
+                    <field name="call_deal_quarter" invisible="0"/>
+                    <field name="bu_call_deal_quarter" invisible="0"/>
+                    <field name="ninety_days" invisible="1"/>
+                    <field name="wlo_opportunities" invisible="1"/>
+                    <field name="this_year" invisible="1"/>
+                    <field name="case_stage_type" invisible="1"/>
+                    <field name="show_call_deals" invisible="1"/>
+                    <field name="slippage" invisible="1"/>
+                    <field name="bu_revenue" groups="base.group_crm_director"/>
+                </field>
+                <xpath expr="//page[@string='Lead']" position="after">
+                    <page string="Opportunity Slip-ups Log">
+                        <field name="slipups_log_ids" readonly="1" groups="base.group_crm_director">
+                            <tree editable="1">
+                                <field name="opportunity_id" invisible="1"/>
+                                <field name="user_id"/>
+                                <field name="department_id"/>
+                                <field name="partner_id"/>
+                                <field name="planned_revenue"/>
+                                <field name="stage_id"/>
+                                <field name="zebra_rating"/>
+                                <field name="date_deadline"/>
+                                <field name="seller_call_deal"/>
+                                <field name="call_deal_quarter"/>
+                                <field name="bu_call_deal_quarter"/>
+                                <field name="bu_call_deal"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Opportunity Slippage Log">
+                        <field name="slippage_log_ids" readonly="1" groups="base.group_crm_director">
+                            <tree editable="1">
+                                <field name="opportunity_id" invisible="1"/>
+                                <field name="user_id"/>
+                                <field name="department_id"/>
+                                <field name="partner_id"/>
+                                <field name="planned_revenue"/>
+                                <field name="stage_id"/>
+                                <field name="zebra_rating"/>
+                                <field name="date_deadline"/>
+                                <field name="seller_call_deal"/>
+                                <field name="call_deal_quarter"/>
+                                <field name="bu_call_deal_quarter"/>
+                                <field name="bu_call_deal"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+        <!-- CRM Lead Kanban View  -->
+        <record model="ir.ui.view" id="crm_case_kanban_view_leads_dashboard">
+            <field name="name">CRM - Leads Kanban</field>
+            <field name="model">crm.lead</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="stage_id">
+                    <field name="stage_id" domain="[('type','=', 'opportunity')]"/>
+                    <field name="color"/>
+                    <field name="priority"/>
+                    <field name="planned_revenue" sum="Expected OrderBooking"/>
+                    <field name="user_email"/>
+                    <field name="user_id"/>
+                    <field name="partner_address_email"/>
+                    <field name="message_summary"/>
+                    <field name="message_unread"/>
+                    <templates>
+                        <field name="date_deadline"/>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_dropdown_toggle oe_dropdown_kanban">
+                                    <span class="oe_e">í</span>
+                                    <ul class="oe_dropdown_menu">
+                                        <t t-if="widget.view.is_action_enabled('edit')"><li><a type="edit">Edit...</a></li></t>
+                                        <t t-if="widget.view.is_action_enabled('delete')"><li><a type="delete">Delete</a></li></t>
+                                        <li><a name="%(mail.action_email_compose_message_wizard)d" type="action">Send Email</a></li>
+                                        <li><a type="action" name="%(crm.crm_case_categ_phone_incoming0)d" >Calls</a></li>
+                                        <li><ul class="oe_kanban_colorpicker" data-field="color"/></li>
+                                    </ul>
+                                </div>
+                                <div class="oe_kanban_content">
+                                    <div>
+                                        <b><field name="name"/></b>
+                                        <t t-if="record.planned_revenue.raw_value">
+                                            - <b><t t-esc="record.planned_revenue.value"/>
+                                            <field name="company_currency"/></b>
+
+                                        </t>
+                                    </div>
+                                    <div>
+                                        <field name="partner_id"/>
+                                    </div>
+                                    <div style="padding-left: 0.5em">
+                                        <t t-if="record.date_action.raw_value and record.date_action.raw_value lt (new Date())" t-set="red">oe_kanban_text_red</t>
+                                        <span t-attf-class="#{red || ''}"><field name="date_action"/></span>
+                                        <t t-if="record.date_action.raw_value"> : </t>
+                                        <field name="title_action"/>
+                                    </div>
+                                    <div>
+                                        <b><strong>Expected Close Date: </strong><field name="date_deadline"/></b>
+                                        <b><strong>Zebra Score: </strong><field name="zebra_rating"/></b>
+                                    </div>
+                                    <div>
+                                        <b><strong>Stage: </strong><field name="stage_id"/></b>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <img t-att-src="kanban_image('res.users', 'image_small', record.user_id.raw_value)" t-att-title="record.user_id.value" width="24" height="24" class="oe_kanban_avatar pull-right"/>
+                                    </div>
+                                    <div class="oe_kanban_footer_left">
+                                        <t t-raw="record.message_summary.raw_value"/>
+                                    </div>
+                                </div>
+                                <div class="oe_clear"></div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="crm_case_tree_view_oppor_dashboard">
+            <field name="name">Opportunities Tree</field>
+            <field name="model">crm.lead</field>
+            <field name="arch" type="xml">
+                <tree string="Opportunities" colors="blue:multi_dept == True">
+                    <field name="user_id"/>
+                    <field name="department_id"/>
+                    <field name="name" string="Opportunity"/>
+                    <field name="partner_id" string="Customer"/>
+                    <field name="country_id"/>
+                    <field name="planned_revenue" string="Expected OrderBooking" sum="Expected OrderBooking"/>
+                    <field name="bu_revenue" sum="BU Revenues" attrs="{'invisible': [('from_gss_menu','=',False)]}"/>
+                    <field name="bu_revenue_for" attrs="{'invisible': [('from_gss_menu','=',False)]}"/>
+                    <field name="from_gss_menu" invisible="1"/>
+                    <field name="stage_id"/>
+                    <field name="zebra_rating"/>
+                    <field name="zebra_scale"/>
+                    <field name="date_deadline"/>
+                    <field name="omm_id"/>
+                    <field name="is_omm_mismatch"/>
+                    <field name="seller_call_deal"/>
+                    <field name="bu_call_deal"/>
+                    <field name="call_deal_quarter"/>
+                    <field name="bu_call_deal_quarter"/>
+                    <field name="focus_deal"/>
+                    <field name="opp_ref_no"/>
+                    <field name="date_converted"/>
+                    <field name="date_action"/>
+                    <field name="title_action"/>
+                    <field name="lead_delay_days"/>
+                    <field name="create_date"/>
+                    <field name="inside_user_id" invisible="1"/>
+                    <field name="medium_id" invisible="1"/>
+                    <field name="campaign_id" invisible="1"/>
+                    <field name="source_id" invisible="1"/>
+                    <field name="multi_dept" invisible="1"/>
+                    <field name="probability" avg="Avg. of Probability" invisible="1"/>
+                    <field name="section_id" groups="base.group_multi_salesteams" invisible="1"/>
+                    <field name="referred" invisible="1"/>
+                    <field name="priority" invisible="1"/>
+                    <field name="message_unread" invisible="1"/>
+                    <field name="write_date" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+    <!-- Active pipeline Dashboards -->
+
+    <record model="ir.actions.act_window" id="action_opportunities_active_pipeline_dashboard">
+        <field name="name">Fiscal Year Active Pipeline</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">tree,form,</field>
+        <field name="domain">[('this_year','=', True),('case_stage_type', '=', 'opportunity'),
+            ('stage_id.probability','&gt;',0),('stage_id.probability', '&lt;',100)]</field>
+        <field name="context">{'default_type':'lead'}</field>
+        <field name="view_id" eval="False"/>
+        <field name="search_view_id" ref="crm.view_crm_case_opportunities_filter"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_active_pipeline_tree_dashboard">
+        <field name="sequence" eval="0"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="crm_case_tree_view_oppor_dashboard"/>
+        <field name="act_window_id" ref="action_opportunities_active_pipeline_dashboard"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_active_pipeline_form_dashboard">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="crm.crm_case_form_view_oppor"/>
+        <field name="act_window_id" ref="action_opportunities_active_pipeline_dashboard"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_active_pipeline_kanban_dashboard">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="crm_case_kanban_view_leads_dashboard"/>
+        <field name="act_window_id" ref="action_opportunities_active_pipeline_dashboard"/>
+    </record>
+
+        <!-- Active pipeline 90 Days Dashboards -->
+
+    <record model="ir.actions.act_window" id="action_crm_case_opportunities_dashboard">
+        <field name="name">Active Pipeline 90days</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('ninety_days','=',True),('case_stage_type','=','opportunity'),('stage_id.probability','&gt;',0),('stage_id.probability', '&lt;',100)]</field>
+        <field name="view_id" eval="False"/>
+        <field name="search_view_id" ref="crm.view_crm_case_opportunities_filter"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_crm_tag_tree_view_oppor11_dashboard">
+        <field name="sequence" eval="0"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="crm_case_tree_view_oppor_dashboard"/>
+        <field name="act_window_id" ref="action_crm_case_opportunities_dashboard"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_crm_tag_form_view_oppor11_dashboard">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="crm.crm_case_form_view_oppor"/>
+        <field name="act_window_id" ref="action_crm_case_opportunities_dashboard"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_crm_tag_kanban_view_oppor11_dashboard">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="crm_case_kanban_view_leads_dashboard"/>
+        <field name="act_window_id" ref="action_crm_case_opportunities_dashboard"/>
+    </record>
+
+        <!-- Current Fiscal Year Slippage Dashboards -->
+
+    <record model="ir.actions.act_window" id="action_slippage_opportunities_dashboard">
+        <field name="name">Slippage</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('this_year','=', True),('stage_id.probability','&gt;',0),
+            ('stage_id.probability', '&lt;',100),('slippage','=',True),('case_stage_type', '=', 'opportunity')]</field>
+        <field name="view_id" eval="False"/>
+        <field name="search_view_id" ref="crm.view_crm_case_opportunities_filter"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_slippage_tree_view_oppor11_dashboard">
+        <field name="sequence" eval="0"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="crm_case_tree_view_oppor_dashboard"/>
+        <field name="act_window_id" ref="action_slippage_opportunities_dashboard"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action__slippage_form_view_oppor11_dashboard">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="crm.crm_case_form_view_oppor"/>
+        <field name="act_window_id" ref="action_slippage_opportunities_dashboard"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_slippage_kanban_view_oppor11_dashboard">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="crm_case_kanban_view_leads_dashboard"/>
+        <field name="act_window_id" ref="action_slippage_opportunities_dashboard"/>
+    </record>
+
+        <!-- Call Deals Q1 Dashboards -->
+
+    <record model="ir.actions.act_window" id="action_call_deal_q_one_opportunities_dashboard">
+        <field name="name">Call Deals Q1</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('show_call_deals', '=', True), '|', ('seller_call_deal', 'in', ('4', '5', '6')),
+            ('bu_call_deal', 'in', ('4', '5', '6'))]</field>
+        <field name="view_id" eval="False"/>
+        <field name="search_view_id" ref="crm.view_crm_case_opportunities_filter"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_call_deal_q_one_tree_oppor11_dashboard">
+        <field name="sequence" eval="0"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="crm_case_tree_view_oppor_dashboard"/>
+        <field name="act_window_id" ref="action_call_deal_q_one_opportunities_dashboard"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_call_deal_q_one_form_oppor11_dashboard">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="crm.crm_case_form_view_oppor"/>
+        <field name="act_window_id" ref="action_call_deal_q_one_opportunities_dashboard"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_call_deal_q_one_kanban_oppor11_dashboard">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="crm_case_kanban_view_leads_dashboard"/>
+        <field name="act_window_id" ref="action_call_deal_q_one_opportunities_dashboard"/>
+    </record>
+
+        <!-- Call Deals Q2 Dashboards -->
+
+    <record model="ir.actions.act_window" id="action_call_deal_q_two_opportunities_dashboard">
+        <field name="name">Call Deals Q2</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('show_call_deals', '=', True), '|', ('seller_call_deal', 'in', ('7', '8', '9')),
+            ('bu_call_deal', 'in', ('7', '8', '9')),
+            ]</field>
+        <field name="view_id" eval="False"/>
+        <field name="search_view_id" ref="crm.view_crm_case_opportunities_filter"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_call_q_two_tree_deal_oppor11_dashboard">
+        <field name="sequence" eval="0"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="crm_case_tree_view_oppor_dashboard"/>
+        <field name="act_window_id" ref="action_call_deal_q_two_opportunities_dashboard"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_call_deal_q_two_form_oppor11_dashboard">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="crm.crm_case_form_view_oppor"/>
+        <field name="act_window_id" ref="action_call_deal_q_two_opportunities_dashboard"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_call_deal_q_two_kanban_oppor11_dashboard">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="crm_case_kanban_view_leads_dashboard"/>
+        <field name="act_window_id" ref="action_call_deal_q_two_opportunities_dashboard"/>
+    </record>
+
+        <!-- Call Deals Q3 Dashboards -->
+
+    <record model="ir.actions.act_window" id="action_call_deal_q_three_opportunities_dashboard">
+        <field name="name">Call Deals Q3</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('show_call_deals', '=', True), '|', ('seller_call_deal', 'in', ('10', '11', '12')),
+            ('bu_call_deal', 'in', ('10', '11', '12'))]</field>
+        <field name="view_id" eval="False"/>
+        <field name="search_view_id" ref="crm.view_crm_case_opportunities_filter"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_call_q_tree_three_deal_oppor11_dashboard">
+        <field name="sequence" eval="0"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="crm_case_tree_view_oppor_dashboard"/>
+        <field name="act_window_id" ref="action_call_deal_q_three_opportunities_dashboard"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_call_deal_q_three_form_oppor11_dashboard">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="crm.crm_case_form_view_oppor"/>
+        <field name="act_window_id" ref="action_call_deal_q_three_opportunities_dashboard"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_call_deal_q_three_kanban_oppor11_dashboard">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="crm_case_kanban_view_leads_dashboard"/>
+        <field name="act_window_id" ref="action_call_deal_q_three_opportunities_dashboard"/>
+    </record>
+
+        <!-- Call Deals Q4 Dashboards -->
+
+    <record model="ir.actions.act_window" id="action_call_deal_q_four_opportunities_dashboard">
+        <field name="name">Call Deals Q4</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('show_call_deals', '=', True), '|', ('seller_call_deal', 'in', ('1', '2', '3')),
+            ('bu_call_deal', 'in', ('1', '2', '3'))]</field>
+        <field name="view_id" eval="False"/>
+        <field name="search_view_id" ref="crm.view_crm_case_opportunities_filter"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_call_q_four_tree_deal_oppor11_dashboard">
+        <field name="sequence" eval="0"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="crm_case_tree_view_oppor_dashboard"/>
+        <field name="act_window_id" ref="action_call_deal_q_four_opportunities_dashboard"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_call_deal_q_four_form_oppor11_dashboard">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="crm.crm_case_form_view_oppor"/>
+        <field name="act_window_id" ref="action_call_deal_q_four_opportunities_dashboard"/>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_wlo_opportunities_dashboard">
+        <field name="name">Won/Lost/On hold Opportunities</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('wlo_opportunities','=',True)]</field>
+        <field name="view_id" eval="False"/>
+        <field name="search_view_id" ref="crm.view_crm_case_opportunities_filter"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_wlo_opportunities_tree_dashboard">
+        <field name="sequence" eval="0"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="crm_case_tree_view_oppor_dashboard"/>
+        <field name="act_window_id" ref="action_wlo_opportunities_dashboard"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_wlo_opportunities_form_dashboard">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="crm.crm_case_form_view_oppor"/>
+        <field name="act_window_id" ref="action_wlo_opportunities_dashboard"/>
+    </record>
+        <!-- Call Deals GSS Dashboards -->
+
+    <record model="ir.actions.act_window" id="action_call_deal_gss_opportunities_dashboard">
+        <field name="name">Call Deals GSS</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('show_call_deals', '=', True)]</field>
+        <field name="view_id" eval="False"/>
+        <field name="search_view_id" ref="crm.view_crm_case_opportunities_filter"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_call_gss_tree_deal_oppor11_dashboard">
+        <field name="sequence" eval="0"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="crm_case_tree_view_oppor_dashboard"/>
+        <field name="act_window_id" ref="action_call_deal_gss_opportunities_dashboard"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_call_deal_gss_form_oppor11_dashboard">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="crm.crm_case_form_view_oppor"/>
+        <field name="act_window_id" ref="action_call_deal_gss_opportunities_dashboard"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_call_deal_gss_kanban_oppor11_dashboard">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="crm_case_kanban_view_leads_dashboard"/>
+        <field name="act_window_id" ref="action_call_deal_gss_opportunities_dashboard"/>
+    </record>
+
+        <record model="ir.ui.view" id="dashboard_opportunities">
+            <field name="name">Opportunity</field>
+            <field name="model">board.board</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form >
+                    <hpaned>
+                        <child1>
+                            <action string="Opportunity 17-18" name="%(action_opportunities_active_pipeline_dashboard)d"/>
+                            <action string="90days - Active Pipe" name="%(action_crm_case_opportunities_dashboard)d"/>
+                            <action string="Slippage" name="%(action_slippage_opportunities_dashboard)d"/>
+                        </child1>
+                        <child2>
+                            <action string="Called Deals Q1 - (AMJ)" name="%(action_call_deal_q_one_opportunities_dashboard)d"/>
+                            <action string="Called Deals Q2 - (JAS)" name="%(action_call_deal_q_two_opportunities_dashboard)d"/>
+                            <action string="Called Deals Q3 - (OND)" name="%(action_call_deal_q_three_opportunities_dashboard)d"/>
+                            <action string="Called Deals Q4 - (JFM)" name="%(action_call_deal_q_four_opportunities_dashboard)d"/>
+                        </child2>
+                    </hpaned>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="act_dashboard_opportunities">
+            <field name="name">Opportunity</field>
+            <field name="res_model">board.board</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="usage">menu</field>
+            <field name="view_id" ref="dashboard_opportunities"/>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_crm_email_log_dashboard">
+            <field name="name">Logged Email Dashboard</field>
+            <field name="res_model">crm.email.log</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('ninety_days', '=', True)]</field>
+            <field name="context">{'group_by':'parent_id'}</field>
+            <field name="view_id" ref="crm_jmr.crm_email_log_tree_view"/>
+            <field name="search_view_id" ref="crm_jmr.view_crm_email_log_filter"/>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_view_event_calendar_dashboard">
+            <field name="name">Meetings Dashboard</field>
+            <field name="res_model">calendar.event</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('ninety_days', '=', True)]</field>
+            <field name="context">{'group_by':'account_id'}</field>
+            <field name="view_id" ref="calendar.view_calendar_event_tree"/>
+            <field name="search_view_id" ref="calendar.view_calendar_event_search"/>
+        </record>
+
+
+        <record id="action_dashboard_phonecall" model="ir.actions.act_window">
+            <field name="name">Phonecall Dashboard</field>
+            <field name="res_model">crm.phonecall</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('ninety_days', '=', True)]</field>
+            <field name="context">{'group_by':'parent_id'}</field>
+            <field name="view_id" ref="crm.crm_case_inbound_phone_tree_view"/>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_crm_email_log_dashboard">
+            <field name="name">Logged Email Dashboard</field>
+            <field name="res_model">crm.email.log</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('ninety_days', '=', True)]</field>
+            <field name="context">{'group_by':'parent_id'}</field>
+            <field name="view_id" ref="crm_jmr.crm_email_log_tree_view"/>
+            <field name="search_view_id" ref="crm_jmr.view_crm_email_log_filter"/>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_view_event_calendar_dashboard">
+            <field name="name">Meetings Dashboard</field>
+            <field name="res_model">calendar.event</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('ninety_days', '=', True)]</field>
+            <field name="context">{'group_by':'account_id'}</field>
+            <field name="view_id" ref="calendar.view_calendar_event_tree"/>
+            <field name="search_view_id" ref="calendar.view_calendar_event_search"/>
+        </record>
+
+        <record id="action_dashboard_phonecall" model="ir.actions.act_window">
+            <field name="name">Phonecall Dashboard</field>
+            <field name="res_model">crm.phonecall</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('ninety_days', '=', True)]</field>
+            <field name="context">{'group_by':'parent_id'}</field>
+            <field name="view_id" ref="crm.crm_case_inbound_phone_tree_view"/>
+        </record>
+
+        <record model="ir.ui.view" id="dashboard_pipeline_build">
+            <field name="name">Pipeline Build</field>
+            <field name="model">board.board</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form >
+                    <hpaned>
+                        <child1>
+                            <action string="BU Target vs Achievement" name="%(action_bu_pipeline_build)d" groups="base.group_crm_director,base.group_crm_BU"/>
+                            <action string="Opportunity Target vs Achievement" name="%(action_seller_opportunity_pipeline_build)d"/>
+                        </child1>
+                    </hpaned>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="act_dashboard_pipeline_build">
+            <field name="name">Pipeline Build</field>
+            <field name="res_model">board.board</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="usage">menu</field>
+            <field name="view_id" ref="dashboard_pipeline_build"/>
+        </record>
+
+        <!--- View Non Multi BU Opps -->
+        <record model="ir.actions.act_window" id="action_non_multi_opportunities_active_pipeline_dashboard">
+            <field name="name">Non Multi BU Active Pipeline</field>
+            <field name="res_model">crm.lead</field>
+            <field name="view_mode">tree,form,</field>
+            <field name="domain">[('this_year','=', True),('case_stage_type','=','opportunity'),('multi_dept','=',False),('stage_id.probability','&gt;',0),('stage_id.probability', '&lt;',100)]</field>
+            <field name="view_id" eval="False"/>
+            <field name="search_view_id" ref="crm.view_crm_case_opportunities_filter"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_active_pipeline_tree_dashboard_nonmulti">
+            <field name="sequence" eval="0"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="crm_case_tree_view_oppor_dashboard"/>
+            <field name="act_window_id" ref="action_non_multi_opportunities_active_pipeline_dashboard"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_active_pipeline_form_dashboard_nonmulti">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="crm.crm_case_form_view_oppor"/>
+            <field name="act_window_id" ref="action_non_multi_opportunities_active_pipeline_dashboard"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_active_pipeline_kanban_dashboard_nonmulti">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="crm_case_kanban_view_leads_dashboard"/>
+            <field name="act_window_id" ref="action_non_multi_opportunities_active_pipeline_dashboard"/>
+        </record>
+        <!-- Non multi BU Opps Ends-->
+        
+
+        <!-- Schedule for checking active pipeline -->
+        <record model="ir.cron" id="checking_opportunity_active_pipe">
+           <field name="name">Checking Opportunity Active Pipe</field>
+           <field name="interval_number">1</field>
+           <field name="interval_type">days</field>
+           <field name="numbercall">-1</field>
+           <field name="model" eval="'crm.lead'"/>
+           <field name="function" eval="'checking_opportunity_active_pipe'"/>
+           <field name="args" eval="'()'"/>
+        </record>
+
+        <!-- Schedule for BU Pipeline build-->
+
+        <record model="ir.cron" id="run_bu_opportunity_pipeline_build_cron">
+           <field name="name">BU Pipeline build</field>
+           <field name="interval_number">1</field>
+           <field name="interval_type">days</field>
+           <field name="numbercall">-1</field>
+           <field name="model" eval="'bu.pipeline.build'"/>
+           <field name="function" eval="'run_bu_opportunity_pipeline_build'"/>
+           <field name="args" eval="'()'"/>
+        </record>
+
+        <!-- Schedule for Opportunity Target vs Achievement -->
+
+        <record model="ir.cron" id="opportunity_pipeline_build_cron">
+           <field name="name">Opportunity Pipeline Build</field>
+           <field name="interval_number">1</field>
+           <field name="interval_type">days</field>
+           <field name="numbercall">-1</field>
+           <field name="model" eval="'opportunity.pipeline.build'"/>
+           <field name="function" eval="'run_opportunity_pipeline_build'"/>
+           <field name="args" eval="'()'"/>
+        </record>
+
+
+        <menuitem id="main_crm_dashboard" name="CRM Dashboard" sequence='0' parent="base.menu_base_partner"
+                  groups="base.group_inside_sales11_user,base.group_crm_BU"/>
+
+        <record id="view_opportunity_slipups_log_form" model="ir.ui.view">
+            <field name="name">Opportunity Slip-ups Log Form</field>
+            <field name="model">opportunity.slipups.log</field>
+            <field name="arch" type="xml">
+                <form string="Opportunity Slip-ups Log" create="0" edit="0">
+                    <group>
+                        <group>
+                            <field name="opportunity_id" invisible="1"/>
+                            <field name="user_id"/>
+                            <field name="department_id"/>
+                            <field name="partner_id"/>
+                            <field name="planned_revenue"/>
+                            <field name="stage_id"/>
+                        </group>
+                        <group>
+                            <field name="zebra_rating"/>
+                            <field name="date_deadline"/>
+                            <field name="seller_call_deal"/>
+                            <field name="call_deal_quarter"/>
+                            <field name="bu_call_deal_quarter"/>
+                            <field name="bu_call_deal"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_opportunity_slipups_log_tree" model="ir.ui.view">
+            <field name="name">Opportunity Slip-ups Log Tree</field>
+            <field name="model">opportunity.slipups.log</field>
+            <field name="arch" type="xml">
+                <tree string="Opportunity Slip-ups Log" create="0" edit="0">
+                    <field name="opportunity_id" invisible="1"/>
+                    <field name="user_id"/>
+                    <field name="department_id"/>
+                    <field name="partner_id"/>
+                    <field name="planned_revenue"/>
+                    <field name="stage_id"/>
+                    <field name="zebra_rating"/>
+                    <field name="date_deadline"/>
+                    <field name="seller_call_deal"/>
+                    <field name="call_deal_quarter"/>
+                    <field name="bu_call_deal_quarter"/>
+                    <field name="bu_call_deal"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_opportunity_slipups_log_search" model="ir.ui.view">
+            <field name="name">Opportunity Slip-ups Log Search</field>
+            <field name="model">opportunity.slipups.log</field>
+            <field name="arch" type="xml">
+                <search string="Search Opportunity Slip-ups Log">
+                    <field name="opportunity_id" string="Opportunity Name"/>
+                    <field name="partner_id" string="Account Name"/>
+                    <field name="user_id" string="Seller Name"/>
+                    <field name="department_id" string="Business Unit"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Opportunity Name" icon="terp-partner" domain="[]" context="{'group_by':'opportunity_id'}"/>
+                        <filter string="Account Name" icon="terp-partner" domain="[]" context="{'group_by':'partner_id'}"/>
+                        <filter string="Seller" icon="terp-partner" domain="[]" context="{'group_by':'user_id'}"/>
+                        <filter string="Business Unit" icon="terp-partner" domain="[]" context="{'group_by':'department_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record id="action_opportunity_slipups_log" model="ir.actions.act_window">
+            <field name="name">Opportunity Slip-ups Log</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">opportunity.slipups.log</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="view_opportunity_slipups_log_search"/>
+        </record>
+
+        <menuitem id="menu_main_opportunity_log" name="Opportunity Log" sequence='60' parent="base.menu_sales"
+                  groups="base.group_inside_sales11_user"/>
+
+        <menuitem id="menu_opp_slipups_log" name="Opportunity Slip-ups Log" sequence='1' parent="menu_main_opportunity_log"
+                  action ="action_opportunity_slipups_log"
+                  groups="base.group_crm_director"/>
+
+        <record id="view_opportunity_slippage_log_form" model="ir.ui.view">
+            <field name="name">Opportunity Slippage Log Form</field>
+            <field name="model">opportunity.slippage.log</field>
+            <field name="arch" type="xml">
+                <form string="Opportunity Slip-ups Log" create="0" edit="0">
+                    <group>
+                        <group>
+                            <field name="opportunity_id" invisible="1"/>
+                            <field name="user_id"/>
+                            <field name="department_id"/>
+                            <field name="partner_id"/>
+                            <field name="planned_revenue"/>
+                            <field name="stage_id"/>
+                        </group>
+                        <group>
+                            <field name="zebra_rating"/>
+                            <field name="date_deadline"/>
+                            <field name="seller_call_deal"/>
+                            <field name="call_deal_quarter"/>
+                            <field name="bu_call_deal_quarter"/>
+                            <field name="bu_call_deal"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_opportunity_slippage_log_tree" model="ir.ui.view">
+            <field name="name">Opportunity Slippage Log Tree</field>
+            <field name="model">opportunity.slippage.log</field>
+            <field name="arch" type="xml">
+                <tree string="Opportunity Slippage Log" create="0" edit="0">
+                    <field name="opportunity_id" invisible="1"/>
+                    <field name="user_id"/>
+                    <field name="department_id"/>
+                    <field name="partner_id"/>
+                    <field name="planned_revenue"/>
+                    <field name="stage_id"/>
+                    <field name="zebra_rating"/>
+                    <field name="date_deadline"/>
+                    <field name="seller_call_deal"/>
+                    <field name="call_deal_quarter"/>
+                    <field name="bu_call_deal_quarter"/>
+                    <field name="bu_call_deal"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_opportunity_slippage_log_search" model="ir.ui.view">
+            <field name="name">Opportunity Slippage Log Search</field>
+            <field name="model">opportunity.slippage.log</field>
+            <field name="arch" type="xml">
+                <search string="Search Opportunity Slippage Log">
+                    <field name="opportunity_id" string="Opportunity Name"/>
+                    <field name="partner_id" string="Account Name"/>
+                    <field name="user_id" string="Seller Name"/>
+                    <field name="department_id" string="Business Unit"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Opportunity Name" icon="terp-partner" domain="[]" context="{'group_by':'opportunity_id'}"/>
+                        <filter string="Account Name" icon="terp-partner" domain="[]" context="{'group_by':'partner_id'}"/>
+                        <filter string="Seller" icon="terp-partner" domain="[]" context="{'group_by':'user_id'}"/>
+                        <filter string="Business Unit" icon="terp-partner" domain="[]" context="{'group_by':'department_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record id="action_opportunity_slippage_log" model="ir.actions.act_window">
+            <field name="name">Opportunity Slippage Log</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">opportunity.slippage.log</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="view_opportunity_slippage_log_search"/>
+        </record>
+
+        <menuitem id="menu_opp_slippage_log" name="Opportunity Slippage Log" sequence='2' parent="menu_main_opportunity_log"
+                  action ="action_opportunity_slippage_log"
+                  groups="base.group_crm_director"/>
+
+        <!--menuitem id="menu_sales_dashboard" name="Sales Dashboard" sequence='0' parent="crm_dashboard_jmr.main_crm_dashboard"
+                  groups="base.group_crm_BU,base.group_crm_director,base.group_inside_sales11_user"/>
+
+        <menuitem id="menu_sales_account_activity" name="90Days Account Activity" sequence='1'
+                  parent="menu_sales_dashboard"
+                  groups="base.group_crm_BU,base.group_crm_director,base.group_inside_sales11_user"/>
+
+        <menuitem id="menu_sales_meetings" name="Meetings" sequence='0' parent="menu_sales_account_activity"
+                  action ="action_view_event_calendar_dashboard"
+                  groups="base.group_crm_BU,base.group_crm_director,base.group_inside_sales11_user"/>
+
+        <menuitem id="menu_sales_phone_calls" name="Phone Calls" sequence='1' parent="menu_sales_account_activity"
+                  action ="action_dashboard_phonecall"
+                  groups="base.group_crm_BU,base.group_crm_director,base.group_inside_sales11_user"/>
+
+        <menuitem id="menu_sales_email_log" name="Email Log" sequence='2' parent="menu_sales_account_activity"
+                  action ="action_crm_email_log_dashboard"
+                  groups="base.group_crm_BU,base.group_crm_director,base.group_inside_sales11_user"/>
+
+        <menuitem id="menu_active_pipeline_opportunity_dashboard" name="Active Pipe JMR" sequence='0'
+                  parent="menu_sales_dashboard" action ="act_dashboard_opportunities"
+                  groups="base.group_inside_sales11_user,base.group_crm_BU,base.group_crm_director"/>
+
+        <menuitem id="menu_gss_sales_dashboard" name="GSS Dashboard" sequence='1' parent="crm_dashboard_jmr.main_crm_dashboard"
+                  groups="base.group_crm_director"/>
+
+        <menuitem id="menu_gss_active_pipeline_opportunity" name="Opportunity" sequence='0'
+                  parent="menu_gss_sales_dashboard" action ="action_opportunities_active_pipeline_dashboard"
+                  groups="base.group_crm_director"/>
+
+        <menuitem id="menu_gss_90days_pipeline" name="90Days - Active Pipe" sequence='1'
+                  parent="menu_gss_sales_dashboard" action ="action_crm_case_opportunities_dashboard"
+                  groups="base.group_crm_director"/>
+
+        <menuitem id="menu_gss_call_deal_pipeline" name="Called Deals" sequence='3'
+                  parent="menu_gss_sales_dashboard" action ="action_call_deal_gss_opportunities_dashboard"
+                  groups="base.group_crm_director"/>
+
+        <menuitem id="menu_gss_slippage" name="Slippage - GSS" sequence='4'
+                  parent="menu_gss_sales_dashboard" action ="action_slippage_opportunities_dashboard"
+                  groups="base.group_crm_director"/>
+
+
+        <menuitem id="menu_gss_pipeline_build" name="Pipeline Build" sequence='5'
+                  parent="menu_gss_sales_dashboard" groups="base.group_crm_director"/>
+
+        <menuitem id="menu_gss_seller_pipeline_build" name="Seller Pipeline Build" sequence='0'
+                  parent="menu_gss_pipeline_build" action ="action_opportunity_pipeline_build"
+                  groups="base.group_crm_director"/>
+
+        <menuitem id="menu_gss_bu_pipeline_build" name="BU Pipeline Build" sequence='1'
+                  parent="menu_gss_pipeline_build" action ="action_bu_pipeline_build"
+                  groups="base.group_crm_director"/>
+
+        <menuitem id="menu_gss_wlo_opportunities" name="Win/Lost/On Hold - Opportunities" sequence='6'
+                  parent="menu_gss_sales_dashboard" action ="action_wlo_opportunities_dashboard"
+                  groups="base.group_crm_director"/>
+
+        <menuitem id="menu_gss_account_activity" name="90Days Account Activity" sequence='5'
+                  parent="menu_gss_sales_dashboard" groups="base.group_crm_director"/>
+
+        <menuitem id="menu_gss_meetings" name="Meetings" sequence='0' parent="menu_gss_account_activity"
+                  action ="action_view_event_calendar_dashboard" groups="base.group_crm_director"/>
+
+        <menuitem id="menu_gss_phone_calls" name="Phone Calls" sequence='1' parent="menu_gss_account_activity"
+                  action ="action_dashboard_phonecall" groups="base.group_crm_director"/>
+
+        <menuitem id="menu_gss_email_log" name="Email Log" sequence='2' parent="menu_gss_account_activity"
+                  action ="action_crm_email_log_dashboard" groups="base.group_crm_director"/>
+
+        <menuitem id="menu_pipeline_build" name="Pipeline Build" sequence='1'
+                  parent="menu_sales_dashboard" action ="act_dashboard_pipeline_build"
+                  groups="base.group_inside_sales11_user,base.group_crm_BU,base.group_crm_director"/-->
+    </data>
+</openerp>

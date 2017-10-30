@@ -1,0 +1,604 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="view_crm_sales_target_form">
+            <field name="name">Field Sales Target form</field>
+            <field name="model">crm.sales.target</field>
+            <field name="arch" type="xml">
+                <form string="CRM Sales Target">
+                   <sheet>
+                    <separator string="YTD Achievement - Field Sales"/>
+                    <group>
+                        <field name="sales_target_user"/>
+                        <field name="date" invisible="1" />
+                        <field name="department_id" invisible="1" />
+                        <field name="revenue_target"/>
+                        <field name="revenue_achieved"/>
+                        <field name="percentage"/>
+                        <field name="sales_manager" invisible="1"/>
+                        <field name="company_id" groups="base.group_multi_company" widget="selection" invisible="1"/>
+                    </group>
+                   <notebook>
+                       <page string="Achievement Breakup">
+                           <field name="leads_achieved">
+                               <tree editable="1">
+                                   <field name="partner_id"/>
+                                   <field name="name"/>
+                                   <field name="planned_revenue" sum="Total Revenue"/>
+                                   <field name="department_id"/>
+                                   <field name="department_product_ids" widget="many2many_tags"/>
+                                   <field name="currency_id"/>
+                                   <field name="closed_won_date"/>
+                                   <field name="user_id"/>
+                               </tree>
+                           </field>
+                       </page>
+                       <page string="BU wise">
+                           <field name="bu_target_ids">
+                           <tree editable="1">
+                               <field name="department_id"/>
+                               <field name="revenue_target" sum="Total Target"/>
+                               <field name="revenue_achieved" sum="Total Revenue Achieved"/>
+                               <field name="percentage"/>
+                           </tree>
+                           </field>
+                       </page>
+                   </notebook>
+                  </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread" groups="base.group_user"/>
+                </div>
+                </form>
+            </field>
+        </record>
+        <record id="view_crm_sales_target_tree" model="ir.ui.view">
+            <field name="name">Field Sales Target Tree</field>
+            <field name="model">crm.sales.target</field>
+            <field name="arch" type="xml">
+                <tree string="CRM Sales Target">
+                    <field name="sales_target_user" string="Seller"/>
+                    <field name="revenue_target"/>
+                    <field name="revenue_achieved"/>
+                    <field name="percentage"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_crm_sales_target_search" model="ir.ui.view">
+            <field name="name">Field Sales Target Search</field>
+            <field name="model">crm.sales.target</field>
+            <field name="arch" type="xml">
+                <search string="Search CRM Sales Target">
+                    <field name="sales_target_user" string="Sales Person"/>
+                    <field name="date" string="Date"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Business Unit" icon="terp-partner" domain="[]" context="{'group_by':'department_id'}"/>
+                        <filter string="Country" icon="terp-go-month" domain="[]" context="{'group_by':'country_id'}"/>
+                        <filter string="Department" icon="terp-go-month" domain="[]" context="{'group_by':'company_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="crm_sales_target_kanban" model="ir.ui.view">
+            <field name="name">crm.sales.target.kanban</field>
+            <field name="model">crm.sales.target</field>
+            <field name="arch" type="xml">
+                <kanban class="oe_background_grey" create="0">
+                    <field name="sales_target_user"/>
+                    <field name="color"/>
+                    <field name="revenue_target"/>
+                    <field name="revenue_achieved"/>
+                    <field name="percentage"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_dropdown_toggle oe_dropdown_kanban">
+                                    <span class="oe_e">í</span>
+                                    <ul class="oe_dropdown_menu">
+                                        <t t-if="widget.view.is_action_enabled('edit')"><li>
+                                            <ul class="oe_kanban_colorpicker" data-field="color"/></li></t>
+                                    </ul>
+                                </div>
+                                <div class="oe_kanban_content">
+                                    <h2 class="text-center"><strong><field name="sales_target_user"/></strong></h2>
+                                    <div class="oe_items_list oe_kanban_ellipsis">
+                                        <div>
+                                             <strong>Revenue Target:</strong><field name="revenue_target"/>
+                                        </div>
+
+                                        <div>
+                                           <strong>Revenue Achievement:</strong> <field name="revenue_achieved"/>
+                                        </div>
+                                    </div>
+                                    <field name="percentage" widget="gauge" style="width:300px; height: 200px;"
+                                           options="{'levelcolors': ['#a9d70b', '#f9c802', '#ff0000'],
+                                           }">Sales Target (%%)</field>
+
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="crm_sales_target_kanban" model="ir.ui.view">
+            <field name="name">crm.sales.target.kanban</field>
+            <field name="model">crm.sales.target</field>
+            <field name="arch" type="xml">
+                <kanban class="oe_background_grey" create="0">
+                    <field name="sales_target_user"/>
+                    <field name="color"/>
+                    <field name="revenue_target"/>
+                    <field name="revenue_achieved"/>
+                    <field name="percentage"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_dropdown_toggle oe_dropdown_kanban">
+                                    <span class="oe_e">í</span>
+                                    <ul class="oe_dropdown_menu">
+                                        <t t-if="widget.view.is_action_enabled('edit')"><li>
+                                            <ul class="oe_kanban_colorpicker" data-field="color"/></li></t>
+                                    </ul>
+                                </div>
+                                <div class="oe_kanban_content">
+                                    <h2 class="text-center"><strong><field name="sales_target_user"/></strong></h2>
+                                    <div class="oe_items_list oe_kanban_ellipsis">
+                                        <div>
+                                             <strong>Revenue Target:</strong><field name="revenue_target"/>
+                                        </div>
+
+                                        <div>
+                                           <strong>Revenue Achievement:</strong> <field name="revenue_achieved"/>
+                                        </div>
+                                    </div>
+                                    <field name="percentage" widget="gauge" style="width:300px; height: 200px;"
+                                           options="{'levelcolors': ['#a9d70b', '#f9c802', '#ff0000'],
+                                           }">Sales Target (%%)</field>
+
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+                <!--Seller OB &#38; Revenue - Target vs Achievement -->
+
+        <record model="ir.ui.view" id="view_seller_order_booking_form">
+            <field name="name">Seller OB &#38; Revenue - Target vs Achievement form</field>
+            <field name="model">seller.order.booking</field>
+            <field name="arch" type="xml">
+                <form string="OB &#38; Revenue - Target vs Achievement">
+                       <h2>
+                           <label for="sales_target_user"/> :
+                           <field name="sales_target_user" class="oe_inline"/>
+                       </h2>
+                       <group>
+                           <group>
+                                <field name="total_ob_target"/>
+                                <field name="total_ob_achieved"/>
+                                <field name="total_ob_variant"/>
+                                <field name="ob_percentage"/>
+                           </group>
+                           <group>
+                                <field name="total_revenue_target"/>
+                                <field name="total_revenue_achieved"/>
+                                <field name="total_revenue_variant"/>
+                                <field name="revenue_percentage"/>
+                           </group>
+                       </group>
+                        <field name="sales_manager" invisible="1"/>
+                       <field name="fiscalyear_id" class="oe_inline" invisible="1"/>
+                       <separator string="Quarter Wise Details" class="oe_inline"/>
+                       <field name="quarter_wise_ids">
+                           <tree>
+                               <field name="name"/>
+                               <field name="ob_target" sum="Total OB Target"/>
+                               <field name="ob_achieved" sum="Total OB Achieved"/>
+                               <field name="ob_variant" sum="Total OB Variant"/>
+                               <field name="ob_percentage"/>
+                               <field name="revenue_target" sum="Total Revenue"/>
+                               <field name="revenue_achieved" sum="Total Revenue Achieved"/>
+                               <field name="revenue_variant" sum="Total Revenue Variant"/>
+                               <field name="revenue_percentage"/>
+                           </tree>
+                       </field>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread" groups="base.group_user"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_seller_order_booking_tree" model="ir.ui.view">
+            <field name="name">Seller OB &#38; Revenue - Target vs Achievement Tree</field>
+            <field name="model">seller.order.booking</field>
+            <field name="arch" type="xml">
+                <tree string="Seller Order Booking">
+                    <field name="sales_target_user"/>
+                    <field name="total_ob_target" sum="Total OB Target"/>
+                    <field name="total_ob_achieved" sum="Total OB Achieved"/>
+                    <field name="total_ob_variant" sum="Total OB Variant"/>
+                    <field name="ob_percentage"/>
+                    <field name="total_revenue_target" sum="Total Revenue Target"/>
+                    <field name="total_revenue_achieved" sum="Total Revenue Achieved" />
+                    <field name="total_revenue_variant" sum="Total Revenue Variant" />
+                    <field name="revenue_percentage"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="seller_order_booking_kanban" model="ir.ui.view">
+            <field name="name">Seller OB &#38; Revenue - Target vs Achievement Kanban</field>
+            <field name="model">seller.order.booking</field>
+            <field name="arch" type="xml">
+                <kanban class="oe_background_grey" create="0">
+                    <field name="sales_target_user"/>
+                    <field name="color"/>
+                    <field name="total_ob_target"/>
+                    <field name="total_ob_achieved"/>
+                    <field name="total_ob_variant"/>
+                    <field name="ob_percentage"/>
+                    <field name="total_revenue_target"/>
+                    <field name="total_revenue_achieved"/>
+                    <field name="total_revenue_variant"/>
+                    <field name="revenue_percentage"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_dropdown_toggle oe_dropdown_kanban">
+                                    <span class="oe_e">í</span>
+                                    <ul class="oe_dropdown_menu">
+                                        <t t-if="widget.view.is_action_enabled('edit')"><li>
+                                            <ul class="oe_kanban_colorpicker" data-field="color"/></li></t>
+                                    </ul>
+                                </div>
+                                <div class="oe_kanban_content">
+                                    <h3 class="text-center"><strong><field name="sales_target_user"/></strong></h3>
+                                    <div class="oe_items_list oe_kanban_ellipsis">
+                                        <div>
+                                             <strong>OB Target:</strong><field name="total_ob_target"/>
+                                        </div>
+
+                                        <div>
+                                           <strong>OB Achievement:</strong> <field name="total_ob_achieved"/>
+                                        </div>
+                                        <div>
+                                           <strong>OB Variant:</strong> <field name="total_ob_variant"/>
+                                        </div>
+                                    </div>
+                                    <div class="oe_items_list oe_kanban_ellipsis">
+                                        <div>
+                                             <strong>Revenue Target:</strong><field name="total_revenue_target"/>
+                                        </div>
+
+                                        <div>
+                                           <strong>Revenue Achievement:</strong> <field name="total_revenue_achieved"/>
+                                        </div>
+                                        <div>
+                                           <strong>Revenue Variant:</strong> <field name="total_revenue_variant"/>
+                                        </div>
+                                    </div>
+                                    <div class="oe_picking_type_gauge">
+                                        <field name="revenue_percentage" widget="gauge" style="width:150px; height: 110px;"
+                                               options="{'levelcolors': ['#a9d70b', '#f9c802', '#ff0000']}">Revenue Achievement (%%)</field>
+                                        <field name="ob_percentage" widget="gauge" style="width:150px; height: 110px;"
+                                        options="{'levelcolors': ['#a9d70b', '#f9c802', '#ff0000']}">OB Achievement (%%)</field>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+                <!--  Graph View -->
+        <record model="ir.ui.view" id="seller_order_booking_graph_view">
+            <field name="name">Seller OB &#38; Revenue - Target vs Achievement</field>
+            <field name="model">seller.order.booking</field>
+            <field name="arch" type="xml">
+                <graph string="Seller OB &#38; Revenue - Target vs Achievement" type="bar">
+                    <field name="sales_target_user" type="row"/>
+                    <field name="total_ob_target" string="OB Target" type="measure"/>
+                    <field name="total_ob_achieved" string="OB Achievement" type="measure"/>
+                    <field name="total_revenue_target" string="Revenue Target" type="measure"/>
+                    <field name="total_revenue_achieved" string="Revenue Achievement" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="seller_quarter_wise_form">
+            <field name="name">Seller OB &#38; Revenue - Quarter wise form</field>
+            <field name="model">seller.quarter.wise</field>
+            <field name="arch" type="xml">
+                <form string="Seller Quarter wiset">
+                       <h2>
+                           <label for="name"/> :
+                           <field name="name" class="oe_inline"/>
+                       </h2>
+                       <group>
+                           <group>
+                                <field name="ob_target"/>
+                                <field name="ob_achieved"/>
+                                <field name="ob_variant"/>
+                                <field name="ob_percentage"/>
+                           </group>
+                           <group>
+                                <field name="revenue_target"/>
+                                <field name="revenue_achieved"/>
+                                <field name="revenue_variant"/>
+                                <field name="revenue_percentage"/>
+                           </group>
+                       </group>
+                        <field name="sales_manager" invisible="1"/>
+                       <field name="fiscalyear_id" class="oe_inline" invisible="1"/>
+                       <separator string="BU Wise Details"/>
+                       <field name="bu_quarter_wise_ids">
+                           <tree editable="1">
+                               <field name="department_id"/>
+                               <field name="ob_target" sum="Total OB Target"/>
+                               <field name="ob_achieved" sum="Total OB Achieved"/>
+                               <field name="ob_variant" sum="Total OB Variant"/>
+                               <field name="ob_percentage"/>
+                               <field name="revenue_target" sum="Total Revenue"/>
+                               <field name="revenue_achieved" sum="Total Revenue Achieved"/>
+                               <field name="revenue_variant" sum="Total Revenue Variant"/>
+                               <field name="revenue_percentage"/>
+                           </tree>
+                       </field>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread" groups="base.group_user"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="seller_quarter_wise_kanban" model="ir.ui.view">
+            <field name="name">Seller Quarter wise Kanban</field>
+            <field name="model">seller.quarter.wise</field>
+            <field name="arch" type="xml">
+                <kanban class="oe_background_grey" create="0">
+                    <field name="sales_target_user"/>
+                    <field name="name"/>
+                    <field name="ob_target"/>
+                    <field name="ob_achieved"/>
+                    <field name="ob_percentage"/>
+                    <field name="revenue_target"/>
+                    <field name="revenue_achieved"/>
+                    <field name="revenue_percentage"/>
+                    <field name="color"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_dropdown_toggle oe_dropdown_kanban">
+                                    <span class="oe_e">í</span>
+                                    <ul class="oe_dropdown_menu">
+                                        <t t-if="widget.view.is_action_enabled('edit')"><li>
+                                            <ul class="oe_kanban_colorpicker" data-field="color"/></li></t>
+                                    </ul>
+                                </div>
+                                <div class="oe_kanban_content">
+                                    <div>
+                                         <h3 class="text-center"><strong><field name="sales_target_user"/></strong></h3>
+                                    </div>
+                                    <div>
+                                         <h4><strong><field name="name"/></strong></h4>
+                                    </div>
+                                    <div>
+                                         <strong>OB Target:</strong><field name="ob_target"/>
+                                    </div>
+                                    <div>
+                                         <strong>OB Target:</strong><field name="ob_target"/>
+                                    </div>
+
+                                    <div>
+                                       <strong>OB Achievement:</strong> <field name="ob_achieved"/>
+                                    </div>
+                                    <div>
+                                         <strong>OB Percentage:</strong><field name="ob_percentage"/>
+                                    </div>
+
+                                    <div>
+                                       <strong>Revenue Target:</strong> <field name="revenue_target"/>
+                                    </div>
+                                    <div>
+                                         <strong>Revenue Achievement:</strong><field name="revenue_achieved"/>
+                                    </div>
+
+                                    <div>
+                                       <strong>Revenue Percentage:</strong> <field name="revenue_percentage"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="view_seller_quarter_wise_search" model="ir.ui.view">
+            <field name="name">Seller Quarter wise Search</field>
+            <field name="model">seller.quarter.wise</field>
+            <field name="arch" type="xml">
+                <search string="Search Seller Quarter wise">
+                    <field name="sales_target_user" string="Sales Person"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Business Unit" icon="terp-partner" domain="[]" context="{'group_by':'department_id'}"/>
+                        <filter string="Seller" icon="terp-go-month" domain="[]" context="{'group_by':'sales_target_user'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!--record model="ir.actions.act_window" id="act_seller_quarter_wise_kanban">
+            <field name="name">Seller Quarter wise Kanban action</field>
+            <field name="res_model">seller.quarter.wise</field>
+            <field name="context">{'group_by':'sales_target_user'}</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban</field>
+            <field name="kanban_view_id" ref="seller_quarter_wise_kanban"/>
+        </record>
+
+        <menuitem id="menu_seller_quarter_wise" name="Quarter wise - Seller OB &#38; Revenue" sequence='5' parent="crm_dashboard_jmr.menu_target_achievements"
+                  action ="act_seller_quarter_wise_kanban" groups="base.group_crm_BU,base.group_crm_director"/-->
+
+        <record id="view_seller_order_booking_search" model="ir.ui.view">
+            <field name="name">Seller OB &#38; Revenue - Target vs Achievement Search</field>
+            <field name="model">seller.order.booking</field>
+            <field name="arch" type="xml">
+                <search string="Search Seller OB &#38; Revenue - Target vs Achievement">
+                    <field name="sales_target_user" string="Business Unit"/>
+                    <separator/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_seller_order_booking" model="ir.actions.act_window">
+            <field name="name">Seller OB &#38; Revenue - Target vs Achievement</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">seller.order.booking</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,graph</field>
+            <field name="view_id" eval="False"/>
+            <field name="search_view_id" ref="view_seller_order_booking_search"/>
+        </record>
+
+        <menuitem id="menu_seller_order_booking" name="Seller OB &#38; Revenue - Target vs Achievement" sequence='4' parent="crm_dashboard_jmr.menu_target_achievements"
+                  action ="action_seller_order_booking" groups="base.group_crm_BU,base.group_crm_director"/>
+
+        <record model="ir.actions.act_window" id="act_seller_order_booking_kanban">
+            <field name="name">Seller OB &#38; Revenue - Target vs Achievement</field>
+            <field name="res_model">seller.order.booking</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban</field>
+            <field name="tree_view_id" ref="seller_order_booking_kanban"/>
+        </record>
+
+        <record model="ir.actions.act_window" id="act_view_seller_order_booking_tree">
+            <field name="name">Seller OB &#38; Revenue - Target vs Achievement Tree</field>
+            <field name="res_model">seller.order.booking</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="tree_view_id" ref="view_seller_order_booking_tree"/>
+        </record>
+
+
+        <record id="action_crm_sales_target" model="ir.actions.act_window">
+            <field name="name">Field Sales Target</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">crm.sales.target</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,kanban,</field>
+            <field name="view_id" eval="False"/>
+            <field name="search_view_id" ref="view_crm_sales_target_search"/>
+        </record>
+
+
+        <record model="ir.ui.view" id="crm_bu_target_board">
+            <field name="name">BU Target.tree</field>
+            <field name="model">crm.bu.target</field>
+            <field name="arch" type="xml">
+                <tree string="CRM BU Target">
+                   <field name="department_id"/>
+                   <field name="revenue_target"/>
+                   <field name="revenue_achieved"/>
+                   <field name="percentage"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="act_crm_bu_target_board">
+            <field name="name">BU Target</field>
+            <field name="res_model">crm.bu.target</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="tree_view_id" ref="crm_bu_target_board"/>
+        </record>
+
+        <record id="action_crm_sales_target_tree" model="ir.actions.act_window">
+            <field name="name">Field Sales Target Board</field>
+            <field name="res_model">crm.sales.target</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="tree_view_id" ref="view_crm_sales_target_tree"/>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="act_crm_sales_target_kanban">
+            <field name="name">BU Target</field>
+            <field name="res_model">crm.sales.target</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban</field>
+            <field name="tree_view_id" ref="crm_sales_target_kanban"/>
+        </record>
+
+        <record model="ir.ui.view" id="dashboard_crm_sales_target">
+            <field name="name">board.sales.target.form</field>
+            <field name="model">board.board</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="CRM Sales Target Dashboard" >
+                    <hpaned>
+                        <child1>
+                            <action
+                                string="Seller OB &#38; Revenue - Target vs Achievement"
+                                name="%(action_seller_order_booking)d"
+                                />
+                        </child1>
+                        <child2>
+                            <action
+                                name="%(act_seller_order_booking_kanban)d"/>
+                        </child2>
+                    </hpaned>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="act_board_crm_sales_target">
+            <field name="name">CRM Dashboard</field>
+            <field name="res_model">board.board</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="usage">menu</field>
+            <field name="view_id" ref="dashboard_crm_sales_target"/>
+        </record>
+
+        <menuitem id="menu_target_achievements" name="Target vs Achievements" sequence='5' parent="main_crm_dashboard"
+                  groups="base.group_inside_sales11_user,base.group_crm_BU"/>
+
+        <menuitem id="menu_seller_order_booking" name="Seller OB &#38; Revenue - Target vs Achievement" sequence='1' parent="menu_target_achievements"
+                  action ="act_board_crm_sales_target" groups="base.group_inside_sales11_user,base.group_crm_BU,base.group_crm_director"/>
+
+
+        <record model="ir.cron" id="sales_target_cron">
+           <field name="name">Sales Vs Achievement Daily Updation </field>
+           <field name="interval_number">1</field>
+           <field name="interval_type">days</field>
+           <field name="numbercall">-1</field>
+           <field name="model" eval="'crm.sales.target'"/>
+           <field name="function" eval="'sales_target'"/>
+           <field name="args" eval="'()'"/>
+        </record>
+
+        <record model="ir.cron" id="seller_order_booking_schedule_cron">
+           <field name="name">Seller OB &#38; Revenue - Target vs Achievement Daily Updation</field>
+           <field name="interval_number">1</field>
+           <field name="interval_type">days</field>
+           <field name="numbercall">-1</field>
+           <field name="model" eval="'seller.order.booking'"/>
+           <field name="function" eval="'sellers_ob_targets'"/>
+           <field name="args" eval="'()'"/>
+        </record>
+    </data>
+</openerp>

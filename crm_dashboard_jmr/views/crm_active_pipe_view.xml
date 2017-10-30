@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- Seller Active Pipe Form View-->
+        <record model="ir.ui.view" id="view_seller_active_pipe_form">
+            <field name="name">Seller Active Pipe Form</field>
+            <field name="model">seller.active.pipe</field>
+            <field name="arch" type="xml">
+                <form string="Seller Active Pipe">
+
+                   <sheet>
+                        <h2>
+                            <label for="user_id"/>
+                            <field name="user_id" domain="[('sales_category', '=', 'FieldSales')]" required="1" class="oe_inline"/>
+                        </h2>
+                       <group>
+                           <group>
+                               <field name="opportunity_count"/>
+                               <field name="multi_opportunity_count"/>
+                               <field name="total_count"/>
+                           </group>
+                           <group>
+                               <field name="opportunity_value"/>
+                               <field name="multi_opportunity_value"/>
+                               <field name="total_Value"/>
+                           </group>
+                       </group>
+                   <separator string="Active Pipe Details"/>
+                   <field name="seller_active_pipe_line">
+                       <tree editable="1">
+                           <field name="name"/>
+                           <field name="opportunity_count" sum="Total Opportunity Count"/>
+                           <field name="opportunity_value" sum="Total Opportunity Value"/>
+                           <field name="multi_opportunity_count" sum="Multi Opportunity Count"/>
+                           <field name="multi_opportunity_value" sum="Multi Opportunity Value"/>
+                           <field name="total_count" sum="Total Count"/>
+                           <field name="total_Value" sum="Total Value"/>
+                       </tree>
+                   </field>
+                   <label for="notes"/>
+                   <field name="notes"/>
+                  </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread" groups="base.group_user"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_seller_active_pipe_tree" model="ir.ui.view">
+            <field name="name">Seller Active Pipe Tree</field>
+            <field name="model">seller.active.pipe</field>
+            <field name="arch" type="xml">
+                <tree string="Seller Account Mapping">
+                    <field name="user_id"/>
+                    <field name="opportunity_count"/>
+                    <field name="opportunity_value"/>
+                    <field name="multi_opportunity_count"/>
+                    <field name="multi_opportunity_value"/>
+                    <field name="total_count"/>
+                    <field name="total_Value"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_seller_active_pipe_search" model="ir.ui.view">
+            <field name="name">Seller Active Pipe Search</field>
+            <field name="model">seller.active.pipe</field>
+            <field name="arch" type="xml">
+                <search string="Seller Active Pipe">
+                    <field name="user_id" string="Seller Name"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Seller" icon="terp-partner" domain="[]" context="{'group_by':'user_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_seller_active_pipe" model="ir.actions.act_window">
+            <field name="name">Seller Active Pipe</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">seller.active.pipe</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+            <field name="search_view_id" ref="view_seller_active_pipe_search"/>
+        </record>
+
+        <!--menuitem id="menu_seller_active_pipe" name="Seller Active Pipe" sequence='3' parent="menu_main_account_mapping"
+                  action ="action_seller_active_pipe"
+                  groups="base.group_crm_director"/-->
+
+        <!-- BU Account Mapping Form View-->
+        <record model="ir.ui.view" id="view_bu_active_pipe_form">
+            <field name="name">BU Active Pipe Form</field>
+            <field name="model">bu.active.pipe</field>
+            <field name="arch" type="xml">
+                <form string="BU Active Pipe">
+
+                   <sheet>
+                        <h2>
+                            <label for="department_id"/>
+                            <field name="department_id" readonly="1"
+                                   domain="[('parent_id', '=', bu.id), ('dept_main_category', '=', 'Non Support')]" class="oe_inline"/>
+                        </h2>
+                       <group>
+                           <group>
+                               <field name="opportunity_count"/>
+                               <field name="multi_opportunity_count"/>
+                               <field name="total_count"/>
+                           </group>
+                           <group>
+                               <field name="opportunity_value"/>
+                               <field name="multi_opportunity_value"/>
+                               <field name="total_Value"/>
+                           </group>
+                       </group>
+                        Non Multi BU Opportunity : <button class="oe_inline" type="action" name="%(action_non_multi_opportunities_active_pipeline_dashboard)d"
+                    icon="gtk-jump-to" context="{'search_default_department_id':    department_id}"/>
+                           Multi BU Opportunity : <button class="oe_inline" type="action" name="%(crm_jmr.action_multi_bu)d"
+                    icon="gtk-jump-to" context="{'search_default_department_id': department_id}"/>
+                   <separator string="Active Pipe Details"/>
+                   <field name="bu_active_pipe_line">
+                       <tree editable="1">
+                           <field name="name"/>
+                           <field name="opportunity_count" sum="Total Opportunity Count"/>
+                           <field name="opportunity_value" sum="Total Opportunity Value"/>
+                           <field name="multi_opportunity_count" sum="Multi Opportunity Count"/>
+                           <field name="multi_opportunity_value" sum="Multi Opportunity Value"/>
+                           <field name="total_count" sum="Total Count"/>
+                           <field name="total_Value" sum="Total Value"/>
+                       </tree>
+                   </field>
+                   <label for="notes"/>
+                   <field name="notes"/>
+                  </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread" groups="base.group_user"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_bu_active_pipe_tree" model="ir.ui.view">
+            <field name="name">BU Active Pipe Tree</field>
+            <field name="model">bu.active.pipe</field>
+            <field name="arch" type="xml">
+                <tree string="BU Account Mapping">
+                    <field name="department_id"/>
+                    <field name="opportunity_count"/>
+                    <field name="opportunity_value"/>
+                    <field name="multi_opportunity_count"/>
+                    <field name="multi_opportunity_value"/>
+                    <field name="total_count"/>
+                    <field name="total_Value"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_bu_active_pipe_search" model="ir.ui.view">
+            <field name="name">BU Active Pipe Search</field>
+            <field name="model">bu.active.pipe</field>
+            <field name="arch" type="xml">
+                <search string="BU Active Pipe">
+                    <field name="department_id" string="BU Name"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="BU" icon="terp-partner" domain="[]" context="{'group_by':'department_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_bu_active_pipe" model="ir.actions.act_window">
+            <field name="name">BU Active Pipe</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bu.active.pipe</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+            <field name="search_view_id" ref="view_bu_active_pipe_search"/>
+        </record>
+
+        <menuitem id="menu_bu_active_pipe" name="BU Active Pipe" sequence='3' parent="base.menu_sales"
+                  action ="action_bu_active_pipe"
+                  groups="base.group_crm_director,base.group_crm_BU"/>
+
+        <!-- Seller Account Mapping-->
+        <record model="ir.cron" id="run_seller_active_pipe_cron">
+           <field name="name">Seller Active Pipe Schedule</field>
+           <field name="interval_number">1</field>
+           <field name="interval_type">days</field>
+           <field name="numbercall">-1</field>
+           <field name="model" eval="'seller.active.pipe'"/>
+           <field name="function" eval="'run_seller_active_pipe'"/>
+           <field name="args" eval="'()'"/>
+        </record>
+
+        <!-- BU Account Mapping-->
+        <record model="ir.cron" id="run_bu_active_pipe_cron">
+           <field name="name">BU Active Pipe Schedule</field>
+           <field name="interval_number">1</field>
+           <field name="interval_type">days</field>
+           <field name="numbercall">-1</field>
+           <field name="model" eval="'bu.active.pipe'"/>
+           <field name="function" eval="'run_bu_active_pipe'"/>
+           <field name="args" eval="'()'"/>
+        </record>
+    </data>
+</openerp>

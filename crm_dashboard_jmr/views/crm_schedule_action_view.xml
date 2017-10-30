@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="view_manual_schedule_actions_form">
+            <field name="name">Manual Schedule Actions Form</field>
+            <field name="model">manual.schedule.actions</field>
+            <field name="arch" type="xml">
+                <form string="Manual Schedule Actions">
+
+                    <sheet>
+                        <h2>
+                           <field name="name" required="1"/>
+                        </h2>
+                        <strong>Annual Performance Sheet: </strong>
+                        <button type="object" name="run_annual_performance" icon="gtk-jump-to"/> <br/>
+                        <strong>Opportunity Active Pipe: </strong>
+                        <button type="object" name="run_active_pipe" icon="gtk-jump-to"/> <br/>
+                        <strong> Seller Pipeline Build: </strong>
+                        <button type="object" name="run_opportunity_pipeline_build" icon="gtk-jump-to"/> <br/>
+                        <strong>BU Pipeline build: </strong>
+                        <button type="object" name="run_bu_pipeline_build" icon="gtk-jump-to"/> <br/>
+                        <strong>OMM Mismatch: </strong>
+                        <button type="object" name="run_omm_mismatch" icon="gtk-jump-to"/> <br/>
+                        <strong>OMM Expiry Mail Notification: </strong>
+                        <button type="object" name="run_omm_expiry_mail" icon="gtk-jump-to"/> <br/>
+                        <strong>Levels of Account Schedule: </strong>
+                        <button type="object" name="run_levels_of_account_schedule" icon="gtk-jump-to"/> <br/>
+                        <strong>Account Mapping Schedule: </strong>
+                        <button type="object" name="run_account_mapping" icon="gtk-jump-to"/> <br/>
+                        <strong>BU Account Mapping Schedule: </strong>
+                        <button type="object" name="run_bu_account_mapping" icon="gtk-jump-to"/> <br/>
+                        <strong>Seller Account Mapping Schedule: </strong>
+                        <button type="object" name="run_seller_account_mapping" icon="gtk-jump-to"/> <br/>
+                        <strong> BU Active Pipe Schedule: </strong>
+                        <button type="object" name="run_bu_active_pipe" icon="gtk-jump-to"/> <br/>
+                        <strong> Seller Active Pipe Schedule: </strong>
+                        <button type="object" name="run_seller_active_pipe" icon="gtk-jump-to"/> <br/>
+                        <strong>BU Committed Closures Daily Update: </strong>
+                        <button type="object" name="run_bu_committed_closures" icon="gtk-jump-to"/> <br/>
+                        <strong>OB &amp; Revenue - Target vs Achievement Daily Update: </strong>
+                        <button type="object" name="run_ob_revenue_update" icon="gtk-jump-to"/> <br/>
+                        <strong>Seller OB &amp; Revenue - Target vs Achievement Daily Update: </strong>
+                        <button type="object" name="run_seller_ob_revenue_update" icon="gtk-jump-to"/> <br/>
+                        <strong>Update Principal Contact Meeting Details: </strong>
+                        <button type="object" name="run_update_principal_meeting_details" icon="gtk-jump-to"/> <br/>
+                        <strong>Sales Commission: </strong>
+                        <button type="object" name="run_sales_commission" icon="gtk-jump-to"/> <br/>
+                        <strong>Update Variant Values: </strong>
+                        <button type="object" name="update_variant_values" icon="gtk-jump-to"/> <br/>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread" groups="base.group_user"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_manual_schedule_actions_tree" model="ir.ui.view">
+            <field name="name">Manual Schedule Actions Tree</field>
+            <field name="model">manual.schedule.actions</field>
+            <field name="arch" type="xml">
+                <tree string="Manual Schedule Actions">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_manual_schedule_actions_search" model="ir.ui.view">
+            <field name="name">Manual Schedule Actions Search</field>
+            <field name="model">manual.schedule.actions</field>
+            <field name="arch" type="xml">
+                <search string="Manual Schedule Actions">
+                    <field name="name" string="Name"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_manual_schedule_actions" model="ir.actions.act_window">
+            <field name="name">Manual Schedule Actions</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">manual.schedule.actions</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+            <field name="search_view_id" ref="view_manual_schedule_actions_search"/>
+        </record>
+
+        <menuitem id="menu_manual_schedule_actions" name="Manual Schedule Actions" sequence='50'
+                  parent="main_crm_dashboard"
+                  action ="action_manual_schedule_actions"
+                  groups="base.group_crm_director"/>
+
+    </data>
+</openerp>

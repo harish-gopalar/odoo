@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="view_annual_performance_sheet_form">
+            <field name="name">Annual Performance Sheet form</field>
+            <field name="model">annual.performance.sheet</field>
+            <field name="arch" type="xml">
+                <form string="Annual Performance Sheet">
+                   <group>
+                       <group>
+                           <field name="employee_id"/>
+                           <field name="designation_id"/>
+                           <field name="second_designation_id"/>
+                       </group>
+                       <group>
+                           <field name="identification_id"/>
+                           <field name="parent_id"/>
+                           <field name="second_parent_id"/>
+                           <field name="fiscalyear_id"/>
+                       </group>
+                   </group>
+                    <separator string="Targets"/>
+                   <field name="target_line">
+                       <tree editable="1">
+                           <field name="name"/>
+                           <field name="quarter_one" sum="Quarter 1"/>
+                           <field name="quarter_two" sum="Quarter 2"/>
+                           <field name="quarter_three" sum="Quarter 3"/>
+                           <field name="quarter_four" sum="Quarter 4"/>
+                           <field name="total" sum="Total"/>
+                       </tree>
+                   </field>
+                    <separator string="Achievements"/>
+                   <field name="achievement_line">
+                       <tree editable="1">
+                           <field name="name"/>
+                           <field name="quarter_one" sum="Quarter 1"/>
+                           <field name="quarter_two" sum="Quarter 2"/>
+                           <field name="quarter_three" sum="Quarter 3"/>
+                           <field name="quarter_four" sum="Quarter 4"/>
+                           <field name="total" sum="Total"/>
+                       </tree>
+                   </field>
+                    <separator string="Business Unit"/>
+                   <field name="department_line">
+                        <tree editable="1">
+                            <field name="department_id"/>
+                            <field name="ob_target" sum="OB Target Total"/>
+                            <field name="ob_achieved" sum="OB Achieved Total"/>
+                            <field name="ob_percentage"/>
+                            <field name="revenue_target" sum="Revenue Total"/>
+                            <field name="revenue_achieved" sum="Revenue Achieved Total"/>
+                            <field name="revenue_percentage"/>
+                        </tree>
+                   </field>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread" groups="base.group_user"/>
+                </div>
+                </form>
+            </field>
+        </record>
+        <record id="view_annual_performance_sheet_tree" model="ir.ui.view">
+            <field name="name">Annual Performance Sheet Tree</field>
+            <field name="model">annual.performance.sheet</field>
+            <field name="arch" type="xml">
+                <tree string="Annual Performance Sheet">
+                    <field name="employee_id"/>
+                    <field name="identification_id"/>
+                    <field name="designation_id"/>
+                    <field name="parent_id"/>
+                    <field name="second_designation_id"/>
+                    <field name="second_parent_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_annual_performance_sheet_search" model="ir.ui.view">
+            <field name="name">Annual Performance Sheet Search</field>
+            <field name="model">annual.performance.sheet</field>
+            <field name="arch" type="xml">
+                <search string="Search Annual Performance Sheet">
+                    <field name="employee_id" string="Employee Name"/>
+                    <field name="identification_id" string="Employee ID"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_annual_performance_sheet" model="ir.actions.act_window">
+            <field name="name">Annual Performance Sheet</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">annual.performance.sheet</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+            <field name="search_view_id" ref="view_annual_performance_sheet_search"/>
+        </record>
+
+        <menuitem id="menu_annual_performance_sheet" name="Annual Performance Sheet" sequence='6' parent="crm_dashboard_jmr.main_crm_dashboard"
+                  action ="action_annual_performance_sheet" groups="base.group_crm_director"/>
+
+        <record model="ir.cron" id="annual_performance_sheet_cron">
+           <field name="name">Annual Performance Sheet Creation</field>
+           <field name="interval_number">1</field>
+           <field name="interval_type">days</field>
+           <field name="numbercall">-1</field>
+           <field name="model" eval="'annual.performance.sheet'"/>
+           <field name="function" eval="'annual_performance_sheet_schedule'"/>
+           <field name="args" eval="'()'"/>
+        </record>
+
+    </data>
+</openerp>

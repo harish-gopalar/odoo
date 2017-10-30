@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="view_incentive_simulation_form">
+            <field name="name">Incentive Simulation form</field>
+            <field name="model">incentive.simulation</field>
+            <field name="arch" type="xml">
+                <form string="Incentive Simulation">
+                   <sheet>
+                       <h2>
+                           <label for="designation"/>
+                           <field name="designation" class="oe_inline"/>
+                       </h2>
+                       <group>
+                           <group>
+                               <field name="sales_person_id"/>
+                               <field name="sales_manager" invisible="1"/>
+                           </group>
+                           <group>
+                               <p> Note: Green and Blue Color fields are editable</p>
+                           </group>
+
+                       </group>
+                        <separator string="Products"/>
+                       <field name="product_line_ids">
+                           <tree editable="1" colors="green:amount!='False'">
+                               <field name="name"/>
+                               <field name="amount"/>
+                           </tree>
+                       </field>
+
+                       <group class="oe_subtotal_footer oe_right">
+                           <field name="target" widget="monetary"/>
+                           <field name="achievement" widget="monetary"/>
+                           <field name="achievement_percentage" widget="monetary"/>
+                       </group >
+                        <separator string="Incentive Product Line"/>
+                       <field name="incentive_product_line_ids">
+                           <tree editable="1" colors="green:markup!='False'">
+                               <field name="name"/>
+                               <field name="markup"/>
+                           </tree>
+                       </field>
+                        <separator string="Incentive Result Line"/>
+                       <field name="incentive_result_line_ids">
+                            <tree editable="1">
+                                <field name="name"/>
+                                <field name="amount"/>
+                            </tree>
+                       </field>
+                       <group class="oe_subtotal_footer oe_right">
+                           <field name="total_incentive" widget="monetary"/>
+                       </group >
+                        <field name="calculation_info"/>
+                  </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread" groups="base.group_user"/>
+                </div>
+                </form>
+            </field>
+        </record>
+        <record id="view_incentive_simulation_tree" model="ir.ui.view">
+            <field name="name">Incentive Simulation Tree</field>
+            <field name="model">incentive.simulation</field>
+            <field name="arch" type="xml">
+                <tree string="Incentive Simulation">
+                    <field name="sales_person_id"/>
+                    <field name="designation"/>
+                    <field name="target"/>
+                    <field name="achievement"/>
+                    <field name="achievement_percentage"/>
+                    <field name="total_incentive"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_incentive_simulation_search" model="ir.ui.view">
+            <field name="name">Incentive Simulation Search</field>
+            <field name="model">incentive.simulation</field>
+            <field name="arch" type="xml">
+                <search string="Search Incentive Simulation">
+                    <field name="designation" string="Sales Person"/>
+                    <separator/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_incentive_simulation" model="ir.actions.act_window">
+            <field name="name">Incentive Simulation</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">incentive.simulation</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+            <field name="search_view_id" ref="view_incentive_simulation_search"/>
+        </record>
+
+        <menuitem id="menu_incentive_simulation" name="Incentive Simulation" sequence='5' parent="crm_dashboard_jmr.main_crm_dashboard"
+                  action ="action_incentive_simulation" groups="base.group_inside_sales11_user,base.group_crm_BU"/>
+
+        <record model="ir.cron" id="incentive_creation_schedule_cron">
+           <field name="name">Incentive Simulation Creation</field>
+           <field name="interval_number">1</field>
+           <field name="interval_type">days</field>
+           <field name="numbercall">-1</field>
+           <field name="model" eval="'incentive.simulation'"/>
+           <field name="function" eval="'incentive_creation_schedule'"/>
+           <field name="args" eval="'()'"/>
+        </record>
+
+    </data>
+</openerp>

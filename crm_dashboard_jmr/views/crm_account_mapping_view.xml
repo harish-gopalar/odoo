@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="view_account_mapping_form">
+            <field name="name">Account Mapping Form</field>
+            <field name="model">account.mapping</field>
+            <field name="arch" type="xml">
+                <form string="Account Mapping">
+
+                   <sheet>
+                    <group>
+                        <group>
+                            <field name="account_id" required="1" domain="[('is_company','!=',False)]"
+                                   context="{'form_view_ref' : 'crm_jmr.view_partner_account_form'}"
+                                   options="{'no_create' : True}"/>
+                            <field name="industry_id"/>
+                            <field name="country_id"/>
+                        </group>
+                        <group>
+                            <field name="levels_of_account"/>
+                            <field name="industry_category_id"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="user_id" domain="[('sales_category', '=', 'FieldSales')]" required="1"/>
+                        </group>
+                        <group>
+                            <field name="department_id"  required="1"
+                                   domain="[('parent','=',False), ('dept_main_category','=','Non Support')]"/>
+                        </group>
+                    </group>
+                    <group col="6">
+                        <group string="CRM Plan">
+                            <field name="crm_l0" readonly="1"/>
+                            <field name="crm_l1" readonly="1"/>
+                            <field name="crm_l2" readonly="1"/>
+                            <field name="crm_l3" readonly="1"/>
+                        </group>
+                        <group string="Seller Plan">
+                            <field name="seller_l0" />
+                            <field name="seller_l1" />
+                            <field name="seller_l2" />
+                            <field name="seller_l3" />
+                        </group>
+                        <group string="BU Plan">
+                            <field name="bu_l0" />
+                            <field name="bu_l1" />
+                            <field name="bu_l2" />
+                            <field name="bu_l3" />
+                        </group>
+                    </group>
+                    <group String="Delay in Mapping">
+                        <group>
+                            <field name="seller_l0_delay"/>
+                            <field name="seller_l1_delay"/>
+                            <field name="seller_l2_delay"/>
+                            <field name="seller_l3_delay"/>
+                        </group>
+                        <group>
+                            <field name="bu_l0_delay"/>
+                            <field name="bu_l1_delay"/>
+                            <field name="bu_l2_delay"/>
+                            <field name="bu_l3_delay"/>
+                        </group>
+                    </group>
+                   <label for="notes"/>
+                   <field name="notes"/>
+                  </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread" groups="base.group_user"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_account_mapping_tree" model="ir.ui.view">
+            <field name="name">Account Mapping Tree</field>
+            <field name="model">account.mapping</field>
+            <field name="arch" type="xml">
+                <tree string="Account Mapping">
+                    <field name="user_id"/>
+                    <field name="department_id"/>
+                    <field name="account_id"/>
+                    <field name="industry_category_id"/>
+                    <field name="levels_of_account"/>
+                    <field name="crm_l0"/>
+                    <field name="seller_l0" />
+                    <field name="seller_l0_delay"/>
+                    <field name="crm_l1"/>
+                    <field name="seller_l1" />
+                    <field name="seller_l1_delay"/>
+                    <field name="crm_l2"/>
+                    <field name="seller_l2" />
+                    <field name="seller_l2_delay"/>
+                    <field name="crm_l3"/>
+                    <field name="seller_l3" />
+                    <field name="seller_l3_delay"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_account_mapping_search" model="ir.ui.view">
+            <field name="name">Account Mapping Search</field>
+            <field name="model">account.mapping</field>
+            <field name="arch" type="xml">
+                <search string="Search Account Mapping">
+                    <field name="account_id" string="Account Name"/>
+                    <field name="user_id" string="Seller Name"/>
+                    <field name="department_id" string="Business Unit"/>
+                    <field name="levels_of_account" string="Levels of Account"/>
+                    <field name="industry_category_id" string="Industry Category"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Account Name" icon="terp-partner" domain="[]" context="{'group_by':'account_id'}"/>
+                        <filter string="Seller" icon="terp-partner" domain="[]" context="{'group_by':'user_id'}"/>
+                        <filter string="Business Unit" icon="terp-partner" domain="[]" context="{'group_by':'department_id'}"/>
+                        <filter string="Levels of Account" icon="terp-partner" domain="[]" context="{'group_by':'levels_of_account'}"/>
+                        <filter string="Industry Category" icon="terp-partner" domain="[]" context="{'group_by':'industry_category_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_account_mapping" model="ir.actions.act_window">
+            <field name="name">Account Mapping</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.mapping</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+            <field name="search_view_id" ref="view_account_mapping_search"/>
+        </record>
+
+        <menuitem id="menu_main_account_mapping" name="Account Mapping" sequence='5' parent="base.menu_sales"
+                  groups="base.group_inside_sales11_user"/>
+
+        <menuitem id="menu_account_mapping" name="Account Mapping" sequence='1' parent="menu_main_account_mapping"
+                  action ="action_account_mapping"
+                  groups="base.group_inside_sales11_user"/>
+
+        <!-- Seller Account Mapping Form View-->
+        <record model="ir.ui.view" id="view_seller_account_mapping_form">
+            <field name="name">Seller Account Mapping Form</field>
+            <field name="model">seller.account.mapping</field>
+            <field name="arch" type="xml">
+                <form string="Seller Account Mapping">
+
+                   <sheet>
+                        <h2>
+                            <label for="user_id"/>
+                            <field name="user_id" domain="[('sales_category', '=', 'FieldSales')]" required="1" class="oe_inline"/>
+                        </h2>
+
+                        <div class="oe_right oe_button_box" name="buttons">
+                       <button name="compute_seller_account_mapping" string="Compute Account Mapping" groups="base.group_inside_sales11_user"
+                                type="object"/>
+                       <button name="compute_update_level" string="Compute Level of Account " groups="base.group_inside_sales11_user"
+                                type="object"/>
+                        </div>
+                       <group col="8">
+                           <group>
+                               <field name="total_l0_target"/>
+                               <field name="total_l1_target"/>
+                               <field name="total_l2_target"/>
+                               <field name="total_l3_target"/>
+                               <field name="total_target"/>
+                           </group>
+                           <group>
+                               <field name="total_l0_achieved"/>
+                               <field name="total_l1_achieved"/>
+                               <field name="total_l2_achieved"/>
+                               <field name="total_l3_achieved"/>
+                               <field name="total_achieved"/>
+                           </group>
+                           <group>
+                               <field name="total_l0_variant"/>
+                               <field name="total_l1_variant"/>
+                               <field name="total_l2_variant"/>
+                               <field name="total_l3_variant"/>
+                               <field name="total_variant"/>
+                           </group>
+                           <group>
+                               <field name="total_l0_percentage"/>
+                               <field name="total_l1_percentage"/>
+                               <field name="total_l2_percentage"/>
+                               <field name="total_l3_percentage"/>
+                               <field name="total_percentage"/>
+                           </group>
+                       </group>
+                           L0 Accounts : <button class="oe_inline" type="action" name="%(action_account_mapping)d"
+                    icon="gtk-jump-to" context="{'search_default_user_id': user_id, 'search_default_levels_of_account': 'L0'}"/>
+                           L1 Accounts : <button class="oe_inline" type="action" name="%(action_account_mapping)d"
+                    icon="gtk-jump-to" context="{'search_default_user_id': user_id, 'search_default_levels_of_account': 'L1'}"/>
+                           L2 Accounts : <button class="oe_inline" type="action" name="%(action_account_mapping)d"
+                    icon="gtk-jump-to" context="{'search_default_user_id': user_id, 'search_default_levels_of_account': 'L2'}"/>
+                           L3 Accounts : <button class="oe_inline" type="action" name="%(action_account_mapping)d"
+                    icon="gtk-jump-to" context="{'search_default_user_id': user_id, 'search_default_levels_of_account': 'L3'}"/>
+                   <separator string="Account Mapping Details"/>
+                   <field name="seller_account_mapping_line">
+                       <tree editable="1">
+                           <field name="name"/>
+                           <field name="l0_target" sum="Total L0 Target"/>
+                           <field name="l0_achieved" sum="Total L0 Achieved"/>
+                           <field name="l0_percentage"/>
+                           <field name="l1_target" sum="Total L1 Target"/>
+                           <field name="l1_achieved" sum="Total L1 Achieved"/>
+                           <field name="l1_percentage"/>
+                           <field name="l2_target" sum="Total L2 Target"/>
+                           <field name="l2_achieved" sum="Total L2 Achieved"/>
+                           <field name="l2_percentage"/>
+                           <field name="l3_target" sum="Total L3 Target"/>
+                           <field name="l3_achieved" sum="Total L3 Achieved"/>
+                           <field name="l3_percentage"/>
+                       </tree>
+                   </field>
+                   <label for="notes"/>
+                   <field name="notes"/>
+                  </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread" groups="base.group_user"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_seller_account_mapping_tree" model="ir.ui.view">
+            <field name="name">Seller Account Mapping Tree</field>
+            <field name="model">seller.account.mapping</field>
+            <field name="arch" type="xml">
+                <tree string="Seller Account Mapping">
+                    <field name="user_id"/>
+                    <field name="total_target"/>
+                    <field name="total_achieved"/>
+                    <field name="total_variant"/>
+                    <field name="total_percentage"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_seller_account_mapping_search" model="ir.ui.view">
+            <field name="name">Seller Account Mapping Search</field>
+            <field name="model">seller.account.mapping</field>
+            <field name="arch" type="xml">
+                <search string="Search Seller Account Mapping">
+                    <field name="user_id" string="Seller Name"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Seller" icon="terp-partner" domain="[]" context="{'group_by':'user_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_seller_account_mapping" model="ir.actions.act_window">
+            <field name="name">Seller Account Mapping</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">seller.account.mapping</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+            <field name="search_view_id" ref="view_seller_account_mapping_search"/>
+        </record>
+
+        <menuitem id="menu_seller_account_mapping" name="Seller Account Mapping" sequence='2' parent="menu_main_account_mapping"
+                  action ="action_seller_account_mapping"
+                  groups="base.group_inside_sales11_user"/>
+
+        <!-- BU Account Mapping Form View-->
+        <record model="ir.ui.view" id="view_bu_account_mapping_form">
+            <field name="name">BU Account Mapping Form</field>
+            <field name="model">bu.account.mapping</field>
+            <field name="arch" type="xml">
+                <form string="BU Account Mapping">
+
+                   <sheet>
+                        <h2>
+                            <label for="department_id"/>
+                            <field name="department_id" readonly="1"
+                                   domain="[('parent_id', '=', bu.id), ('dept_main_category', '=', 'Non Support')]" class="oe_inline"/>
+                        </h2>
+                        <div class="oe_right oe_button_box" name="buttons">
+                       <button name="compute_bu_account_mapping" string="Compute Account Mapping" groups="base.group_crm_director,base.group_crm_BU"
+                                type="object"/>
+                        </div>
+                       <group col="8">
+                           <group>
+                               <field name="total_l0_target"/>
+                               <field name="total_l1_target"/>
+                               <field name="total_l2_target"/>
+                               <field name="total_l3_target"/>
+                               <field name="total_target"/>
+                           </group>
+                           <group>
+                               <field name="total_l0_achieved"/>
+                               <field name="total_l1_achieved"/>
+                               <field name="total_l2_achieved"/>
+                               <field name="total_l3_achieved"/>
+                               <field name="total_achieved"/>
+                           </group>
+                           <group>
+                               <field name="total_l0_variant"/>
+                               <field name="total_l1_variant"/>
+                               <field name="total_l2_variant"/>
+                               <field name="total_l3_variant"/>
+                               <field name="total_variant"/>
+                           </group>
+                           <group>
+                               <field name="total_l0_percentage"/>
+                               <field name="total_l1_percentage"/>
+                               <field name="total_l2_percentage"/>
+                               <field name="total_l3_percentage"/>
+                               <field name="total_percentage"/>
+                           </group>
+                           <group>
+                           </group>
+                       </group>
+                           L0 Accounts : <button class="oe_inline" type="action" name="%(action_account_mapping)d"
+                    icon="gtk-jump-to" context="{'search_default_department_id': department_id, 'search_default_levels_of_account': 'L0'}"/>
+                           L1 Accounts : <button class="oe_inline" type="action" name="%(action_account_mapping)d"
+                    icon="gtk-jump-to" context="{'search_default_department_id': department_id, 'search_default_levels_of_account': 'L1'}"/>
+                           L2 Accounts : <button class="oe_inline" type="action" name="%(action_account_mapping)d"
+                    icon="gtk-jump-to" context="{'search_default_department_id': department_id, 'search_default_levels_of_account': 'L2'}"/>
+                           L3 Accounts : <button class="oe_inline" type="action" name="%(action_account_mapping)d"
+                    icon="gtk-jump-to" context="{'search_default_department_id': department_id, 'search_default_levels_of_account': 'L3'}"/>
+                   <separator string="Account Mapping Details"/>
+                   <field name="bu_account_mapping_line">
+                       <tree editable="1">
+                           <field name="name"/>
+                           <field name="l0_target" sum="Total L0 Target"/>
+                           <field name="l0_achieved" sum="Total L0 Achieved"/>
+                           <field name="l0_percentage"/>
+                           <field name="l1_target" sum="Total L1 Target"/>
+                           <field name="l1_achieved" sum="Total L1 Achieved"/>
+                           <field name="l1_percentage"/>
+                           <field name="l2_target" sum="Total L2 Target"/>
+                           <field name="l2_achieved" sum="Total L2 Achieved"/>
+                           <field name="l2_percentage"/>
+                           <field name="l3_target" sum="Total L3 Target"/>
+                           <field name="l3_achieved" sum="Total L3 Variant"/>
+                           <field name="l3_percentage"/>
+                       </tree>
+                   </field>
+                   <label for="notes"/>
+                   <field name="notes"/>
+                  </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread" groups="base.group_user"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_bu_account_mapping_kanban" model="ir.ui.view">
+            <field name="name">BU Account Mapping Kanban</field>
+            <field name="model">bu.account.mapping</field>
+            <field name="arch" type="xml">
+                <kanban class="oe_background_grey" create="0">
+                    <field name="department_id"/>
+                    <field name="color"/>
+                    <field name="total_l0_target"/>
+                    <field name="total_l0_achieved"/>
+                    <field name="total_l0_variant"/>
+                    <field name="total_l1_target"/>
+                    <field name="total_l1_achieved"/>
+                    <field name="total_l1_variant"/>
+                    <field name="total_l2_target"/>
+                    <field name="total_l2_achieved"/>
+                    <field name="total_l2_variant"/>
+                    <field name="total_l3_target"/>
+                    <field name="total_l3_achieved"/>
+                    <field name="total_l3_variant"/>
+                    <field name="total_target"/>
+                    <field name="total_achieved"/>
+                    <field name="total_variant"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_dropdown_toggle oe_dropdown_kanban">
+                                    <span class="oe_e">í</span>
+                                    <ul class="oe_dropdown_menu">
+                                        <t t-if="widget.view.is_action_enabled('edit')"><li>
+                                            <ul class="oe_kanban_colorpicker" data-field="color"/></li></t>
+                                    </ul>
+                                </div>
+                                <div class="oe_kanban_content">
+                                    <h3 class="text-center"><strong><field name="department_id"/></strong></h3>
+                                    <div class="oe_items_list oe_kanban_ellipsis">
+                                       <strong>L0 Target:</strong> <field name="total_l0_target"/>
+                                    </div>
+                                    <div class="oe_items_list oe_kanban_ellipsis">
+                                       <strong>L0 Achieved:</strong> <field name="total_l0_achieved"/>
+                                    </div>
+                                    <div class="oe_items_list oe_kanban_ellipsis">
+                                       <strong>L1 Target:</strong> <field name="total_l1_target"/>
+                                    </div>
+                                    <div class="oe_items_list oe_kanban_ellipsis">
+                                       <strong>L1 Achieved:</strong> <field name="total_l1_achieved"/>
+                                    </div>
+                                    <div class="oe_items_list oe_kanban_ellipsis">
+                                       <strong>L2 Target:</strong> <field name="total_l2_target"/>
+                                    </div>
+                                    <div class="oe_items_list oe_kanban_ellipsis">
+                                       <strong>L2 Achieved:</strong> <field name="total_l2_achieved"/>
+                                    </div>
+                                    <div class="oe_items_list oe_kanban_ellipsis">
+                                       <strong>L3 Target:</strong> <field name="total_l3_target"/>
+                                    </div>
+                                    <div class="oe_items_list oe_kanban_ellipsis">
+                                       <strong>L3 Achieved:</strong> <field name="total_l3_achieved"/>
+                                    </div>
+                                    <div class="oe_items_list oe_kanban_ellipsis">
+                                        <div>
+                                             <strong>Total Target:</strong><field name="total_target"/>
+                                        </div>
+
+                                        <div>
+                                           <strong>Total Achievement:</strong> <field name="total_achieved"/>
+                                        </div>
+                                        <div>
+                                           <strong>Total Variant:</strong> <field name="total_variant"/>
+                                        </div>
+                                    </div>
+                                    <div class="oe_picking_type_gauge">
+                                        <field name="total_percentage" widget="gauge" style="width:150px; height: 110px;"
+                                               options="{'levelcolors': ['#a9d70b', '#f9c802', '#ff0000']}">Total Achievement (%%)</field>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+                <!--  Graph View -->
+        <record model="ir.ui.view" id="view_bu_account_mapping_graph">
+            <field name="name">BU Account Mapping</field>
+            <field name="model">bu.account.mapping</field>
+            <field name="arch" type="xml">
+                <graph string="BU Account Mapping" type="bar">
+                    <field name="department_id" type="row"/>
+                    <field name="total_l0_target" string="L0 Target" type="measure"/>
+                    <field name="total_l0_achieved" string="L0 Achieved" type="measure"/>
+                    <field name="total_l1_target" string="L1 Target" type="measure"/>
+                    <field name="total_l1_achieved" string="L1 Achieved" type="measure"/>
+                    <field name="total_l2_target" string="L2 Target" type="measure"/>
+                    <field name="total_l2_achieved" string="L2 Achieved" type="measure"/>
+                    <field name="total_l3_target" string="L3 Target" type="measure"/>
+                    <field name="total_l3_achieved" string="L3 Achieved" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="view_bu_account_mapping_tree" model="ir.ui.view">
+            <field name="name">BU Account Mapping Tree</field>
+            <field name="model">bu.account.mapping</field>
+            <field name="arch" type="xml">
+                <tree string="BU Account Mapping">
+                    <field name="department_id"/>
+                    <field name="total_target"/>
+                    <field name="total_achieved"/>
+                    <field name="total_variant"/>
+                    <field name="total_percentage"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_bu_account_mapping_search" model="ir.ui.view">
+            <field name="name">BU Account Mapping Search</field>
+            <field name="model">bu.account.mapping</field>
+            <field name="arch" type="xml">
+                <search string="Search BU Account Mapping">
+                    <field name="department_id" string="BU Name"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="BU" icon="terp-partner" domain="[]" context="{'group_by':'department_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_bu_account_mapping" model="ir.actions.act_window">
+            <field name="name">BU Account Mapping</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bu.account.mapping</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+            <field name="search_view_id" ref="view_bu_account_mapping_search"/>
+        </record>
+
+        <menuitem id="menu_bu_account_mapping" name="BU Account Mapping" sequence='3' parent="menu_main_account_mapping"
+                  action ="action_bu_account_mapping"
+                  groups="base.group_crm_director,base.group_crm_BU"/>
+
+        <record model="ir.cron" id="run_account_mapping_schedule_cron">
+           <field name="name">Account Mapping Schedule</field>
+           <field name="interval_number">1</field>
+           <field name="interval_type">hours</field>
+           <field name="numbercall">-1</field>
+           <field name="model" eval="'account.mapping'"/>
+           <field name="function" eval="'run_account_mapping_schedule'"/>
+           <field name="args" eval="'()'"/>
+        </record>
+
+        <!-- Seller Account Mapping-->
+        <record model="ir.cron" id="run_seller_account_mapping_cron">
+           <field name="name">Seller Account Mapping Schedule</field>
+           <field name="interval_number">1</field>
+           <field name="interval_type">days</field>
+           <field name="numbercall">-1</field>
+           <field name="model" eval="'seller.account.mapping'"/>
+           <field name="function" eval="'run_seller_account_mapping'"/>
+           <field name="args" eval="'()'"/>
+        </record>
+
+        <!-- BU Account Mapping-->
+        <record model="ir.cron" id="run_bu_account_mapping_cron">
+           <field name="name">BU Account Mapping Schedule</field>
+           <field name="interval_number">1</field>
+           <field name="interval_type">days</field>
+           <field name="numbercall">-1</field>
+           <field name="model" eval="'bu.account.mapping'"/>
+           <field name="function" eval="'run_bu_account_mapping'"/>
+           <field name="args" eval="'()'"/>
+        </record>
+    </data>
+</openerp>

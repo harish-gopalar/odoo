@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_department_form_inherit" model="ir.ui.view">
+            <field name="name">hr.department.form.inherit</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_form" />
+            <field name="arch" type="xml">
+                <field name="company_id" position="after">
+                    <field name="parent" />
+                </field>
+            </field>
+        </record>
+
+        <!--record model="ir.ui.view" id="view_bu_achievement_form">
+            <field name="name">BU Achievement form</field>
+            <field name="model">bu.achievement</field>
+            <field name="arch" type="xml">
+                <form string="BU Achievement">
+                   <sheet>
+                       <h2>
+                           <label for="department_id"/> :
+                           <field name="department_id" class="oe_inline"/>
+                       </h2>
+                       <group>
+                           <field name="target"/>
+                           <field name="revenue_achieved"/>
+                           <field name="percentage"/>
+                       </group>
+                       <separator string="Achievement Backup"/>
+                       <field name="leads_achieved">
+                           <tree editable="1">
+                               <field name="partner_id"/>
+                               <field name="name"/>
+                               <field name="planned_revenue" sum="Total Revenue"/>
+                               <field name="department_id"/>
+                               <field name="department_product_ids" widget="many2many_tags"/>
+                               <field name="currency_id"/>
+                               <field name="closed_won_date"/>
+                               <field name="user_id"/>
+                           </tree>
+                       </field>
+                  </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread" groups="base.group_user"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_bu_achievement_tree" model="ir.ui.view">
+            <field name="name">BU Achievement Tree</field>
+            <field name="model">bu.achievement</field>
+            <field name="arch" type="xml">
+                <tree string="BU Achievement">
+                    <field name="department_id"/>
+                    <field name="target"/>
+                    <field name="revenue_achieved"/>
+                    <field name="percentage"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_bu_achievement_search" model="ir.ui.view">
+            <field name="name">BU Achievement Search</field>
+            <field name="model">bu.achievement</field>
+            <field name="arch" type="xml">
+                <search string="Search BU Achievement">
+                    <field name="department_id" string="Business Unit"/>
+                    <separator/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_bu_achievement" model="ir.actions.act_window">
+            <field name="name">BU Achievements</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bu.achievement</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+            <field name="search_view_id" ref="view_bu_achievement_search"/>
+        </record>
+
+        <menuitem id="menu_bu_achievement" name="BU Achievements" sequence='2' parent="crm_dashboard_jmr.menu_target_achievements"
+                  action ="action_bu_achievement" groups="base.group_crm_BU,base.group_crm_director"/-->
+
+        <record model="ir.cron" id="bu_target_schedule_cron">
+           <field name="name">BU Achievements vs Target Creation</field>
+           <field name="interval_number">1</field>
+           <field name="interval_type">days</field>
+           <field name="numbercall">-1</field>
+           <field name="model" eval="'bu.achievement'"/>
+           <field name="function" eval="'bu_target'"/>
+           <field name="args" eval="'()'"/>
+        </record>
+
+                <!--BU OB &#38; Revenue - Target vs Achievement -->
+
+        <record model="ir.ui.view" id="view_bu_order_booking_form">
+            <field name="name">BU OB &#38; Revenue - Target vs Achievement form</field>
+            <field name="model">bu.order.booking</field>
+            <field name="arch" type="xml">
+                <form string="OB &#38; Revenue - Target vs Achievement">
+                   <sheet>
+                       <h2>
+                           <label for="department_id"/> :
+                           <field name="department_id" class="oe_inline"/>
+                       </h2>
+                       <group>
+                           <group>
+                                <field name="total_ob_target"/>
+                                <field name="total_ob_achieved"/>
+                                <field name="total_ob_variant"/>
+                                <field name="ob_percentage"/>
+                           </group>
+                           <group>
+                                <field name="total_revenue_target"/>
+                                <field name="total_revenue_achieved"/>
+                                <field name="total_revenue_variant"/>
+                                <field name="revenue_percentage"/>
+
+                           </group>
+                       </group>
+                       <field name="fiscalyear_id" class="oe_inline" invisible="1"/>
+                       <separator string="Quarter Wise Details" class="oe_inline"/>
+                       <field name="quarter_wise_ids">
+                           <tree editable="1">
+                               <field name="name"/>
+                               <field name="ob_target" sum="Total OB Target"/>
+                               <field name="ob_achieved" sum="Total OB Achieved"/>
+                               <field name="ob_variant" sum="Total OB Variant"/>
+                               <field name="ob_percentage"/>
+                               <field name="revenue_target" sum="Total Revenue"/>
+                               <field name="revenue_achieved" sum="Total Revenue Achieved"/>
+                               <field name="revenue_variant" sum="Total Revenue Variant"/>
+                               <field name="revenue_percentage"/>
+                           </tree>
+                       </field>
+                  </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread" groups="base.group_user"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_bu_order_booking_tree" model="ir.ui.view">
+            <field name="name">OB &#38; Revenue - Target vs Achievement Tree</field>
+            <field name="model">bu.order.booking</field>
+            <field name="arch" type="xml">
+                <tree string="BU Order Booking">
+                    <field name="department_id"/>
+                    <field name="total_ob_target" sum="Total OB Target"/>
+                    <field name="total_ob_achieved" sum="Total OB Achieved"/>
+                    <field name="total_ob_variant" sum="Total OB Variant"/>
+                    <field name="ob_percentage"/>
+                    <field name="total_revenue_target" sum="Total Revenue Target"/>
+                    <field name="total_revenue_achieved" sum="Total Revenue Achieved"/>
+                    <field name="total_revenue_variant" sum="Total Revenue Variant"/>
+                    <field name="revenue_percentage"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="bu_order_booking_kanban" model="ir.ui.view">
+            <field name="name">OB &#38; Revenue - Target vs Achievement Kanban</field>
+            <field name="model">bu.order.booking</field>
+            <field name="arch" type="xml">
+                <kanban class="oe_background_grey" create="0">
+                    <field name="department_id"/>
+                    <field name="color"/>
+                    <field name="total_ob_achieved"/>
+                    <field name="total_ob_target"/>
+                    <field name="ob_percentage"/>
+                    <field name="total_revenue_achieved"/>
+                    <field name="total_revenue_target"/>
+                    <field name="revenue_percentage"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_dropdown_toggle oe_dropdown_kanban">
+                                    <span class="oe_e">í</span>
+                                    <ul class="oe_dropdown_menu">
+                                        <t t-if="widget.view.is_action_enabled('edit')"><li>
+                                            <ul class="oe_kanban_colorpicker" data-field="color"/></li></t>
+                                    </ul>
+                                </div>
+                                <div class="oe_kanban_content">
+                                    <h3 class="text-center"><strong><field name="department_id"/></strong></h3>
+                                    <div class="oe_items_list oe_kanban_ellipsis">
+                                        <div>
+                                             <strong>OB Target:</strong><field name="total_ob_target"/>
+                                        </div>
+
+                                        <div>
+                                           <strong>OB Achievement:</strong> <field name="total_ob_achieved"/>
+                                        </div>
+                                    </div>
+                                    <div class="oe_items_list oe_kanban_ellipsis">
+                                        <div>
+                                             <strong>Revenue Target:</strong><field name="total_revenue_target"/>
+                                        </div>
+
+                                        <div>
+                                           <strong>Revenue Achievement:</strong> <field name="total_revenue_achieved"/>
+                                        </div>
+                                    </div>
+                                    <div class="oe_picking_type_gauge">
+                                        <field name="revenue_percentage" widget="gauge" style="width:150px; height: 110px;"
+                                               options="{'levelcolors': ['#a9d70b', '#f9c802', '#ff0000']}">Revenue Achievement (%%)</field>
+                                        <field name="ob_percentage" widget="gauge" style="width:150px; height: 110px;"
+                                        options="{'levelcolors': ['#a9d70b', '#f9c802', '#ff0000']}">OB Achievement (%%)</field>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+                <!--  Graph View -->
+        <record model="ir.ui.view" id="bu_order_booking_graph_view">
+            <field name="name">OB &#38; Revenue - Target vs Achievement</field>
+            <field name="model">bu.order.booking</field>
+            <field name="arch" type="xml">
+                <graph string="OB &#38; Revenue - Target vs Achievement" type="bar">
+                    <field name="department_id" type="row"/>
+                    <field name="total_ob_target" string="OB Target" type="measure"/>
+                    <field name="total_ob_achieved" string="OB Achievement" type="measure"/>
+                    <field name="total_revenue_target" string="Revenue Target" type="measure"/>
+                    <field name="total_revenue_achieved" string="Revenue Achievement" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="view_bu_order_booking_search" model="ir.ui.view">
+            <field name="name">OB &#38; Revenue - Target vs Achievement Search</field>
+            <field name="model">bu.order.booking</field>
+            <field name="arch" type="xml">
+                <search string="Search OB &#38; Revenue - Target vs Achievement">
+                    <field name="department_id" string="Business Unit"/>
+                    <separator/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_bu_order_booking" model="ir.actions.act_window">
+            <field name="name">OB &#38; Revenue - Target vs Achievement</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bu.order.booking</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+            <field name="search_view_id" ref="view_bu_order_booking_search"/>
+        </record>
+
+        <!--menuitem id="menu_bu_order_booking" name="OB &#38; Revenue - Target vs Achievement" sequence='3' parent="crm_dashboard_jmr.menu_target_achievements"
+                  action ="action_bu_order_booking" groups="base.group_crm_BU,base.group_crm_director"/-->
+
+        <record model="ir.actions.act_window" id="act_bu_order_booking_kanban">
+            <field name="name">OB &#38; Revenue - Target vs Achievement</field>
+            <field name="res_model">bu.order.booking</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban</field>
+            <field name="tree_view_id" ref="bu_order_booking_kanban"/>
+        </record>
+
+        <record model="ir.ui.view" id="dashboard_bu_order_booking">
+            <field name="name">bu.order.booking.form</field>
+            <field name="model">board.board</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="OB &#38; Revenue - Target vs Achievement Dashboard" >
+                    <hpaned>
+                        <child1>
+                            <action
+                                string="BU OB &#38; Revenue - Target vs Achievement"
+                                name="%(action_bu_order_booking)d"
+                                />
+                        </child1>
+                        <child2>
+                            <action
+                                name="%(act_bu_order_booking_kanban)d"/>
+                        </child2>
+                    </hpaned>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="act_dashboard_bu_order_booking">
+            <field name="name">BU Dashboard</field>
+            <field name="res_model">board.board</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="usage">menu</field>
+            <field name="view_id" ref="dashboard_bu_order_booking"/>
+        </record>
+
+        <menuitem id="menu_bu_order_booking" name="BU OB &#38; Revenue - Target vs Achievement" sequence='3'
+                  parent="crm_dashboard_jmr.menu_target_achievements" action ="act_dashboard_bu_order_booking"
+                  groups="base.group_crm_BU,base.group_crm_director"/>
+
+        <!--menuitem id="menu_bu_dashboard" name="BU Dashboard" sequence='2' parent="menu_crm_dashboard"
+                  action ="act_dashboard_bu_order_booking" groups="base.group_crm_BU,base.group_crm_director"/-->
+
+        <record model="ir.cron" id="bu_order_booking_schedule_cron">
+           <field name="name">OB &#38; Revenue - Target vs Achievement Daily Updation</field>
+           <field name="interval_number">1</field>
+           <field name="interval_type">days</field>
+           <field name="numbercall">-1</field>
+           <field name="model" eval="'bu.order.booking'"/>
+           <field name="function" eval="'bu_ob_targets'"/>
+           <field name="args" eval="'()'"/>
+        </record>
+
+    </data>
+</openerp>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_mail_compose_wizard_form" model="ir.ui.view">
+            <field name="name">Mail Compose Wizard Form</field>
+            <field name="model">mail.compose.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Review">
+                    <group>
+                        <field name="subject"/>
+                        <field name="to_ids" widget="many2many_tags" />
+                        <field name="cc_ids" widget="many2many_tags" />
+                    </group>
+                    <field name="body"/>
+                    <field name="attachment_ids" widget="many2many_binary" string="Attach a file"/>
+                    <footer>
+                        <button string="Send" name="send_mail" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_mail_compose_wizard" model="ir.actions.act_window">
+            <field name="name">Mail Compose Wizard</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">mail.compose.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="view_mail_compose_wizard_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <record model="ir.ui.view" id="view_plan_action_form">
+            <field name="name">Review Action Points Form</field>
+            <field name="model">plan.action</field>
+            <field name="arch" type="xml">
+                <form string="Review Action Points">
+
+                <header>
+
+                    <button name="send_mail"  class="oe_highlight" string="Send by Email"
+                            type="object" groups="base.group_crm_director"/>
+
+                </header>
+                   <sheet>
+                    <group>
+                        <group>
+                            <field name="user_id" required="0"  domain="[('sales_category', '=', 'FieldSales')]"/>
+                            <field name="department_id"
+                                   domain="[('parent','=',False), ('dept_main_category','=','Non Support')]"/>
+                        </group>
+                        <group>
+                            <field name="review_date" required="1"/>
+                            <!--field name="cc_ids" required="0"/-->
+                        </group>
+                    </group>
+                    <separator string="Action Points"/>
+                    <field name="action_points_line" required="1">
+                       <tree editable="1">
+                           <field name="action_point" required="1"/>
+                           <field name="completion_date" required="1"/>
+                           <field name="status" required="1"/>
+                           <field name="remarks"/>
+                       </tree>
+                    </field>
+                    <separator string="Opportunities Details"/>
+                    <field name="plan_opportunities_line" required="1">
+                       <tree editable="1">
+                           <field name="opportunity_id"  required="1" domain="[('type','=','opportunity')]"/>
+                           <field name="partner_id"/>
+                           <field name="planned_revenue" sum="Total Planned revenue"/>
+                           <field name="remarks"/>
+                           <field name="user_id" invisible="1"/>
+                           <field name="department_id" invisible="1"/>
+                       </tree>
+                    </field>
+                  </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread" groups="base.group_user"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_plan_action_tree" model="ir.ui.view">
+            <field name="name">Review Action Points Tree</field>
+            <field name="model">plan.action</field>
+            <field name="arch" type="xml">
+                <tree string="Plan of Action">
+                    <field name="user_id"/>
+                    <field name="department_id"/>
+                    <field name="review_date"/>
+                    <field name="action_points"/>
+                    <field name="create_uid"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_plan_action_search" model="ir.ui.view">
+            <field name="name">Review Action Points Search</field>
+            <field name="model">plan.action</field>
+            <field name="arch" type="xml">
+                <search string="Search Review Action Points">
+                    <field name="user_id" string="Seller Name"/>
+                    <field name="review_date" string="Review Name"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Fields SalesPerson" icon="terp-partner" domain="[]" context="{'group_by':'user_id'}"/>
+                        <filter string="Review Date" icon="terp-partner" domain="[]" context="{'group_by':'review_date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_plan_action" model="ir.actions.act_window">
+            <field name="name">Review Action Points</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">plan.action</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+            <field name="search_view_id" ref="view_plan_action_search"/>
+        </record>
+
+        <menuitem id="menu_plan_action" name="Review Action Points" sequence='8'
+                  parent="base.menu_sales" action ="action_plan_action"
+                  groups="base.group_inside_sales11_user"/>
+
+    </data>
+</openerp>

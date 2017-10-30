@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="view_principal_touch_point_form">
+            <field name="name">Principal Touch Point Form</field>
+            <field name="model">principal.touch.point</field>
+            <field name="arch" type="xml">
+                <form string="Principal Touch Point">
+
+                   <sheet>
+                    <group>
+                        <group>
+                            <field name="principal" required="1"/>
+                            <field name="line_business" required="1"/>
+                        </group>
+                        <group>
+                            <field name="principal_contact" required="1"/>
+                            <field name="fiscal_year" required="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="department_id"
+                               domain="[('parent','=',False), ('dept_main_category','=','Non Support')]"
+                               groups="base.group_crm_director,base.group_crm_BU"/>
+                    </group>
+                    <group>
+                        <group>
+                            <label for="street" string="Address" />
+                            <div>
+                                <field name="street" placeholder="Street..."/>
+                                <field name="street2"/>
+                                <div class="address_format">
+                                    <field name="city" placeholder="City" style="width: 40%%"/>
+                                    <field name="state_id" options='{"no_open": True}'
+                                           placeholder="State" style="width: 24%%"/>
+                                    <field name="zip" placeholder="ZIP" style="width: 34%%"/>
+                                </div>
+                                <field name="country_id" placeholder="Country" options='{"no_open": True, "no_create": True}'/>
+                            </div>
+                        </group>
+                        <group>
+                            <field name="phone" required="1"/>
+                            <field name="email" required="1"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group>
+                            <field name="organised_by" required="1"/>
+                            <field name="employee_department_id" readonly="1"/>
+                            <field name="meeting_frequency" required="1"/>
+                            <field name="meeting_date" required="1"/>
+                            <field name="last_meeting_date" required="1"/>
+                            <field name="next_meeting_date" required="1"/>
+                        </group>
+                        <group>
+                            <field name="face2face_meeting" required="1"/>
+                            <field name="sales_plan_discussed" required="1"/>
+                            <field name="discussed_agreed" required="1"/>
+                            <field name="create_uid"/>
+                            <field name="reporting_manager_id"/>
+                        </group>
+                    </group>
+                    <!--label for="attachment_ids" />
+                    <field name="attachment_ids" widget="many2many_binary"/-->
+                    <separator string="Minutes of Meeting"/>
+                    <field name="minutes_meeting_ids" required="1">
+                       <tree editable="1">
+                           <field name="date"/>
+                           <field name="attendees"/>
+                           <field name="attachment_ids" widget="many2many_binary"/>
+                           <field name="description"/>
+                       </tree>
+                    </field>
+                  </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread" groups="base.group_user"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_principal_touch_point_tree" model="ir.ui.view">
+            <field name="name">Principal Touch Point Tree</field>
+            <field name="model">principal.touch.point</field>
+            <field name="arch" type="xml">
+                <tree string="Principal Touch Point">
+                    <field name="principal"/>
+                    <field name="line_business"/>
+                    <field name="organised_by"/>
+                    <field name="create_uid" string="Field Salesperson"/>
+                    <field name="department_id"/>
+                    <field name="principal_contact"/>
+                    <field name="country_id"/>
+                    <field name="meeting_date"/>
+                    <field name="last_meeting_date"/>
+                    <field name="next_meeting_date"/>
+                    <field name="fiscal_year"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_principal_touch_point_search" model="ir.ui.view">
+            <field name="name">Principal Touch Point Search</field>
+            <field name="model">principal.touch.point</field>
+            <field name="arch" type="xml">
+                <search string="Search Principal Touch Point">
+                    <field name="principal_contact" string="OMM Reg Id"/>
+                    <field name="principal" string="Account Name"/>
+                    <field name="line_business" string="Opportunity Name"/>
+                    <field name="department_id" string="Business Unit"/>
+                    <field name="create_uid" string="Created By"/>
+                    <field name="organised_by" string="Meeting Organised BY"/>
+                    <field name="fiscal_year" string="Fiscal Year"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Name" icon="terp-partner" domain="[]" context="{'group_by':'principal_contact'}"/>
+                        <filter string="Principal" icon="terp-partner" domain="[]" context="{'group_by':'principal'}"/>
+                        <filter string="Line of Business" icon="terp-partner" domain="[]" context="{'group_by':'line_business'}"/>
+                        <filter string="Business Unit" icon="terp-partner" domain="[]" context="{'group_by':'department_id'}"/>
+                        <filter string="Meeting Organised BY" icon="terp-partner" domain="[]" context="{'group_by':'organised_by'}"/>
+                        <filter string="Created By" icon="terp-partner" domain="[]" context="{'group_by':'create_uid'}"/>
+                        <filter string="Fiscal Year" icon="terp-partner" domain="[]" context="{'group_by':'fiscal_year'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_principal_touch_point" model="ir.actions.act_window">
+            <field name="name">Principal Touch Point</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">principal.touch.point</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+            <field name="search_view_id" ref="view_principal_touch_point_search"/>
+        </record>
+
+        <menuitem id="menu_principal_touch_point" name="Principal Touch Point" sequence='7' parent="base.menu_sales"
+                  action ="action_principal_touch_point"
+                  groups="base.group_inside_sales11_user,base.group_sale_salesman,base.group_sale_manager"/>
+
+    </data>
+</openerp>

@@ -1,0 +1,795 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="plan_action_email_template" model="email.template">
+            <field name="name">Plan of Action Template</field>
+            <field name="email_from">omm.gss@jmrinfotech.com</field>
+            <field name="subject">Plan of Action | ${object.review_date}</field>
+            <field name="email_to">${ctx["to"]}</field>
+            <field name="email_cc">${ctx["cc"]}</field>
+            <field name="lang">${object.lang}</field>
+            <field name="model_id" ref="model_plan_action"/>
+            <field name="auto_delete" eval="False"/>
+
+            <field name="body_html">
+                <![CDATA[
+                <p>Dear ${ctx["name"]}, </p>
+                <p></p>
+                <p>Please find the action points from the Review dated ${object.review_date} for your reference and action.</p>
+                <table cellpadding="2" border="1">
+                    <tbody>
+                        <tr bgcolor="#D3D3D3">
+                            <td style="text-align: center;" colspan="2"><strong>Action Points</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Completion Date</strong></td>
+                        </tr>
+                        % for action_point in ctx["action_points"]:
+                            <tr>
+                                <td style="text-align: center;" colspan="2">${action_point[0]}</td>
+                                <td style="text-align: center;" colspan="2">${action_point[1]}</td>
+                            </tr>
+                        %endfor
+                    </tbody>
+                </table>
+                <p> <br/><br/><br/><br/><br/></p>
+                <p><strong> Regards,</strong><br></p>
+                <p><strong> GSS - Team.</strong><br></p>
+                <p><br></p>
+            ]]></field>
+
+        </record>
+
+        <record id="omm_registration_email_template" model="email.template">
+            <field name="name">OMM Registration Template</field>
+            <field name="email_from">omm.gss@jmrinfotech.com</field>
+            <field name="subject">OMM Registration | ${object.account_id.name}</field>
+            <field name="email_to">${ctx["to"]}</field>
+            <field name="email_cc">${ctx["cc"]}</field>
+            <field name="lang">${object.lang}</field>
+            <field name="model_id" ref="model_crm_omm"/>
+            <field name="auto_delete" eval="False"/>
+
+            <field name="body_html">
+                <![CDATA[
+                <p>Dear Srinivasan, </p>
+                <p></p>
+                <p>Need your approval to register the following deals in OMM.</p>
+                <p><strong>Account Name: </strong> ${object.account_id.name} <br/>
+                <p><strong>Proposed Solution: </strong> ${object.proposed_solution}<br/>
+                <p><strong>Products: </strong> ${ctx["products"]} <br/>
+                <p><strong>List price of BOM in USD: </strong> ${object.bom_price}<br/>
+                <p><strong>Corresponding discounted price in USD (which will go in OMM): </strong> ${object.discounted_price}<br/>
+                <p><strong>Discounted %: </strong> ${object.discount}<br/>
+                <p><strong>Direct / RFP: </strong> ${object.direct_rfp}<br/>
+                <p><strong>Oracle Sales Manager (Tagged to this opportunity): </strong> ${object.oracle_sales_manager}</p>
+                <p/>
+                <p>To Access the OMM: <a href="https:oerp.jmrinfotech.com/web#id=${object.id}&view_type=form&model=crm_omm&action=${ctx['action_id']}">Click here</a> <br></p><p></p><p><br></p>
+
+                <p><strong> Thanks & Regards,</strong><br></p>
+                <p class="MsoNormal">
+                <span style="font-size:11.0pt;font-family:&quot;Calibri&quot;,&quot;sans-serif&quot;;color:red"></span>
+                ${object.create_uid.name}</p>
+                <span style="font-size:11.0pt;font-family:&quot;Calibri&quot;,&quot;sans-serif&quot;;color:red"></span>
+                <p><br></p><p>
+            ]]></field>
+
+        </record>
+
+        <record id="omm_fusion_status_email_template" model="email.template">
+            <field name="name">OMM Registration Fusion Status Template</field>
+            <field name="email_from">omm.gss@jmrinfotech.com</field>
+            <field name="subject">OMM Fusion Status Updated | ${object.account_id.name}</field>
+            <field name="email_to">${ctx["to"]}</field>
+            <field name="email_cc">${ctx["cc"]}</field>
+            <field name="lang">${object.lang}</field>
+            <field name="model_id" ref="model_crm_omm"/>
+            <field name="auto_delete" eval="False"/>
+
+            <field name="body_html">
+                <![CDATA[
+                <p>Dear ${object.opportunity_id.user_id.name}, </p>
+                <p></p>
+                <p><strong>${object.account_id.name} - Deal Registration ID: ${object.deal_reg_id}. </strong> <br/>
+                <p><strong>Deal Registration Status: ${ctx["sales_stage"]}</strong> <br/>
+                <p><strong>Fusion Status: ${object.fusion_status}</strong> <br/>
+                <p><strong>Fusion Oppty No: ${object.fusion_number}</strong> <br/>
+                <p/>
+                <p>To Access the OMM: <a href="https:oerp.jmrinfotech.com/web#id=${object.id}&view_type=form&model=crm_omm&action=${ctx['action_id']}">Click here</a> <br></p><p></p><p><br></p>
+
+                <p><strong> Regards,</strong><br></p>
+                <p><strong> JMR GSS Team.</strong><br></p>
+            ]]></field>
+        </record>
+
+        <record id="omm_registration_submitted_email_template" model="email.template">
+            <field name="name">OMM Registration Submitted Template</field>
+            <field name="email_from">omm.gss@jmrinfotech.com</field>
+            <field name="subject">OMM Registration Submitted | ${object.account_id.name}</field>
+            <field name="email_to">${ctx["to"]}</field>
+            <field name="email_cc">${ctx["cc"]}</field>
+            <field name="lang">${object.lang}</field>
+            <field name="model_id" ref="model_crm_omm"/>
+            <field name="auto_delete" eval="False"/>
+
+            <field name="body_html">
+                <![CDATA[
+                <p>Dear ${object.opportunity_id.user_id.name}, </p>
+                <p></p>
+                <p><strong>${object.account_id.name}</strong> deal is registered in OMM. Will update you the status accordingly.</p>
+                <p><strong>${object.account_id.name} - Deal Registration ID: ${object.deal_reg_id}. </strong> <br/>
+                <p><strong>Proposed Solution: ${object.proposed_solution}</strong> <br/>
+                <p><strong>Products: ${ctx["products"]} </strong> <br/>
+                <p/>
+                <p>To Access the OMM: <a href="https:oerp.jmrinfotech.com/web#id=${object.id}&view_type=form&model=crm_omm&action=${ctx['action_id']}">Click here</a> <br></p><p></p><p><br></p>
+
+                <p><strong> Regards,</strong><br></p>
+                <p><strong> JMR GSS Team.</strong><br></p>
+            ]]></field>
+        </record>
+
+        <record id="omm_registration_updating_email_template" model="email.template">
+            <field name="name">OMM Registration Updating Template</field>
+            <field name="email_from">omm.gss@jmrinfotech.com</field>
+            <field name="subject">OMM Registration Updates | ${object.account_id.name}</field>
+            <field name="email_to">${ctx["to"]}</field>
+            <field name="email_cc">${ctx["cc"]}</field>
+            <field name="lang">${object.lang}</field>
+            <field name="model_id" ref="model_crm_omm"/>
+            <field name="auto_delete" eval="False"/>
+
+            <field name="body_html">
+                <![CDATA[
+                <p></p>
+                <p><strong>${object.account_id.name} - Deal Registration ID: ${object.deal_reg_id}. </strong> </p>
+                <p>${ctx["updates"]}</p>
+                % for changes in ctx["changes"]:
+                    ${changes}<br/>
+                %endfor
+
+                <p/>
+                <p>To Access the OMM: <a href="https:oerp.jmrinfotech.com/web#id=${object.id}&view_type=form&model=crm_omm&action=${ctx['action_id']}">Click here</a> <br></p><p></p><p><br></p>
+
+                <p><strong> Regards,</strong><br></p>
+                <p><strong> JMR GSS Team.</strong><br></p>
+            ]]></field>
+        </record>
+
+                <!-- Lead omm template -->
+        <record id="omm_registration_lead_updating_email_template" model="email.template">
+            <field name="name">OMM Registration from lead Updating Template</field>
+            <field name="email_from">omm.gss@jmrinfotech.com</field>
+            <field name="subject">OMM Registration Updates | ${object.account_id.name}</field>
+            <field name="email_to">${ctx["to"]}</field>
+            <field name="email_cc">${ctx["cc"]}</field>
+            <field name="lang">${object.lang}</field>
+            <field name="model_id" ref="model_crm_lead"/>
+            <field name="auto_delete" eval="False"/>
+
+            <field name="body_html">
+                <![CDATA[
+                <p></p>
+                <p><strong>${object.account_id.name} - Deal Registration ID: ${object.deal_reg_id}. </strong> </p>
+                <p>${ctx["updates"]}</p>
+                % for changes in ctx["changes"]:
+                    ${changes}<br/>
+                %endfor
+
+                <p/>
+                <p>To Access the OMM: <a href="https:oerp.jmrinfotech.com/web#id=${object.id}&view_type=form&model=crm_omm&action=${ctx['action_id']}">Click here</a> <br></p><p></p><p><br></p>
+
+                <p><strong> Regards,</strong><br></p>
+                <p><strong> JMR GSS Team.</strong><br></p>
+            ]]></field>
+        </record>
+
+        <record id="omm_expiring_template_one" model="email.template">
+            <field name="name">OMM Expiring Notification Template</field>
+            <field name="email_from">omm.gss@jmrinfotech.com</field>
+            <field name="subject">OMM Expiring Notification | ${object.sales_target_user.user_id.name}</field>
+            <field name="email_to">${ctx["to"]}</field>
+            <field name="email_cc">${ctx["cc"]}</field>
+            <field name="lang">${object.lang}</field>
+            <field name="model_id" ref="model_crm_sales_target"/>
+            <field name="auto_delete" eval="False"/>
+
+            <field name="body_html">
+                <![CDATA[
+                <p>Dear ${object.sales_target_user.user_id.name}, </p>
+                <p></p><p></p>
+                <p>This is a reminder E-mail to let you know that the mentioned deal will expire in next 30 days in OMM.</p>
+                <p>Please take required action by updating the Expiring Date in CRM under the tab Open Market Model.</p>
+                <p>Also have your respective Oracle counterpart take action to update the same in OMM only then the
+                update will be complete and will reflect in OMM</p>
+                <table cellpadding="2" border="1">
+                    <tbody>
+                        <tr bgcolor="#D3D3D3">
+                            <td style="text-align: center;" colspan="2"><strong>Account Name</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Deal Reg. ID</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Proposed Solution</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>JMR Expiring Date</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Oracle Expiring Date</strong></td>
+                        </tr>
+                        % for omm_id in ctx["omm_details"]:
+                            <tr>
+                                <td style="text-align: center;" colspan="2">${omm_id[0]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[1]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[2]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[3]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[4]}</td>
+                            </tr>
+                        %endfor
+                    </tbody>
+                </table>
+                <p/><br><p/><p/><br><p/>
+                <p><strong> Regards,</strong><br></p>
+                <p><strong> JMR GSS Team.</strong><br></p>
+            ]]></field>
+
+        </record>
+
+        <record id="omm_expiring_template_two" model="email.template">
+            <field name="name">OMM Expiring Notification (Day 16 – 25) Template</field>
+            <field name="email_from">omm.gss@jmrinfotech.com</field>
+            <field name="subject">OMM Expiring Notification | ${object.sales_target_user.user_id.name}</field>
+            <field name="email_to">${ctx["to"]}</field>
+            <field name="email_cc">${ctx["cc"]}</field>
+            <field name="lang">${object.lang}</field>
+            <field name="model_id" ref="model_crm_sales_target"/>
+            <field name="auto_delete" eval="False"/>
+
+            <field name="body_html">
+                <![CDATA[
+                <p>Dear ${object.sales_target_user.user_id.name}, </p>
+                <p></p>
+                <p>The mentioned deal will expeire in next 14 days in OMM. There has been no update so far.</p>
+                <p>Please take required action by updating the Expiring Date in CRM under the tab Open Market Model.</p>
+                <p>Also it is important to Inform your Orcale couterpart to take action to update the same in OMM.</p>
+                <table cellpadding="2" border="1">
+                    <tbody>
+                        <tr bgcolor="#D3D3D3">
+                            <td style="text-align: center;" colspan="2"><strong>Account Name</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Deal Reg. ID</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Proposed Solution</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>JMR Expiring Date</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Oracle Expiring Date</strong></td>
+                        </tr>
+                        % for omm_id in ctx["omm_details"]:
+                            <tr>
+                                <td style="text-align: center;" colspan="2">${omm_id[0]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[1]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[2]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[3]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[4]}</td>
+                            </tr>
+                        %endfor
+                    </tbody>
+                </table>
+                <p/><br><p/><p/><br><p/>
+                <p><strong> Regards,</strong><br></p>
+                <p><strong> JMR GSS Team.</strong><br></p>
+            ]]></field>
+
+        </record>
+
+        <record id="omm_expiring_template_three" model="email.template">
+            <field name="name">OMM Expiring Notification (Day 26– 30) Template</field>
+            <field name="email_from">omm.gss@jmrinfotech.com</field>
+            <field name="subject">OMM Expiring Notification | ${object.sales_target_user.user_id.name}</field>
+            <field name="email_to">${ctx["to"]}</field>
+            <field name="email_cc">${ctx["cc"]}</field>
+            <field name="lang">${object.lang}</field>
+            <field name="model_id" ref="model_crm_sales_target"/>
+            <field name="auto_delete" eval="False"/>
+
+            <field name="body_html">
+                <![CDATA[
+                <p>Dear ${object.sales_target_user.user_id.name}, </p>
+                <p></p>
+                <p>The mentioned deal will expire in next 4 days in OMM. There has been no update so far.Inspite of
+                repeate reminders.</p>
+                <p>Please take required action by updating the Expiring Date in CRM under the tab Open Market Model.</p>
+                <p>Also it is important to Inform your Orcale couterpart to take action to update the same in OMM.</p>
+                <table cellpadding="2" border="1">
+                    <tbody>
+                        <tr bgcolor="#D3D3D3">
+                            <td style="text-align: center;" colspan="2"><strong>Account Name</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Deal Reg. ID</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Proposed Solution</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>JMR Expiring Date</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Oracle Expiring Date</strong></td>
+                        </tr>
+                        % for omm_id in ctx["omm_details"]:
+                            <tr>
+                                <td style="text-align: center;" colspan="2">${omm_id[0]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[1]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[2]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[3]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[4]}</td>
+                            </tr>
+                        %endfor
+                    </tbody>
+                </table>
+                <p/><br><p/><p/><br><p/>
+                <p><strong> Regards,</strong><br></p>
+                <p><strong> JMR GSS Team.</strong><br></p>
+            ]]></field>
+
+        </record>
+
+        <record id="omm_expiring_template_four" model="email.template">
+            <field name="name">OMM Expiring Notification Day 31 Template</field>
+            <field name="email_from">omm.gss@jmrinfotech.com</field>
+            <field name="subject">OMM Expiring Notification | ${object.sales_target_user.user_id.name}</field>
+            <field name="email_to">${ctx["to"]}</field>
+            <field name="email_cc">${ctx["cc"]}</field>
+            <field name="lang">${object.lang}</field>
+            <field name="model_id" ref="model_crm_sales_target"/>
+            <field name="auto_delete" eval="False"/>
+
+            <field name="body_html">
+                <![CDATA[
+                <p>Dear ${object.sales_target_user.user_id.name}, </p>
+                <p></p>
+                <p>This deal has experid please reach out to your reporting manager to work out a action plan.</p>
+                <table cellpadding="2" border="1">
+                    <tbody>
+                        <tr bgcolor="#D3D3D3">
+                            <td style="text-align: center;" colspan="2"><strong>Account Name</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Deal Reg. ID</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Proposed Solution</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>JMR Expiring Date</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Oracle Expiring Date</strong></td>
+                        </tr>
+                        % for omm_id in ctx["omm_details"]:
+                            <tr>
+                                <td style="text-align: center;" colspan="2">${omm_id[0]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[1]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[2]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[3]}</td>
+                            </tr>
+                        %endfor
+                    </tbody>
+                </table>
+                <p/><br><p/><p/><br><p/>
+                <p><strong> Regards,</strong><br></p>
+                <p><strong> JMR GSS Team.</strong><br></p>
+            ]]></field>
+
+        </record>
+
+        <record id="opportunity_close_date_template" model="email.template">
+            <field name="name">OMM Opportunity Close Date Notification Template</field>
+            <field name="email_from">omm.gss@jmrinfotech.com</field>
+            <field name="subject">OMM Opportunity Close Date Notification | ${object.sales_target_user.user_id.name}</field>
+            <field name="email_to">${ctx["to"]}</field>
+            <field name="email_cc">${ctx["cc"]}</field>
+            <field name="lang">${object.lang}</field>
+            <field name="model_id" ref="model_crm_sales_target"/>
+            <field name="auto_delete" eval="False"/>
+
+            <field name="body_html">
+                <![CDATA[
+                <p>Dear ${object.sales_target_user.user_id.name}, </p>
+                <p></p><p></p>
+                <p>This is a reminder E-mail to let you know that the mentioned deal's opportunity close date will expire in next 30 days in OMM.</p>
+                <p>Please take required action by updating the Opportunity Close Date in CRM under the tab Open Market Model.</p>
+                <p>Also have your respective Oracle counterpart take action to update the same in OMM only then the
+                update will be complete and will reflect in OMM</p>
+                <table cellpadding="2" border="1">
+                    <tbody>
+                        <tr bgcolor="#D3D3D3">
+                            <td style="text-align: center;" colspan="2"><strong>Account Name</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Deal Reg. ID</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Proposed Solution</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>JMR Opportunity Close Date</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Oracle Opportunity Close Date</strong></td>
+                        </tr>
+                        % for omm_id in ctx["opp_details"]:
+                            <tr>
+                                <td style="text-align: center;" colspan="2">${omm_id[0]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[1]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[2]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[3]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[4]}</td>
+                            </tr>
+                        %endfor
+                    </tbody>
+                </table>
+                <p/><br><p/><p/><br><p/>
+                <p><strong> Regards,</strong><br></p>
+                <p><strong> JMR GSS Team.</strong><br></p>
+            ]]></field>
+
+        </record>
+
+        <record id="omm_comparing_data_template" model="email.template">
+            <field name="name">JMR Details vs Oracle Details Notification Template</field>
+            <field name="email_from">omm.gss@jmrinfotech.com</field>
+            <field name="subject">OMM Data Comparing JMR vs Oracle | ${object.sales_target_user.user_id.name}</field>
+            <field name="email_to">${ctx["to"]}</field>
+            <field name="email_cc">${ctx["cc"]}</field>
+            <field name="lang">${object.lang}</field>
+            <field name="model_id" ref="model_crm_sales_target"/>
+            <field name="auto_delete" eval="False"/>
+
+            <field name="body_html">
+                <![CDATA[
+                <p>Dear ${object.sales_target_user.user_id.name}, </p>
+                <p></p><p></p>
+                <table cellpadding="2" border="1">
+                    <tbody>
+                        <tr bgcolor="#D3D3D3">
+                            <td style="text-align: center;" colspan="2"><strong>Account Name</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Deal Reg. ID</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Proposed Solution</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>JMR Sales Stage</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Oracle Sales Stage</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Remarks</strong></td>
+                        </tr>
+                        % for omm_id in ctx["sales_stage_details"]:
+                            <tr>
+                                <td style="text-align: center;" colspan="2">${omm_id[0]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[1]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[2]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[3]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[4]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[5]}</td>
+                            </tr>
+                        %endfor
+                    </tbody>
+                </table>
+                <p/><p/><p/>
+                <table cellpadding="2" border="1">
+                    <tbody>
+                        <tr bgcolor="#D3D3D3">
+                            <td style="text-align: center;" colspan="2"><strong>Account Name</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Deal Reg. ID</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Proposed Solution</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>JMR Expiring Date</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Oracle Expiring Date</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Remarks</strong></td>
+                        </tr>
+                        % for omm_id in ctx["expiring_date_details"]:
+                            <tr>
+                                <td style="text-align: center;" colspan="2">${omm_id[0]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[1]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[2]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[3]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[4]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[5]}</td>
+                            </tr>
+                        %endfor
+                    </tbody>
+                </table>
+                <p/><p/><p/>
+                <table cellpadding="2" border="1">
+                    <tbody>
+                        <tr bgcolor="#D3D3D3">
+                            <td style="text-align: center;" colspan="2"><strong>Account Name</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Deal Reg. ID</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Proposed Solution</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>JMR Opportunity Close Date</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Oracle Opportunity Close Date</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Remarks</strong></td>
+                        </tr>
+                        % for omm_id in ctx["opp_close_details"]:
+                            <tr>
+                                <td style="text-align: center;" colspan="2">${omm_id[0]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[1]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[2]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[3]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[4]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[5]}</td>
+                            </tr>
+                        %endfor
+                    </tbody>
+                </table>
+                <p/><p/><p/>
+                <table cellpadding="2" border="1">
+                    <tbody>
+                        <tr bgcolor="#D3D3D3">
+                            <td style="text-align: center;" colspan="2"><strong>Account Name</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Deal Reg. ID</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Proposed Solution</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>JMR Deal Registration Status</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Oracle Deal Registration Status</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Remarks</strong></td>
+                        </tr>
+                        % for omm_id in ctx["registration_status_details"]:
+                            <tr>
+                                <td style="text-align: center;" colspan="2">${omm_id[0]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[1]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[2]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[3]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[4]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[5]}</td>
+                            </tr>
+                        %endfor
+                    </tbody>
+                </table>
+                <p/><p/><p/>
+                <table cellpadding="2" border="1">
+                    <tbody>
+                        <tr bgcolor="#D3D3D3">
+                            <td style="text-align: center;" colspan="2"><strong>Account Name</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Deal Reg. ID</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Proposed Solution</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>JMR Fusion Opportunity Status</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Oracle Deal Fusion Opportunity Status</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Remarks</strong></td>
+                        </tr>
+                        % for omm_id in ctx["fusion_status_details"]:
+                            <tr>
+                                <td style="text-align: center;" colspan="2">${omm_id[0]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[1]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[2]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[3]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[4]}</td>
+                                <td style="text-align: center;" colspan="2">${omm_id[5]}</td>
+                            </tr>
+                        %endfor
+                    </tbody>
+                </table>
+                <p/><br><p/><p/><br><p/>
+                <p><strong> Regards,</strong><br></p>
+                <p><strong> JMR GSS Team.</strong><br></p>
+            ]]></field>
+
+        </record>
+
+        <record id="fieldsales_weekly_email_template" model="email.template">
+            <field name="name">Field Sales Weekly Report</field>
+            <field name="email_from">odoo@jmrinfotech.com</field>
+            <field name="subject">Field Sales Weekly Report</field>
+            <field name="email_to">${ctx["to"]}</field>
+            <field name="email_cc">${ctx["cc"]}</field>
+            <field name="lang">${object.lang}</field>
+            <field name="model_id" ref="model_crm_committed_closures"/>
+            <field name="auto_delete" eval="False"/>
+
+            <field name="body_html">
+                <![CDATA[
+
+                <p>Dear <strong>${object.sales_user.name} </strong>, </p>
+
+                <p></p>
+
+                <p><strong>Committed Closures as of now for the current quarter</strong>.</p>
+
+                <table cellpadding="2" border="1">
+                    <tbody>
+                        <tr bgcolor="#808080">
+                            <td style="text-align: center;" colspan="8"><strong>Top of the Pipe - (Current and Newly Generated )</strong></td>
+                            <td style="text-align: center;" colspan="8"><strong>Mid-Pipe - (Leads converted to opportunities) </strong></td>
+                            <td style="text-align: center;" colspan="8"><strong>Bottom of the Pipe - ( Won's)</strong></td>
+                        </tr>
+                        <tr bgcolor="#D3D3D3">
+                            <td style="text-align: center;" colspan="2"><strong>Category</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>YTD Last Week</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Current Week</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Changes/Delta</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Category</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>YTD Last Week</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Current Week</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Changes/Delta</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Category</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>YTD Last Week</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Current Week</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Changes/Delta</strong></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><strong>No. of Leads:</strong></td>
+                            <td style="text-align: center;" colspan="2">${ctx['last_week_leads']}</td>
+                            <td style="text-align: center;" colspan="2">${ctx['current_week_leads']}</td>
+                            <td style="text-align: center;" colspan="2">${ctx['lead_remark']}</td>
+                            <td colspan="2"><strong>No. of Opportunities:</strong></td>
+                            <td style="text-align: center;" colspan="2">${ctx["last_week_opportunities"]}</td>
+                            <td style="text-align: center;" colspan="2">${ctx["current_week_opportunities"]}</td>
+                            <td style="text-align: center;" colspan="2">${ctx["opportunities_remark"]}</td>
+                            <td colspan="2"><strong>No. of Wins:</strong></td>
+                            <td style="text-align: center;" colspan="2">N/A</td>
+                            <td style="text-align: center;" colspan="2">N/A</td>
+                            <td style="text-align: center;" colspan="2">N/A</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><strong>Value:</strong></td>
+                            <td style="text-align: center;" colspan="6">N/A</td>
+                            <td colspan="2"><strong>Value:</strong></td>
+                            <td style="text-align: center;" colspan="2">${ctx["last_week_opp_revenue"]}</td>
+                            <td style="text-align: center;" colspan="2">${ctx["current_week_opp_revenue"]}</td>
+                            <td style="text-align: center;" colspan="2">${ctx["opp_revenue_remark"]}</td>
+                            <td colspan="2"><strong>Value:</strong></td>
+                            <td style="text-align: center;" colspan="2">N/A</td>
+                            <td style="text-align: center;" colspan="2">N/A</td>
+                            <td style="text-align: center;" colspan="2">N/A</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><strong>FQO ( Zebra 43-50):</strong></td>
+                            <td style="text-align: center;" colspan="2">${ctx['last_week_lead_fqo']}</td>
+                            <td style="text-align: center;" colspan="2">${ctx['current_lead_fqo']}</td>
+                            <td style="text-align: center;" colspan="2">${ctx['opp_fqo_remark']}</td>
+                            <td colspan="2"><strong>FQO ( Zebra 43-50):</strong></td>
+                            <td style="text-align: center;" colspan="2">${ctx['last_week_opp_fqo']}</td>
+                            <td style="text-align: center;" colspan="2">${ctx['current_opp_fqo']}</td>
+                            <td style="text-align: center;" colspan="2">${ctx['opp_fqo_remark']}</td>
+                            <td colspan="2"><strong>FQO ( Zebra 43-50):</strong></td>
+                            <td style="text-align: center;" colspan="2">N/A</td>
+                            <td style="text-align: center;" colspan="2">N/A</td>
+                            <td style="text-align: center;" colspan="2">N/A</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><strong>Very Hot (Zebra 35-42):</strong></td>
+                            <td style="text-align: center;" colspan="2">${ctx['last_week_lead_very_hot']}</td>
+                            <td style="text-align: center;" colspan="2">${ctx['current_lead_very_hot']}</td>
+                            <td style="text-align: center;" colspan="2">${ctx['lead_very_hot_remark']}</td>
+                            <td colspan="2"><strong>Very Hot (Zebra 35-42):</strong></td>
+                            <td style="text-align: center;" colspan="2">${ctx['last_week_opp_very_hot']}</td>
+                            <td style="text-align: center;" colspan="2">${ctx['current_opp_very_hot']}</td>
+                            <td style="text-align: center;" colspan="2">${ctx['opp_very_hot_remark']}</td>
+                            <td colspan="2"><strong>Very Hot (Zebra 35-42):</strong></td>
+                            <td style="text-align: center;" colspan="2">N/A</td>
+                            <td style="text-align: center;" colspan="2">N/A</td>
+                            <td style="text-align: center;" colspan="2">N/A</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><strong>Hot (Zebra 30-35):</strong></td>
+                            <td style="text-align: center;" colspan="2">${ctx['last_week_lead_hot']}</td>
+                            <td style="text-align: center;" colspan="2">${ctx['current_lead_hot']}</td>
+                            <td style="text-align: center;" colspan="2">${ctx['lead_hot_remark']}</td>
+                            <td colspan="2"><strong>Hot (Zebra 30-35):</strong></td>
+                            <td style="text-align: center;" colspan="2">${ctx['last_week_opp_hot']}</td>
+                            <td style="text-align: center;" colspan="2">${ctx['current_opp_hot']}</td>
+                            <td style="text-align: center;" colspan="2">${ctx['opp_hot_remark']}</td>
+                            <td colspan="2"><strong>Hot (Zebra 30-35):</strong></td>
+                            <td style="text-align: center;" colspan="2">N/A</td>
+                            <td style="text-align: center;" colspan="2">N/A</td>
+                            <td style="text-align: center;" colspan="2">N/A</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><strong>Warm (Zebra 25-29):</strong></td>
+                            <td style="text-align: center;" colspan="2">${ctx['last_week_lead_warm']}</td>
+                            <td style="text-align: center;" colspan="2">${ctx['current_lead_warm']}</td>
+                            <td style="text-align: center;" colspan="2">${ctx['lead_warm_remark']}</td>
+                            <td colspan="2"><strong>Warm (Zebra 25-29):</strong></td>
+                            <td style="text-align: center;" colspan="2">${ctx['last_week_opp_warm']}</td>
+                            <td style="text-align: center;" colspan="2">${ctx['current_opp_warm']}</td>
+                            <td style="text-align: center;" colspan="2">${ctx['opp_warm_remark']}</td>
+                            <td colspan="2"><strong>Warm (Zebra 25-29):</strong></td>
+                            <td style="text-align: center;" colspan="2">N/A</td>
+                            <td style="text-align: center;" colspan="2">N/A</td>
+                            <td style="text-align: center;" colspan="2">N/A</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><strong>Cold ( Zebra 0-25):</strong></td>
+                            <td style="text-align: center;" colspan="2">${ctx['last_week_lead_cold']}</td>
+                            <td style="text-align: center;" colspan="2">${ctx['current_lead_cold']}</td>
+                            <td style="text-align: center;" colspan="2">${ctx['lead_cold_remark']}</td>
+                            <td colspan="2"><strong>Cold ( Zebra 0-25):</strong></td>
+                            <td style="text-align: center;" colspan="2">${ctx['last_week_lead_cold']}</td>
+                            <td style="text-align: center;" colspan="2">${ctx['current_opp_cold']}</td>
+                            <td style="text-align: center;" colspan="2">${ctx['opp_cold_remark']}</td>
+                            <td colspan="2"><strong>Cold ( Zebra 0-25):</strong></td>
+                            <td style="text-align: center;" colspan="2">N/A</td>
+                            <td style="text-align: center;" colspan="2">N/A</td>
+                            <td style="text-align: center;" colspan="2">N/A</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p> Top of the Pipe - (attracting &  capturing leads )</p>
+
+
+                <table cellpadding="2" border="1">
+                    <tbody>
+                        <tr bgcolor="#D3D3D3">
+                            <td style="text-align: center;" colspan="2"><strong>Customer Name</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Opportunity Name</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Business Unit</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Product/Interest Area</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Zebra Score</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Stages</strong></td>
+                        </tr>
+                        % for lead_list in ctx["lead_list"]:
+                            <tr>
+                                <td style="text-align: center;" colspan="2">${lead_list[0]}</td>
+                                <td style="text-align: center;" colspan="2">${lead_list[1]}</td>
+                                <td style="text-align: center;" colspan="2">${lead_list[2]}</td>
+                                <td style="text-align: center;" colspan="2">${lead_list[3]}</td>
+                                <td style="text-align: center;" colspan="2">${lead_list[4]}</td>
+                                <td style="text-align: center;" colspan="2">${lead_list[5]}</td>
+                            </tr>
+                        %endfor
+                    </tbody>
+                </table>
+
+                <p> Mid-Pipe - (converting qualified accounts to opportunities) </p>
+
+                <table cellpadding="2" border="1">
+                    <tbody>
+                        <tr bgcolor="#D3D3D3">
+                            <td style="text-align: center;" colspan="2"><strong>Customer Name</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Opportunity Name</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Business Unit</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Product/Interest Area</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Expected OrderBooking</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Expected closing date</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Zebra Score</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Stages</strong></td>
+                        </tr>
+                        % for opportunity_list in ctx["opportunity_list"]:
+                            <tr>
+                                <td style="text-align: center;" colspan="2">${opportunity_list[0]}</td>
+                                <td style="text-align: center;" colspan="2">${opportunity_list[1]}</td>
+                                <td style="text-align: center;" colspan="2">${opportunity_list[2]}</td>
+                                <td style="text-align: center;" colspan="2">${opportunity_list[3]}</td>
+                                <td style="text-align: center;" colspan="2">${opportunity_list[4]}</td>
+                                <td style="text-align: center;" colspan="2">${opportunity_list[5]}</td>
+                                <td style="text-align: center;" colspan="2">${opportunity_list[6]}</td>
+                                <td style="text-align: center;" colspan="2">${opportunity_list[7]}</td>
+                            </tr>
+                        %endfor
+                    </tbody>
+                </table>
+
+                <p/>
+
+                <p><strong>Different between last week and present week closures for the current quarter</strong>.</p>
+
+                <table border="1" cellpadding="2">
+                    <tbody>
+                        <tr bgcolor="#D3D3D3">
+                            <td style="text-align: center;" colspan="2"><strong>Category</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Count</strong></td>
+                            <td style="text-align: center;" colspan="2"><strong>Remarks</strong></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Opportunities Zebra score increased in a week</td>
+                            <td style="text-align: center;" colspan="2">${ctx["zebra_rating_increased_count"]}</td>
+                            <td style="text-align: center;" colspan="2">Remarks</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Opportunities Zebra score Decreased in a week</td>
+                            <td style="text-align: center;" colspan="2">${ctx["zebra_rating_decreased_count"]}</td>
+                            <td style="text-align: center;" colspan="2">Remarks</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Opportunities moved up the sales stage</td>
+                            <td style="text-align: center;" colspan="2">${ctx["stage_increased_count"]}</td>
+                            <td style="text-align: center;" colspan="2">Remarks</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Opportunities moved down in Sales Stage</td>
+                            <td style="text-align: center;" colspan="2">${ctx["stage_decreased_count"]}</td>
+                            <td style="text-align: center;" colspan="2">Remarks</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Opportunities moved to on Hold</td>
+                            <td style="text-align: center;" colspan="2">${ctx["moved_hold_count"]}</td>
+                            <td style="text-align: center;" colspan="2">Remarks</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Opportunities moved to won</td>
+                            <td style="text-align: center;" colspan="2">${ctx["moved_won_count"]}</td>
+                            <td style="text-align: center;" colspan="2">Remarks</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Opportunities moved to Lost</td>
+                            <td style="text-align: center;" colspan="2">${ctx["moved_lost_count"]}</td>
+                            <td style="text-align: center;" colspan="2">Remarks</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">New addition compared to last week</td>
+                            <td style="text-align: center;" colspan="2">${ctx["new_leads_count"]}</td>
+                            <td style="text-align: center;" colspan="2">Remarks</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p><strong> Regards,</strong><br></p>
+                <p><strong> JMR GSS Team.</strong><br></p>
+            ]]></field>
+
+        </record>
+
+    </data>
+</openerp>

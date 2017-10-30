@@ -1,0 +1,702 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+
+
+        <record id="salesperson_hierarchy_manager" model="res.groups">
+            <field name="name">SalesPerson Hierarchy Manager</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_inside_sales11_user'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record>
+
+
+        <record id="salesperson_hierarchy_head" model="res.groups">
+            <field name="name">SalesPerson Hierarchy Head</field>
+            <field name="implied_ids" eval="[(4, ref('salesperson_hierarchy_manager'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record>
+
+            <!-- Sales Target Security-->
+
+        <record id="crm_sales_target_user" model="ir.rule">
+            <field name="name">CRM Sales Target User</field>
+            <field ref="model_crm_sales_target" name="model_id"/>
+                <field name="domain_force">[('sales_target_user.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_inside_sales11_user'))]"/>
+        </record>
+
+        <record id="crm_sales_target_manager" model="ir.rule">
+            <field name="name">CRM Sales Target Manager</field>
+            <field ref="model_crm_sales_target" name="model_id"/>
+                <field name="domain_force">[('sales_manager','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_manager'))]"/>
+        </record>
+
+        <record id="crm_sales_target_head" model="ir.rule">
+            <field name="name">CRM Sales Target Head</field>
+            <field ref="model_crm_sales_target" name="model_id"/>
+                <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_head'))]"/>
+        </record>
+
+
+        <!-- Sales OB Target Security-->
+
+        <record id="sellers_ob_target_user" model="ir.rule">
+            <field name="name">Sellers OB Target User</field>
+            <field ref="model_seller_order_booking" name="model_id"/>
+                <field name="domain_force">[('sales_target_user.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_inside_sales11_user'))]"/>
+        </record>
+
+        <record id="sellers_ob_target_manager" model="ir.rule">
+            <field name="name">Sellers OB Target Manager</field>
+            <field ref="model_seller_order_booking" name="model_id"/>
+                <field name="domain_force">[('sales_manager','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_manager'))]"/>
+        </record>
+
+        <record id="sellers_ob_target_bu" model="ir.rule">
+            <field name="name">BU - Sellers OB Target</field>
+            <field ref="model_seller_order_booking" name="model_id"/>
+                <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('base.group_crm_BU'))]"/>
+        </record>
+
+        <record id="sellers_ob_target_head" model="ir.rule">
+            <field name="name">Sellers OB Target Head</field>
+            <field ref="model_seller_order_booking" name="model_id"/>
+                <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_head'))]"/>
+        </record>
+
+            <!-- Sales OB Target Security-->
+
+        <record id="seller_quarter_wise_user" model="ir.rule">
+            <field name="name">Sellers OB Target User</field>
+            <field ref="model_seller_quarter_wise" name="model_id"/>
+                <field name="domain_force">[('sales_target_user.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_inside_sales11_user'))]"/>
+        </record>
+
+        <record id="seller_quarter_wise_manager" model="ir.rule">
+            <field name="name">Sellers OB Target Manager</field>
+            <field ref="model_seller_quarter_wise" name="model_id"/>
+                <field name="domain_force">[('sales_manager','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_manager'))]"/>
+        </record>
+
+        <record id="seller_quarter_wise_bu" model="ir.rule">
+            <field name="name">BU - Sellers Quarter wise OB Target</field>
+            <field ref="model_seller_quarter_wise" name="model_id"/>
+            <field name="domain_force">
+                [('department_id','child_of',[dept.id  for emp in user.employee_ids for dept in emp.department_ids])]</field>
+            <field name="groups" eval="[(4, ref('base.group_crm_BU'))]"/>
+        </record>
+
+         <record id="seller_quarter_wise_bdm_rule" model="ir.rule">
+            <field name="name">BDM - Sellers Quarter wise OB Target</field>
+            <field ref="model_seller_quarter_wise" name="model_id"/>
+            <field name="domain_force">[('department_id.bdm_ids','in', [user.id])]
+                </field>
+            <field name="groups" eval="[(4, ref('base.group_crm_bdm'))]"/>
+        </record>
+
+        <record id="seller_quarter_wise_head" model="ir.rule">
+            <field name="name">Sellers OB Target Head</field>
+            <field ref="model_seller_quarter_wise" name="model_id"/>
+                <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_head'))]"/>
+        </record>
+
+            <!-- BU Wise Sales Target Security-->
+
+        <record id="crm_bu_target_user" model="ir.rule">
+            <field name="name">CRM BU wise Sales Target User</field>
+            <field ref="model_crm_bu_target" name="model_id"/>
+            <field name="domain_force">[('ref_id.sales_target_user.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_inside_sales11_user'))]"/>
+        </record>
+
+        <record id="crm_bu_target_manager" model="ir.rule">
+            <field name="name">CRM BU wise Sales Target Manager</field>
+            <field ref="model_crm_bu_target" name="model_id"/>
+            <field name="domain_force">[('ref_id.sales_manager','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_manager'))]"/>
+        </record>
+
+        <record id="crm_bu_target_head" model="ir.rule">
+            <field name="name">CRM BU wise Sales Target Head</field>
+            <field ref="model_crm_bu_target" name="model_id"/>
+                <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_head'))]"/>
+        </record>
+
+         <record id="bu_target_bdm_rule" model="ir.rule">
+            <field name="name">BDM - BU wise Sales Target</field>
+            <field ref="model_crm_bu_target" name="model_id"/>
+            <field name="domain_force">[('department_id.bdm_ids','in', [user.id])]
+                </field>
+            <field name="groups" eval="[(4, ref('base.group_crm_bdm'))]"/>
+        </record>
+            <!-- Field Sales Committed Closures Security  -->
+
+        <record id="crm_committed_closures_user" model="ir.rule">
+            <field name="name">CRM Committed Closures User</field>
+            <field ref="model_crm_committed_closures" name="model_id"/>
+                <field name="domain_force">[('sales_user','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_inside_sales11_user'))]"/>
+        </record>
+
+
+        <record id="crm_committed_closures_manager" model="ir.rule">
+            <field name="name">CRM Committed Closures Manager</field>
+            <field ref="model_crm_committed_closures" name="model_id"/>
+                <field name="domain_force">[('sales_manager','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_manager'))]"/>
+        </record>
+
+
+        <record id="crm_committed_closures_head" model="ir.rule">
+            <field name="name">CRM Committed Closures Head</field>
+            <field ref="model_crm_committed_closures" name="model_id"/>
+                <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_head'))]"/>
+        </record>
+        
+            <!--BU Committed Closures Security  -->
+
+        <record id="bu_committed_closures" model="ir.rule">
+            <field name="name">BU Committed Closures</field>
+            <field ref="model_bu_committed_closures" name="model_id"/>
+            <field name="domain_force">
+                [('department_id','child_of',[dept.id  for emp in user.employee_ids for dept in emp.department_ids])]</field>
+            <field name="groups" eval="[(4, ref('base.group_crm_BU'))]"/>
+        </record>
+
+         <record id="bu_committed_closures_bdm_rule" model="ir.rule">
+            <field name="name">BDM - BU Committed Closures</field>
+            <field ref="model_bu_committed_closures" name="model_id"/>
+            <field name="domain_force">[('department_id.bdm_ids','in', [user.id])]
+                </field>
+            <field name="groups" eval="[(4, ref('base.group_crm_bdm'))]"/>
+        </record>
+
+        <record id="bu_committed_closures_head" model="ir.rule">
+            <field name="name">BU Committed Closures Head</field>
+            <field ref="model_bu_committed_closures" name="model_id"/>
+                <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_head'))]"/>
+        </record>
+
+
+            <!--Incentive Simulation Security  -->
+
+        <record id="incentive_simulation_user" model="ir.rule">
+            <field name="name">Incentive Simulation User</field>
+            <field ref="model_incentive_simulation" name="model_id"/>
+                <field name="domain_force">[('sales_person_id.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_inside_sales11_user'))]"/>
+        </record>
+
+        <record id="incentive_simulation_manager" model="ir.rule">
+            <field name="name">Incentive Simulation Manager</field>
+            <field ref="model_incentive_simulation" name="model_id"/>
+                <field name="domain_force">[('sales_manager','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_manager'))]"/>
+        </record>
+
+        <record id="incentive_simulation_head" model="ir.rule">
+            <field name="name">Incentive Simulation Head</field>
+            <field ref="model_incentive_simulation" name="model_id"/>
+                <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_head'))]"/>
+        </record>
+
+            <!--BU Achievements Security  -->
+
+        <record id="bu_achievement_user" model="ir.rule">
+            <field name="name">BU Achievements User</field>
+            <field ref="model_bu_achievement" name="model_id"/>
+            <field name="domain_force">
+                [('department_id','child_of',[dept.id  for emp in user.employee_ids for dept in emp.department_ids])]</field>
+            <field name="groups" eval="[(4, ref('base.group_crm_BU'))]"/>
+        </record>
+
+         <record id="bu_achievement_bdm_rule" model="ir.rule">
+            <field name="name">BDM- BU Achievements</field>
+            <field ref="model_bu_achievement" name="model_id"/>
+            <field name="domain_force">[('department_id.bdm_ids','in', [user.id])]
+                </field>
+            <field name="groups" eval="[(4, ref('base.group_crm_bdm'))]"/>
+        </record>
+
+        <record id="bu_achievement_head" model="ir.rule">
+            <field name="name">BU Achievement Head</field>
+            <field ref="model_bu_achievement" name="model_id"/>
+                <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_head'))]"/>
+        </record>
+        
+            <!--BU OB and Target Security  -->
+
+        <record id="bu_order_booking_user" model="ir.rule">
+            <field name="name">BU Achievements User</field>
+            <field ref="model_bu_order_booking" name="model_id"/>
+            <field name="domain_force">
+                [('department_id','child_of',[dept.id  for emp in user.employee_ids for dept in emp.department_ids])]</field>
+            <field name="groups" eval="[(4, ref('base.group_crm_BU'))]"/>
+        </record>
+
+         <record id="bu_order_booking_bdm_rule" model="ir.rule">
+            <field name="name">BDM - BU OB</field>
+            <field ref="model_bu_order_booking" name="model_id"/>
+            <field name="domain_force">[('department_id.bdm_ids','in', [user.id])]
+                </field>
+            <field name="groups" eval="[(4, ref('base.group_crm_bdm'))]"/>
+        </record>
+
+        <record id="bu_order_booking_head" model="ir.rule">
+            <field name="name">BU Achievement Head</field>
+            <field ref="model_bu_order_booking" name="model_id"/>
+                <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_head'))]"/>
+        </record>
+
+         <record id="bu_order_booking_bdm_rule" model="ir.rule">
+            <field name="name">BDM - BU OB and Target</field>
+            <field ref="model_bu_order_booking" name="model_id"/>
+            <field name="domain_force">[('department_id.bdm_ids','in', [user.id])]
+                </field>
+            <field name="groups" eval="[(4, ref('base.group_crm_bdm'))]"/>
+        </record>
+
+            <!--Principal Security  -->
+
+        <record id="principal_touch_point_user" model="ir.rule">
+            <field name="name">Principal Touch Point User</field>
+            <field ref="model_principal_touch_point" name="model_id"/>
+            <field name="domain_force">['|', ('create_uid','=',user.id),
+                ('country_id','in',[country.id  for country in user.country_ids]),
+                ]</field>
+            <field name="groups" eval="[(4, ref('base.group_inside_sales11_user'))]"/>
+        </record>
+
+        <record id="principal_touch_point_manager" model="ir.rule">
+            <field name="name">Principal Touch Point Manager</field>
+            <field ref="model_principal_touch_point" name="model_id"/>
+            <field name="domain_force">[('reporting_manager_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_manager'))]"/>
+        </record>
+
+         <record id="principal_touch_point_bu_rule" model="ir.rule">
+            <field name="name">BU - Principal Touch Point</field>
+            <field ref="model_principal_touch_point" name="model_id"/>
+            <field name="domain_force">
+                [('department_id','child_of',[dept.id for dept in user.department_ids])]
+                </field>
+            <field name="groups" eval="[(4, ref('base.group_crm_BU'))]"/>
+        </record>
+
+         <record id="principal_touch_point_bdm_rule" model="ir.rule">
+            <field name="name">BDM - Principal Touch Point</field>
+            <field ref="model_principal_touch_point" name="model_id"/>
+            <field name="domain_force">[('department_id.bdm_ids','in', [user.id])]
+                </field>
+            <field name="groups" eval="[(4, ref('base.group_crm_bdm'))]"/>
+        </record>
+
+        <record id="principal_touch_point_head" model="ir.rule">
+            <field name="name">Principal Touch Point Head</field>
+            <field ref="model_principal_touch_point" name="model_id"/>
+                <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_head'))]"/>
+        </record>
+
+            <!--OMM  Security  -->
+
+        <record id="omm_user" model="ir.rule">
+            <field name="name">OMM User</field>
+            <field ref="model_crm_omm" name="model_id"/>
+            <field name="domain_force">[('opportunity_id.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_inside_sales11_user'))]"/>
+        </record>
+
+       <record id="omm_manager" model="ir.rule">
+            <field name="name">OMM Manager</field>
+            <field ref="model_crm_omm" name="model_id"/>
+            <field name="domain_force">[
+                ('opportunity_id.country_id','in',[country.id  for country in user.country_ids]),
+                ]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_manager'))]"/>
+        </record>
+
+        <record id="omm_nu" model="ir.rule">
+            <field name="name">BU OMM</field>
+            <field ref="model_crm_omm" name="model_id"/>
+            <field name="domain_force">
+                ['|',('department_id','child_of',[dept.id  for emp in user.employee_ids for dept in emp.department_ids]),
+				('opportunity_id.multi_department_ids','in',[emp.department_id.id  for emp in user.employee_ids])]</field>
+            <field name="groups" eval="[(4, ref('base.group_crm_BU'))]"/>
+        </record>
+
+         <record id="omm_bdm_rule" model="ir.rule">
+            <field name="name">BDM - OMM</field>
+            <field ref="model_crm_omm" name="model_id"/>
+            <field name="domain_force">[('department_id.bdm_ids','in', [user.id])]
+                </field>
+            <field name="groups" eval="[(4, ref('base.group_crm_bdm'))]"/>
+        </record>
+
+        <record id="omm_head" model="ir.rule">
+            <field name="name">OMM Head</field>
+            <field ref="model_crm_omm" name="model_id"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_head'))]"/>
+        </record>
+
+            <!--OMM Mismatch (Sales Stage) Security  -->
+
+        <record id="omm_mismatch_sales_stage_user" model="ir.rule">
+            <field name="name">OMM Sales Stage User</field>
+            <field ref="model_omm_mismatch_sales_stage" name="model_id"/>
+            <field name="domain_force">[('user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_inside_sales11_user'))]"/>
+        </record>
+
+       <record id="omm_mismatch_sales_stage_manager" model="ir.rule">
+            <field name="name">OMM Sales Stage Manager</field>
+            <field ref="model_omm_mismatch_sales_stage" name="model_id"/>
+            <field name="domain_force">[
+                ('opportunity_id.country_id','in',[country.id  for country in user.country_ids]),
+                ]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_manager'))]"/>
+        </record>
+
+        <record id="omm_mismatch_sales_stage_bu" model="ir.rule">
+            <field name="name">BU Sales Stage OMM</field>
+            <field ref="model_omm_mismatch_sales_stage" name="model_id"/>
+            <field name="domain_force">
+                [('department_id','child_of',[dept.id  for emp in user.employee_ids for dept in emp.department_ids])]</field>
+            <field name="groups" eval="[(4, ref('base.group_crm_BU'))]"/>
+        </record>
+
+         <record id="omm_mismatch_sales_stage_bdm_rule" model="ir.rule">
+            <field name="name">BDM - Sales Stage OMM</field>
+            <field ref="model_omm_mismatch_sales_stage" name="model_id"/>
+			<field name="domain_force">[('department_id.bdm_ids','in', [user.id])]
+                </field>
+            <field name="groups" eval="[(4, ref('base.group_crm_bdm'))]"/>
+        </record>
+
+        <record id="omm_mismatch_sales_stage_head" model="ir.rule">
+            <field name="name">OMM Sales Stage Head</field>
+            <field ref="model_omm_mismatch_sales_stage" name="model_id"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_head'))]"/>
+        </record>
+
+            <!--OMM Mismatch (Expiring Date) Security  -->
+
+        <record id="omm_mismatch_expiring_date_user" model="ir.rule">
+            <field name="name">OMM Expiring Date User</field>
+            <field ref="model_omm_mismatch_expiring_date" name="model_id"/>
+            <field name="domain_force">[('user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_inside_sales11_user'))]"/>
+        </record>
+
+       <record id="omm_mismatch_expiring_date_manager" model="ir.rule">
+            <field name="name">OMM Expiring Date Manager</field>
+            <field ref="model_omm_mismatch_expiring_date" name="model_id"/>
+            <field name="domain_force">[
+                ('opportunity_id.country_id','in',[country.id  for country in user.country_ids]),
+                ]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_manager'))]"/>
+        </record>
+
+        <record id="omm_mismatch_expiring_date_bu" model="ir.rule">
+            <field name="name">BU OMM Expiring Date</field>
+            <field ref="model_omm_mismatch_expiring_date" name="model_id"/>
+            <field name="domain_force">
+                [('department_id','child_of',[dept.id  for emp in user.employee_ids for dept in emp.department_ids])]</field>
+            <field name="groups" eval="[(4, ref('base.group_crm_BU'))]"/>
+        </record>
+
+         <record id="omm_mismatch_expiring_date_bdm_rule" model="ir.rule">
+            <field name="name">BDM - OMM Expiring Date</field>
+            <field ref="model_omm_mismatch_expiring_date" name="model_id"/>
+			<field name="domain_force">[('department_id.bdm_ids','in', [user.id])]
+                </field>
+            <field name="groups" eval="[(4, ref('base.group_crm_bdm'))]"/>
+        </record>
+
+        <record id="omm_mismatch_expiring_date_head" model="ir.rule">
+            <field name="name">OMM Expiring Date Head</field>
+            <field ref="model_omm_mismatch_expiring_date" name="model_id"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_head'))]"/>
+        </record>
+
+            <!--OMM Mismatch (Opportunity Close Date) Security  -->
+
+        <record id="omm_mismatch_opportunity_date_user" model="ir.rule">
+            <field name="name">OMM Opportunity Close Date User</field>
+            <field ref="model_omm_mismatch_opportunity_date" name="model_id"/>
+            <field name="domain_force">[('user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_inside_sales11_user'))]"/>
+        </record>
+
+       <record id="omm_mismatch_opportunity_date_manager" model="ir.rule">
+            <field name="name">OMM Opportunity Close Date Manager</field>
+            <field ref="model_omm_mismatch_opportunity_date" name="model_id"/>
+            <field name="domain_force">[
+                ('opportunity_id.country_id','in',[country.id  for country in user.country_ids]),
+                ]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_manager'))]"/>
+        </record>
+
+        <record id="omm_mismatch_opportunity_date_bu" model="ir.rule">
+            <field name="name">BU OMM Opportunity Close Date</field>
+            <field ref="model_omm_mismatch_opportunity_date" name="model_id"/>
+            <field name="domain_force">
+                [('department_id','child_of',[dept.id  for emp in user.employee_ids for dept in emp.department_ids])]</field>
+            <field name="groups" eval="[(4, ref('base.group_crm_BU'))]"/>
+        </record>
+
+         <record id="omm_mismatch_opportunity_date_bdm_rule" model="ir.rule">
+            <field name="name">BDM - OMM Opportunity Close Date</field>
+            <field ref="model_omm_mismatch_opportunity_date" name="model_id"/>
+			<field name="domain_force">[('department_id.bdm_ids','in', [user.id])]
+                </field>
+            <field name="groups" eval="[(4, ref('base.group_crm_bdm'))]"/>
+        </record>
+
+        <record id="omm_mismatch_opportunity_date_head" model="ir.rule">
+            <field name="name">OMM Opportunity Close Date Head</field>
+            <field ref="model_omm_mismatch_opportunity_date" name="model_id"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_head'))]"/>
+        </record>
+
+            <!--OMM Mismatch (Fusion Opportunity Status) Security  -->
+
+        <record id="omm_mismatch_fusion_status_user" model="ir.rule">
+            <field name="name">OMM Fusion Opportunity Status User</field>
+            <field ref="model_omm_mismatch_fusion_status" name="model_id"/>
+            <field name="domain_force">[('user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_inside_sales11_user'))]"/>
+        </record>
+
+       <record id="omm_mismatch_fusion_status_manager" model="ir.rule">
+            <field name="name">OMM Opportunity Close Date Manager</field>
+            <field ref="model_omm_mismatch_fusion_status" name="model_id"/>
+            <field name="domain_force">[
+                ('opportunity_id.country_id','in',[country.id  for country in user.country_ids]),
+                ]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_manager'))]"/>
+        </record>
+
+        <record id="omm_mismatch_fusion_status_bu" model="ir.rule">
+            <field name="name">BU OMM Fusion Opportunity Status</field>
+            <field ref="model_omm_mismatch_fusion_status" name="model_id"/>
+            <field name="domain_force">
+                [('department_id','child_of',[dept.id  for emp in user.employee_ids for dept in emp.department_ids])]</field>
+            <field name="groups" eval="[(4, ref('base.group_crm_BU'))]"/>
+        </record>
+
+         <record id="omm_mismatch_fusion_status_bdm_rule" model="ir.rule">
+            <field name="name">BDM - OMM Fusion Opportunity Status</field>
+            <field ref="model_omm_mismatch_fusion_status" name="model_id"/>
+			<field name="domain_force">[('department_id.bdm_ids','in', [user.id])]
+                </field>
+            <field name="groups" eval="[(4, ref('base.group_crm_bdm'))]"/>
+        </record>
+
+        <record id="omm_omm_mismatch_fusion_status" model="ir.rule">
+            <field name="name">OMM Fusion Opportunity Status Head</field>
+            <field ref="model_omm_mismatch_fusion_status" name="model_id"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_head'))]"/>
+        </record>
+
+            <!--Pipeline Build Security  -->
+
+        <record id="seller_opportunity_pipeline_build_user" model="ir.rule">
+            <field name="name">Seller Pipeline Build User</field>
+            <field ref="model_seller_opportunity_pipeline_build" name="model_id"/>
+                <field name="domain_force">[('sales_target_user.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_inside_sales11_user'))]"/>
+        </record>
+
+        <record id="seller_opportunity_pipeline_build_manager" model="ir.rule">
+            <field name="name">Seller Pipeline Build Manager</field>
+            <field ref="model_seller_opportunity_pipeline_build" name="model_id"/>
+                <field name="domain_force">[('sales_manager','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_manager'))]"/>
+        </record>
+
+        <record id="seller_opportunity_pipeline_build_bu" model="ir.rule">
+            <field name="name">BU - Seller Pipeline Build</field>
+            <field ref="model_seller_opportunity_pipeline_build" name="model_id"/>
+            <field name="domain_force">
+                [('department_id','child_of',[dept.id  for emp in user.employee_ids for dept in emp.department_ids])]</field>
+            <field name="groups" eval="[(4, ref('base.group_crm_BU'))]"/>
+        </record>
+
+         <record id="seller_opportunity_pipeline_build_bdm_rule" model="ir.rule">
+            <field name="name">BDM- Seller Pipeline Build</field>
+            <field ref="model_seller_opportunity_pipeline_build" name="model_id"/>
+			<field name="domain_force">[('department_id.bdm_ids','in', [user.id])]
+                </field>
+            <field name="groups" eval="[(4, ref('base.group_crm_bdm'))]"/>
+        </record>
+
+        <record id="seller_opportunity_pipeline_build_head" model="ir.rule">
+            <field name="name">Seller Pipeline Build Head</field>
+            <field ref="model_seller_opportunity_pipeline_build" name="model_id"/>
+                <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_head'))]"/>
+        </record>
+
+            <!--Plan of Action Security  -->
+
+        <record id="action_plan_user" model="ir.rule">
+            <field name="name">Plan of Action User</field>
+            <field ref="model_plan_action" name="model_id"/>
+            <field name="domain_force">[('user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_inside_sales11_user'))]"/>
+        </record>
+
+        <record id="action_plan_bu" model="ir.rule">
+            <field name="name">Plan of Action BU</field>
+            <field ref="model_plan_action" name="model_id"/>
+            <field name="domain_force">
+                [('department_id','child_of',[dept.id  for emp in user.employee_ids for dept in emp.department_ids])]</field>
+            <field name="groups" eval="[(4, ref('base.group_crm_BU'))]"/>
+        </record>
+
+         <record id="action_plan_bdm_rule" model="ir.rule">
+            <field name="name">BDM - Plan of Action</field>
+            <field ref="model_plan_action" name="model_id"/>
+			<field name="domain_force">[('department_id.bdm_ids','in', [user.id])]
+                </field>
+            <field name="groups" eval="[(4, ref('base.group_crm_bdm'))]"/>
+        </record>
+
+        <record id="action_plan_head" model="ir.rule">
+            <field name="name">Plan of Action Head</field>
+            <field ref="model_plan_action" name="model_id"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_head'))]"/>
+        </record>
+
+            <!--Account Mapping Security  -->
+
+        <record id="account_mapping_user" model="ir.rule">
+            <field name="name">Account Mapping User</field>
+            <field ref="model_account_mapping" name="model_id"/>
+            <field name="domain_force">[('user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_inside_sales11_user'))]"/>
+        </record>
+
+       <record id="account_mapping_manager" model="ir.rule">
+            <field name="name">Account Mapping Manager</field>
+            <field ref="model_account_mapping" name="model_id"/>
+            <field name="domain_force">[
+                ('country_id','in',[country.id  for country in user.country_ids]),
+                ]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_manager'))]"/>
+        </record>
+
+        <record id="account_mapping_bu" model="ir.rule">
+            <field name="name">Account Mapping BU</field>
+            <field ref="model_account_mapping" name="model_id"/>
+            <field name="domain_force">
+                [('department_id','child_of',[dept.id  for emp in user.employee_ids for dept in emp.department_ids])]</field>
+            <field name="groups" eval="[(4, ref('base.group_crm_BU'))]"/>
+        </record>
+
+         <record id="account_mapping_bdm_rule" model="ir.rule">
+            <field name="name">BDM- Account Mapping</field>
+            <field ref="model_account_mapping" name="model_id"/>
+            <field name="domain_force">[('department_id.bdm_ids','in', [user.id])]
+                </field>
+            <field name="groups" eval="[(4, ref('base.group_crm_bdm'))]"/>
+        </record>
+
+        <record id="account_mapping_head" model="ir.rule">
+            <field name="name">Account Mapping Head</field>
+            <field ref="model_account_mapping" name="model_id"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_head'))]"/>
+        </record>
+
+            <!-- Seller Account Mapping Security  -->
+
+        <record id="seller_account_mapping_user" model="ir.rule">
+            <field name="name">Seller Account Mapping User</field>
+            <field ref="model_seller_account_mapping" name="model_id"/>
+            <field name="domain_force">[('user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_inside_sales11_user'))]"/>
+        </record>
+
+        <record id="seller_account_mapping_head" model="ir.rule">
+            <field name="name">Seller Account Mapping Head</field>
+            <field ref="model_seller_account_mapping" name="model_id"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_head'))]"/>
+        </record>
+
+            <!-- BU Account Mapping Security  -->
+
+        <record id="bu_account_mapping_bu" model="ir.rule">
+            <field name="name">BU Account Mapping BU</field>
+            <field ref="model_bu_account_mapping" name="model_id"/>
+            <field name="domain_force">
+                [('department_id','child_of',[dept.id  for emp in user.employee_ids for dept in emp.department_ids])]</field>
+            <field name="groups" eval="[(4, ref('base.group_crm_BU'))]"/>
+        </record>
+
+         <record id="bu_account_mapping_bdm_rule" model="ir.rule">
+            <field name="name">BDM- BU Account Mapping</field>
+            <field ref="model_bu_account_mapping" name="model_id"/>
+            <field name="domain_force">[('department_id.bdm_ids','in', [user.id])]
+                </field>
+            <field name="groups" eval="[(4, ref('base.group_crm_bdm'))]"/>
+        </record>
+
+        <record id="bu_account_mapping_head" model="ir.rule">
+            <field name="name">BU Account Mapping Head</field>
+            <field ref="model_bu_account_mapping" name="model_id"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_head'))]"/>
+        </record>
+
+            <!-- BU Active Pipe Security  -->
+
+        <record id="bu_active_pipe_bu" model="ir.rule">
+            <field name="name">BU Active Pipe BU</field>
+            <field ref="model_bu_active_pipe" name="model_id"/>
+            <field name="domain_force">
+                [('department_id','child_of',[dept.id  for emp in user.employee_ids for dept in emp.department_ids])]</field>
+            <field name="groups" eval="[(4, ref('base.group_crm_BU'))]"/>
+        </record>
+
+         <record id="bu_active_pipe_bdm_rule" model="ir.rule">
+            <field name="name">BDM- BU Active Pipe</field>
+            <field ref="model_bu_active_pipe" name="model_id"/>
+            <field name="domain_force">[('department_id.bdm_ids','in', [user.id])]
+                </field>
+            <field name="groups" eval="[(4, ref('base.group_crm_bdm'))]"/>
+        </record>
+
+        <record id="bu_active_pipe_head" model="ir.rule">
+            <field name="name">BU Active Pipe Head</field>
+            <field ref="model_bu_active_pipe" name="model_id"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('salesperson_hierarchy_head'))]"/>
+        </record>
+
+    </data>
+</openerp>

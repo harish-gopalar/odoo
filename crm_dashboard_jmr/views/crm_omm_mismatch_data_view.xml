@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- OMM Mismatch (Sales Stage) -->
+
+        <record model="ir.ui.view" id="view_omm_mismatch_sales_stage_form">
+            <field name="name">OMM Mismatch (Sales Stage) form</field>
+            <field name="model">omm.mismatch.sales.stage</field>
+            <field name="arch" type="xml">
+                <form string="OMM Mismatch (Sales Stage)">
+                  <sheet>
+                    <group>
+                        <field name="omm_id"/>
+                        <field name="account_id"/>
+                        <field name="opportunity_id"/>
+                        <field name="department_id"/>
+                        <field name="user_id"/>
+                        <field name="proposed_solution"/>
+                        <field name="deal_reg_id"/>
+                        <field name="sales_stage"/>
+                        <field name="oracle_sales_stage"/>
+                    </group>
+                  </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_omm_mismatch_sales_stage_tree" model="ir.ui.view">
+            <field name="name">OMM Mismatch (Sales Stage) Tree</field>
+            <field name="model">omm.mismatch.sales.stage</field>
+            <field name="arch" type="xml">
+                <tree string="OMM Mismatch (Sales Stage)">
+                    <field name="account_id"/>
+                    <field name="opportunity_id"/>
+                    <field name="department_id"/>
+                    <field name="user_id"/>
+                    <field name="proposed_solution"/>
+                    <field name="deal_reg_id"/>
+                    <field name="sales_stage"/>
+                    <field name="oracle_sales_stage"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_omm_mismatch_sales_stage" model="ir.actions.act_window">
+            <field name="name">OMM Mismatch (Sales Stage)</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">omm.mismatch.sales.stage</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_omm_mismatch_sales_stage_tree"/>
+        </record>
+
+            <!-- OMM Mismatch (Expiring Date) -->
+
+        <record model="ir.ui.view" id="view_omm_mismatch_expiring_date_form">
+            <field name="name">OMM Mismatch (Expiring Date) Form</field>
+            <field name="model">omm.mismatch.expiring.date</field>
+            <field name="arch" type="xml">
+                <form string="OMM Mismatch (Expiring Date)">
+                  <sheet>
+                    <group>
+                        <field name="omm_id"/>
+                        <field name="account_id"/>
+                        <field name="opportunity_id"/>
+                        <field name="department_id"/>
+                        <field name="user_id"/>
+                        <field name="proposed_solution"/>
+                        <field name="deal_reg_id"/>
+                        <field name="expiring_date"/>
+                        <field name="oracle_expiring_date"/>
+                    </group>
+                  </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_omm_mismatch_expiring_date_tree" model="ir.ui.view">
+            <field name="name">OMM Mismatch (Opportunity Close Date) Tree</field>
+            <field name="model">omm.mismatch.expiring.date</field>
+            <field name="arch" type="xml">
+                <tree string="OMM Mismatch (Expiring Date)">
+                    <field name="account_id"/>
+                    <field name="opportunity_id"/>
+                    <field name="department_id"/>
+                    <field name="user_id"/>
+                    <field name="proposed_solution"/>
+                    <field name="deal_reg_id"/>
+                    <field name="expiring_date"/>
+                    <field name="oracle_expiring_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_omm_mismatch_expiring_date" model="ir.actions.act_window">
+            <field name="name">OMM Mismatch (Expiring Date)</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">omm.mismatch.expiring.date</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_omm_mismatch_expiring_date_tree"/>
+        </record>
+
+            <!-- OMM Mismatch (Opportunity Close Date) -->
+
+        <record model="ir.ui.view" id="view_omm_mismatch_opportunity_date_form">
+            <field name="name">OMM Mismatch (Opportunity Close Date) Form</field>
+            <field name="model">omm.mismatch.opportunity.date</field>
+            <field name="arch" type="xml">
+                <form string="OMM Mismatch (Opportunity Close Date)">
+                  <sheet>
+                    <group>
+                        <field name="omm_id"/>
+                        <field name="account_id"/>
+                        <field name="opportunity_id"/>
+                        <field name="department_id"/>
+                        <field name="user_id"/>
+                        <field name="proposed_solution"/>
+                        <field name="deal_reg_id"/>
+                        <field name="opp_close_date"/>
+                        <field name="oracle_opp_close_date"/>
+                    </group>
+                  </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_omm_mismatch_opportunity_date_tree" model="ir.ui.view">
+            <field name="name">OMM Mismatch (Opportunity Close Date) Tree</field>
+            <field name="model">omm.mismatch.opportunity.date</field>
+            <field name="arch" type="xml">
+                <tree string="OMM Mismatch (Opportunity Close Date)">
+                    <field name="account_id"/>
+                    <field name="opportunity_id"/>
+                    <field name="department_id"/>
+                    <field name="user_id"/>
+                    <field name="proposed_solution"/>
+                    <field name="deal_reg_id"/>
+                    <field name="opp_close_date"/>
+                    <field name="oracle_opp_close_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_omm_mismatch_opportunity_date" model="ir.actions.act_window">
+            <field name="name">OMM Mismatch (Opportunity Close Date)</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">omm.mismatch.opportunity.date</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_omm_mismatch_opportunity_date_tree"/>
+        </record>
+
+            <!-- OMM Mismatch (Deal Registration Status) -->
+
+        <!--record model="ir.ui.view" id="view_omm_mismatch_deal_status_form">
+            <field name="name">OMM Mismatch (Deal Registration Status) Form</field>
+            <field name="model">omm.mismatch.deal.status</field>
+            <field name="arch" type="xml">
+                <form string="OMM Mismatch (Deal Registration Status)">
+                  <sheet>
+                    <group>
+                        <field name="account_id"/>
+                        <field name="opportunity_id"/>
+                        <field name="department_id"/>
+                        <field name="user_id"/>
+                        <field name="proposed_solution"/>
+                        <field name="deal_reg_id"/>
+                        <field name="registration_status"/>
+                        <field name="oracle_registration_status"/>
+                    </group>
+                  </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_omm_mismatch_deal_status_tree" model="ir.ui.view">
+            <field name="name">OMM Mismatch (Deal Registration Status) Tree</field>
+            <field name="model">omm.mismatch.deal.status</field>
+            <field name="arch" type="xml">
+                <tree string="OMM Mismatch (Deal Registration Status)">
+                    <field name="account_id"/>
+                    <field name="opportunity_id"/>
+                    <field name="department_id"/>
+                    <field name="user_id"/>
+                    <field name="proposed_solution"/>
+                    <field name="deal_reg_id"/>
+                    <field name="registration_status"/>
+                    <field name="oracle_registration_status"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_omm_mismatch_deal_status" model="ir.actions.act_window">
+            <field name="name">OMM Mismatch (Deal Registration Status)</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">omm.mismatch.deal.status</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_omm_mismatch_deal_status_tree"/>
+        </record-->
+
+            <!-- OMM Mismatch (Fusion Opportunity Status) -->
+
+        <record model="ir.ui.view" id="view_omm_mismatch_fusion_status_form">
+            <field name="name">OMM Mismatch (Fusion Opportunity Status) Form</field>
+            <field name="model">omm.mismatch.fusion.status</field>
+            <field name="arch" type="xml">
+                <form string="OMM Mismatch (Fusion Opportunity Status)">
+                  <sheet>
+                    <group>
+                        <field name="omm_id"/>
+                        <field name="account_id"/>
+                        <field name="opportunity_id"/>
+                        <field name="department_id"/>
+                        <field name="user_id"/>
+                        <field name="proposed_solution"/>
+                        <field name="deal_reg_id"/>
+                        <field name="fusion_status"/>
+                        <field name="oracle_fusion_status"/>
+                    </group>
+                  </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_omm_mismatch_fusion_status_tree" model="ir.ui.view">
+            <field name="name">OMM Mismatch (Fusion Opportunity Status) Tree</field>
+            <field name="model">omm.mismatch.fusion.status</field>
+            <field name="arch" type="xml">
+                <tree string="OMM Mismatch (Fusion Opportunity Status)">
+                    <field name="account_id"/>
+                    <field name="opportunity_id"/>
+                    <field name="department_id"/>
+                    <field name="user_id"/>
+                    <field name="proposed_solution"/>
+                    <field name="deal_reg_id"/>
+                    <field name="fusion_status"/>
+                    <field name="oracle_fusion_status"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_omm_mismatch_fusion_status" model="ir.actions.act_window">
+            <field name="name">OMM Mismatch (Fusion Opportunity Status)</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">omm.mismatch.fusion.status</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_omm_mismatch_fusion_status_tree"/>
+        </record>
+
+        <record model="ir.ui.view" id="dashboard_omm_mismatch">
+            <field name="name">OMM Mismatch Dashboard</field>
+            <field name="model">board.board</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form >
+                    <hpaned>
+                        <child1>
+                            <action string="OMM Mismatch (Sales Stage)" name="%(action_omm_mismatch_sales_stage)d"/>
+                            <action string="OMM Mismatch (Expiring Date)" name="%(action_omm_mismatch_expiring_date)d"/>
+                            <action string="OMM Mismatch (Opportunity Close Date)" name="%(action_omm_mismatch_opportunity_date)d"/>
+                            <action string="OMM Mismatch (Fusion Opportunity Status)" name="%(action_omm_mismatch_fusion_status)d"/>
+                        </child1>
+                    </hpaned>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="act_dashboard_mismatch_crm_omm">
+            <field name="name">OMM JMR vs Oracle</field>
+            <field name="res_model">board.board</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="usage">menu</field>
+            <field name="view_id" ref="dashboard_omm_mismatch"/>
+        </record>
+
+        <record model="ir.ui.view" id="dashboard_crm_omm">
+            <field name="name">Dashboard OMM </field>
+            <field name="model">board.board</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form >
+                    <hpaned>
+                        <child>
+                        <action
+                            string="Open Market Model(OMM)"
+                            name="%(crm_dashboard_jmr.action_crm_omm)d"
+                            />
+                        </child>
+                    </hpaned>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="act_dashboard_crm_omm">
+            <field name="name">OMM Dashboard</field>
+            <field name="res_model">board.board</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="usage">menu</field>
+            <field name="view_id" ref="dashboard_crm_omm"/>
+        </record>
+
+        <menuitem id="menu_omm_dashboard" name="OMM Dashboard" sequence='0' parent="crm_dashboard_jmr.main_crm_dashboard"
+                  groups="base.group_crm_BU,base.group_crm_director,base.group_inside_sales11_user"/>
+
+        <menuitem id="sub_menu_dashboard_crm_omm" name="OMM Dashboard" sequence='1' parent="menu_omm_dashboard"
+                  action ="act_dashboard_crm_omm" groups="base.group_inside_sales11_user,base.group_crm_BU,base.group_crm_director"/>
+
+        <menuitem id="menu_mismatch_crm_omm" name="OMM Mismatch" sequence='2' parent="menu_omm_dashboard"
+                  action ="act_dashboard_mismatch_crm_omm" groups="base.group_inside_sales11_user,base.group_crm_BU,base.group_crm_director"/>
+    </data>
+</openerp>

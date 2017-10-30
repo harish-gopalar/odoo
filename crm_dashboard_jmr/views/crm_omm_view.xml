@@ -1,0 +1,631 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="view_crm_omm_form">
+            <field name="name">CRM OMM form</field>
+            <field name="model">crm.omm</field>
+            <field name="arch" type="xml">
+                <form string="Open Market Model(OMM)">
+
+                <header>
+
+                    <button name="confirm" string="Approve" type="object" groups="base.group_crm_director" attrs="{'invisible': [('status', 'not in', ('0'))]}"/>
+
+                    <button name="reject" string="Reject" type="object" groups="base.group_crm_director" attrs="{'invisible': [('status', 'not in', ('0'))]}"/>
+
+                    <button name="set_draft" string="Set to Draft" type="object" groups="base.group_crm_director"  attrs="{'invisible': [('status', 'not in', ('1', '2'))]}"/>
+
+                    <button name="fusion_oppty_approved" string="Fusion Oppty Approved" groups="base.group_crm_director" type="object" attrs="{'invisible': [('status', 'not in', ('2'))]}"/>
+
+                    <button name="omm_submitted" string="OMM Submitted" type="object" groups="base.group_crm_director" attrs="{'invisible': [('status', 'not in', ('1'))]}"/>
+
+                    <field name="status" widget="statusbar" statusbar_visible="0, 1" statusbar_colors='{"1":"green"}'/>
+
+                </header>
+
+                   <sheet>
+                       <group>
+                            <group>
+                                <field name="account_id" options='{"no_open": True, "no_create": True}'
+                                           domain="[('customer', '=', True), ('is_company', '=', True)]" attrs="{'readonly': [('status', '!=', '0')]}"/>
+                                <field name="proposed_solution" required="1" attrs="{'readonly': [('status', '!=', '0')]}"/>
+                                <field name="department_id"/>
+                                <field name="user_id"/>
+                            </group>
+                            <group>
+                                <field name="opportunity_id" attrs="{'readonly': [('status', '!=', '0')]}"/>
+                                <field name="opp_ref_no"/>
+                                <field name="opp_stage"/>
+                                <field name="oracle_product_ids" widget="many2many_tags" required="1" attrs="{'readonly': [('status', '!=', '0')]}"/>
+                            </group>
+                       </group>
+
+                       <group>
+
+                            <group>
+                                <label for="title" string="Name" attrs="{'readonly': [('status', '=', '0')]}"/>
+                                <div class="address_format">
+                                    <field name="title" placeholder="title" style="width: 24%%" required="1" attrs="{'readonly': [('status', '!=', '0')]}"/>
+                                    <field name="first_name" placeholder="First Name" style="width: 74%%" required="1" attrs="{'readonly': [('status', '!=', '0')]}"/>
+                                </div>
+                                <label for="street" string="Registered Address" />
+                                <div>
+                                    <field name="street" placeholder="Street..." required="1" attrs="{'readonly': [('status', '!=', '0')]}"/>
+                                    <field name="street2" required="1" attrs="{'readonly': [('status', '!=', '0')]}"/>
+                                    <div class="address_format">
+                                        <field name="city" placeholder="City" style="width: 40%%" required="1" attrs="{'readonly': [('status', '!=', '0')]}"/>
+                                        <field name="state_id" options='{"no_open": True}'
+                                               placeholder="State" style="width: 24%%" attrs="{'readonly': [('status', '!=', '0')]}"/>
+                                        <field name="zip" placeholder="ZIP" style="width: 34%%" attrs="{'readonly': [('status', '!=', '0')]}"/>
+                                    </div>
+                                    <field name="country_id" placeholder="Country" options='{"no_open": True, "no_create": True}' attrs="{'readonly': [('status', '!=', '0')]}"/>
+                                </div>
+                                <field name="region_id" options='{"no_open": True, "no_create": True}' required="1" attrs="{'readonly': [('status', '!=', '0')]}"/>
+                            </group>
+                        <group>
+                            <field name="last_name" placeholder="Last Name" required="1" attrs="{'readonly': [('status', '!=', '0')]}"/>
+                            <field name="phone" required="1" attrs="{'readonly': [('status', '!=', '0')]}"/>
+                            <field name="email" required="1" attrs="{'readonly': [('status', '!=', '0')]}"/>
+                        </group>
+                    </group>
+
+                    <group string="Solution details">
+                        <field name="detailed_opportunity" required="1" attrs="{'readonly': [('status', '!=', '0')]}"/>
+                        <field name="solution_reason" required="1" attrs="{'readonly': [('status', '!=', '0')]}"/>
+                        <field name="department_impacted" required="1" attrs="{'readonly': [('status', '!=', '0')]}"/>
+                        <field name="region_requirements" required="1" attrs="{'readonly': [('status', '!=', '0')]}"/>
+                    </group>
+
+                    <group string="Seller Updates">
+                        <group>
+                            <field name="oracle_sales_manager" required="1"/>
+                            <field name="sales_team"/>
+                            <field name="date_deadline" required="1"/>
+                            <field name="bom_price" required="1"/>
+                            <field name="discounted_price" required="1"/>
+                            <field name="discount" required="1"/>
+                        </group>
+                        <group>
+                            <field name="budgets_approved" required="1"/>
+                            <field name="deal_reg_type" required="1"/>
+                            <field name="distributor" required="1"/>
+                            <field name="distributor_company"
+                                   attrs="{'invisible': [('distributor', '!=', 'YES')], 'required': [('distributor', '=', 'YES')]}"/>
+                            <field name="distributor_org"
+                                   attrs="{'invisible': [('distributor', '!=', 'YES')], 'required': [('distributor', '=', 'YES')]}"/>
+                            <field name="distributor_gsi"
+                                   attrs="{'invisible': [('distributor', '!=', 'YES')], 'required': [('distributor', '=', 'YES')]}"/>
+                            <field name="distributor_tax"
+                                   attrs="{'invisible': [('distributor', '!=', 'YES')], 'required': [('distributor', '=', 'YES')]}"/>
+                            <field name="direct_rfp" required="1"/>
+                            <field name="public_sector_customer" required="1"/>
+                            <field name="cloud_deal" required="1"/>
+                            <field name="create_date"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="sector_activities"
+                               widget="many2many_tags" attrs="{'invisible': [('public_sector_customer','!=','YES')],
+                               'required': [('public_sector_customer','=','YES')]}"/>
+                        <field name="deal_contracts"
+                               widget="many2many_tags" attrs="{'invisible': [('cloud_deal','!=','YES')],
+                               'required': [('cloud_deal','=','YES')]}"/>
+                    </group>
+                    <group>
+                        <group string="JMR Updates">
+                            <field name="deal_reg_id"/>
+                            <field name="sales_stage"/>
+                            <field name="sales_stage_updated" invisible="1"/>
+                            <field name="expiring_date"/>
+                            <field name="opp_close_date"/>
+                            <field name="registration_status"/>
+                            <field name="payment_request_status"/>
+                            <field name="fusion_status"/>
+                            <field name="win_loss_reason"/>
+                            <field name="approved_omm_fusion"/>
+                            <field name="fusion_number"/>
+                            <field name="omm_sales_channel"/>
+                            <field name="extension_submitted"/>
+                            <field name="extension_close_date1"/>
+                            <field name="extension_close_date2"/>
+                            <field name="submitted_date"/>
+                            <field name="write_date"/>
+                        </group>
+                        <group string="Oracle Updates">
+                            <field name="oracle_sales_stage"/>
+                            <field name="oracle_expiring_date"/>
+                            <field name="oracle_opp_close_date"/>
+                            <field name="oracle_registration_status"/>
+                            <field name="oracle_payment_request_status"/>
+                            <field name="oracle_fusion_status"/>
+                            <field name="oracle_win_loss_reason"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="decline_reason"/>
+                        <field name="revised_value"/>
+                        <field name="revised_reason" attrs="{'required': [('revised_value','!=',False), ('revised_value','!=',0)]}"/>
+                        <field name="revised_closure_date"/>
+                        <field name="revised_date_reason" attrs="{'invisible': [('revised_closure_date','=',False)],
+                                                            'required': [('revised_closure_date','!=',False)]}"/>
+                    </group>
+                    <separator string="Notes"/>
+                    <label for="reg_info_sales"/>
+                    <field name="reg_info_sales"/>
+                    <label for="reg_info_sellers"/>
+                    <field name="reg_info_sellers"/>
+                    <label for="omm_notes"/>
+                    <field name="omm_notes"/>
+                    <label for="reject_notes"/>
+                    <field name="reject_notes"/>
+                    <label for="approval_notes"/>
+                    <field name="approval_notes"/>
+                  </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread" groups="base.group_user"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_crm_omm_tree" model="ir.ui.view">
+            <field name="name">CRM OMM Tree</field>
+            <field name="model">crm.omm</field>
+            <field name="arch" type="xml">
+                <tree string="Open Market Model(OMM)">
+                    <field name="account_id"/>
+                    <field name="proposed_solution"/>
+                    <field name="department_id"/>
+                    <field name="user_id"/>
+                    <field name="registration_status"/>
+                    <field name="oracle_registration_status"/>
+                    <field name="expiring_date"/>
+                    <field name="oracle_expiring_date"/>
+                    <field name="mismatch_name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_crm_omm_kanban" model="ir.ui.view">
+            <field name="name">CRM OMM Kanban</field>
+            <field name="model">crm.omm</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="department_id" class="oe_background_grey" create="0">
+                    <field name="user_id"/>
+                    <field name="color"/>
+                    <field name="opportunity_id"/>
+                    <field name="account_id"/>
+                    <field name="proposed_solution"/>
+                    <field name="department_id"/>
+                    <field name="deal_reg_id"/>
+                    <field name="mismatch_name"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_dropdown_toggle oe_dropdown_kanban">
+                                    <span class="oe_e">í</span>
+                                    <ul class="oe_dropdown_menu">
+                                        <t t-if="widget.view.is_action_enabled('edit')"><li>
+                                            <ul class="oe_kanban_colorpicker" data-field="color"/></li></t>
+                                    </ul>
+                                </div>
+                                <div class="oe_kanban_content">
+                                    <h3 class="text-center"><strong><field name="proposed_solution"/></strong></h3>
+                                    <div class="oe_items_list oe_kanban_ellipsis">
+                                       <strong>Opportunity Name:</strong> <field name="opportunity_id"/>
+                                    </div>
+                                    <div class="oe_items_list oe_kanban_ellipsis">
+                                        <div>
+                                             <strong>Business Unit:</strong><field name="department_id"/>
+                                        </div>
+
+                                        <div>
+                                           <strong>Field Salesperson:</strong> <field name="user_id"/>
+                                        </div>
+                                    </div>
+                                    <div class="oe_items_list oe_kanban_ellipsis">
+                                        <div>
+                                             <strong>DealReg ID:</strong><field name="deal_reg_id"/>
+                                        </div>
+
+                                        <div>
+                                           <strong>Mismatch Names:</strong> <field name="mismatch_name"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+                <!--  Graph View -->
+        <record model="ir.ui.view" id="view_crm_omm_graph">
+            <field name="name">CRM OMM Graph</field>
+            <field name="model">crm.omm</field>
+            <field name="arch" type="xml">
+                <graph string="CRM OMM" type="bar">
+                    <field name="department_id" type="row"/>
+                    <field name="user_id" type="row"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="view_crm_omm_search" model="ir.ui.view">
+            <field name="name">Open Market Model(OMM) Search</field>
+            <field name="model">crm.omm</field>
+            <field name="arch" type="xml">
+                <search string="Search Open Market Model(OMM)">
+                    <field name="account_id" string="Account Name"/>
+                    <field name="opp_ref_no" string="Opportunity Reference No"/>
+                    <field name="opportunity_id" string="Opportunity Name"/>
+                    <field name="department_id" string="Business Unit"/>
+                    <field name="user_id" string="Field Salesperson"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Account Name" icon="terp-partner" domain="[]" context="{'group_by':'account_id'}"/>
+                        <filter string="Business Unit" icon="terp-go-month" domain="[]" context="{'group_by':'department_id'}"/>
+                        <filter string="Field Salesperson" icon="terp-go-month" domain="[]" context="{'group_by':'user_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_crm_omm" model="ir.actions.act_window">
+            <field name="name">Open Market Model(OMM)</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">crm.omm</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,kanban,graph</field>
+            <field name="view_id" eval="False"/>
+            <field name="search_view_id" ref="view_crm_omm_search"/>
+        </record>
+
+        <record id="view_crm_omm_mismatch_tree" model="ir.ui.view">
+            <field name="name">CRM OMM Mismatch Tree</field>
+            <field name="model">crm.omm</field>
+            <field eval="50" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="OMM Mismatch">
+                    <field name="account_id"/>
+                    <field name="proposed_solution"/>
+                    <field name="department_id"/>
+                    <field name="user_id"/>
+                    <field name="mismatch_name"/>
+                </tree>
+            </field>
+        </record>
+
+        <menuitem id="menu_open_market_model" name="Open Market Model(OMM)" sequence='6' parent="base.menu_sales" action ="action_crm_omm"
+                  groups="base.group_crm_BU,base.group_crm_director,base.group_inside_sales11_user"/>
+
+        <menuitem id="menu_crm_omm_configuration" name="OMM Configuration" sequence='6' parent="crm_jmr.menu_sales_crm_configuration"
+                  groups="base.group_crm_director"/>
+
+        <record model="ir.ui.view" id="view_oracle_product_form">
+            <field name="name">Oracle Product form</field>
+            <field name="model">oracle.products</field>
+            <field name="arch" type="xml">
+                <form string="Oracle Product">
+                  <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                  </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_oracle_product_tree" model="ir.ui.view">
+            <field name="name">Oracle Product Tree</field>
+            <field name="model">oracle.products</field>
+            <field name="arch" type="xml">
+                <tree string="Oracle Product">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_oracle_product" model="ir.actions.act_window">
+            <field name="name">Oracle Product</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">oracle.products</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_oracle_product_tree"/>
+        </record>
+
+        <menuitem id="menu_oracle_product" name="Oracle Product " sequence='6'
+                  action ="action_oracle_product" parent="menu_crm_omm_configuration"
+                  groups="base.group_crm_BU"/>
+
+        <record model="ir.ui.view" id="view_public_sector_activities_form">
+            <field name="name">Customer Public Sector Activities form</field>
+            <field name="model">public.sector.activities</field>
+            <field name="arch" type="xml">
+                <form string="Customer Public Sector Activities">
+                  <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="description"/>
+                    </group>
+                  </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_public_sector_activities_tree" model="ir.ui.view">
+            <field name="name">Customer Public Sector Activities Tree</field>
+            <field name="model">public.sector.activities</field>
+            <field name="arch" type="xml">
+                <tree string="Customer Public Sector Activities">
+                    <field name="name"/>
+                    <field name="description"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_public_sector_activities" model="ir.actions.act_window">
+            <field name="name">Customer Public Sector Activities</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">public.sector.activities</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_public_sector_activities_tree"/>
+        </record>
+
+        <menuitem id="menu_public_sector_activities" name="Customer Public Sector Activities" sequence='6'
+                  action ="action_public_sector_activities" parent="menu_crm_omm_configuration"
+                  groups="base.group_crm_BU"/>
+
+        <record model="ir.ui.view" id="view_cloud_deal_contracts_form">
+            <field name="name">Cloud Deal Contracts form</field>
+            <field name="model">cloud.deal.contracts</field>
+            <field name="arch" type="xml">
+                <form string="Cloud Deal Contracts">
+                  <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                  </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_cloud_deal_contracts_tree" model="ir.ui.view">
+            <field name="name">Cloud Deal Contracts Tree</field>
+            <field name="model">cloud.deal.contracts</field>
+            <field name="arch" type="xml">
+                <tree string="Cloud Deal Contracts">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_cloud_deal_contracts" model="ir.actions.act_window">
+            <field name="name">Cloud Deal Contracts</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">cloud.deal.contracts</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_cloud_deal_contracts_tree"/>
+        </record>
+
+        <menuitem id="menu_cloud_deal_contracts" name="Cloud Deal Contracts" sequence='6'
+                  action ="action_cloud_deal_contracts" parent="menu_crm_omm_configuration"
+                  groups="base.group_crm_BU"/>
+
+        <record id="view_crm_lead_omm_form" model="ir.ui.view">
+            <field name="name">crm.lead.omm.form</field>
+            <field name="model">crm.lead</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="crm_jmr.view_crm_lead_form_inherit" />
+            <field name="arch" type="xml">
+                <field name="lost_reason" position="after">
+                    <field name="omm_required" required="1"/>
+                </field>
+                <xpath expr="/form/sheet/notebook" position="inside">
+                    <page string="Open Market Model (OMM)" attrs="{'invisible': [('omm_required','!=','YES')]}">
+
+                   <sheet>
+                       <group>
+                            <group>
+                                <field name="account_id" options='{"no_open": True, "no_create": True}'
+                                       domain="[('customer', '=', True), ('is_company', '=', True)]"
+                                       attrs="{'required': [('omm_required','=','YES')], 'readonly': [('omm_id','!=',False)]}"/>
+                                <field name="proposed_solution" attrs="{'required': [('omm_required','=','YES')], 'readonly': [('omm_id','!=',False)]}"/>
+                            </group>
+                            <group>
+                                <field name="oracle_product_ids" widget="many2many_tags"
+                                       attrs="{'required': [('omm_required','=','YES')], 'readonly': [('omm_id','!=',False)]}"
+                                       options='{"no_open": True,"no_create": True}'/>
+                            </group>
+                       </group>
+
+                       <group>
+
+                            <group>
+                                <label for="title" string="Name" />
+                                <div class="address_format">
+                                    <field name="title" placeholder="title" style="width: 24%%"
+                                           attrs="{'required': [('omm_required','=','YES')], 'readonly': [('omm_id','!=',False)]}"/>
+                                    <field name="first_name" placeholder="First Name" style="width: 74%%"
+                                           attrs="{'required': [('omm_required','=','YES')], 'readonly': [('omm_id','!=',False)]}"/>
+                                </div>
+                                <label for="omm_street" string="Registered Address" />
+                                <div>
+                                    <field name="omm_street" placeholder="Street..."
+                                           attrs="{'required': [('omm_required','=','YES')], 'readonly': [('omm_id','!=',False)]}"/>
+                                    <field name="omm_street2" attrs="{'required': [('omm_required','=','YES')], 'readonly': [('omm_id','!=',False)]}"/>
+                                    <div class="address_format">
+                                        <field name="omm_city" placeholder="City" style="width: 40%%"
+                                               attrs="{'required': [('omm_required','=','YES')], 'readonly': [('omm_id','!=',False)]}"/>
+                                        <field name="omm_state_id" options='{"no_open": True}'
+                                               placeholder="State" style="width: 24%%"
+                                               attrs="{'readonly': [('omm_id','!=',False)]}"/>
+                                        <field name="omm_zip" placeholder="ZIP" style="width: 34%%"
+                                               attrs="{'readonly': [('omm_id','!=',False)]}"/>
+                                    </div>
+                                    <field name="omm_country_id" placeholder="Country" options='{"no_open": True, "no_create": True}'
+                                            attrs="{'required': [('omm_required','=','YES')], 'readonly': [('omm_id','!=',False)]}"/>
+                                </div>
+                                <field name="omm_region_id" options='{"no_open": True, "no_create": True}'
+                                       attrs="{'required': [('omm_required','=','YES')], 'readonly': [('omm_id','!=',False)]}"/>
+                            </group>
+                        <group>
+                            <field name="last_name" placeholder="Last Name"
+                                   attrs="{'required': [('omm_required','=','YES')], 'readonly': [('omm_id','!=',False)]}"/>
+                            <field name="omm_phone" attrs="{'required': [('omm_required','=','YES')], 'readonly': [('omm_id','!=',False)]}"/>
+                            <field name="omm_email" attrs="{'required': [('omm_required','=','YES')], 'readonly': [('omm_id','!=',False)]}"/>
+                        </group>
+                    </group>
+
+                    <group string="Solution details">
+                        <field name="detailed_opportunity" attrs="{'required': [('omm_required','=','YES')], 'readonly': [('omm_id','!=',False)]}"/>
+                        <field name="solution_reason" attrs="{'required': [('omm_required','=','YES')], 'readonly': [('omm_id','!=',False)]}"/>
+                        <field name="department_impacted" attrs="{'required': [('omm_required','=','YES')], 'readonly': [('omm_id','!=',False)]}"/>
+                        <field name="region_requirements" attrs="{'required': [('omm_required','=','YES')], 'readonly': [('omm_id','!=',False)]}"/>
+                    </group>
+
+                    <group string="Seller Updates">
+                        <group>
+                            <field name="oracle_sales_manager" attrs="{'required': [('omm_required','=','YES')]}"/>
+                            <field name="sales_team"/>
+                            <field name="omm_date_deadline" attrs="{'required': [('omm_required','=','YES')]}"/>
+                            <field name="bom_price" attrs="{'required': [('omm_required','=','YES')]}"/>
+                            <field name="discounted_price" attrs="{'required': [('omm_required','=','YES')]}"/>
+                            <field name="discount" attrs="{'required': [('omm_required','=','YES')]}"/>
+                        </group>
+                        <group>
+                            <field name="budgets_approved" attrs="{'required': [('omm_required','=','YES')]}"/>
+                            <field name="deal_reg_type" attrs="{'required': [('omm_required','=','YES')]}"/>
+                            <field name="distributor" attrs="{'required': [('omm_required','=','YES')]}"/>
+                            <field name="distributor_company"
+                                   attrs="{'invisible': [('distributor', '!=', 'YES')], 'required': [('distributor', '=', 'YES')]}"/>
+                            <field name="distributor_org"
+                                   attrs="{'invisible': [('distributor', '!=', 'YES')], 'required': [('distributor', '=', 'YES')]}"/>
+                            <field name="distributor_gsi"
+                                   attrs="{'invisible': [('distributor', '!=', 'YES')], 'required': [('distributor', '=', 'YES')]}"/>
+                            <field name="distributor_tax"
+                                   attrs="{'invisible': [('distributor', '!=', 'YES')], 'required': [('distributor', '=', 'YES')]}"/>
+                            <field name="direct_rfp" attrs="{'required': [('omm_required','=','YES')]}"/>
+                            <field name="public_sector_customer" attrs="{'required': [('omm_required','=','YES')]}"/>
+                            <field name="cloud_deal" attrs="{'required': [('omm_required','=','YES')]}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="sector_activities"
+                               widget="many2many_tags" attrs="{'invisible': [('public_sector_customer','!=','YES')],
+                               'required': [('public_sector_customer','=','YES')]}"/>
+                        <field name="deal_contracts"
+                               widget="many2many_tags" attrs="{'invisible': [('cloud_deal','!=','YES')],
+                               'required': [('cloud_deal','=','YES'), ('omm_required','=','YES')]}"/>
+                    </group>
+                    <group string="JMR Updates">
+                        <group>
+                            <field name="deal_reg_id"/>
+                            <field name="sales_team"/>
+                            <field name="sales_stage"/>
+                            <field name="expiring_date"/>
+                            <field name="opp_close_date"/>
+                            <field name="registration_status"/>
+                            <field name="payment_request_status"/>
+                            <field name="fusion_status"/>
+                            <field name="win_loss_reason"/>
+                            <field name="approved_omm_fusion"/>
+                            <field name="fusion_number"/>
+                            <field name="omm_sales_channel"/>
+                            <field name="extension_submitted"/>
+                            <field name="extension_close_date1"/>
+                            <field name="extension_close_date2"/>
+                            <field name="submitted_date"/>
+                            <field name="omm_write_date"/>
+                            <field name="omm_status" readonly="1"/>
+                            <field name="omm_id" invisible="1"/>
+                        </group>
+                        <group string="Oracle Updates">
+                            <field name="oracle_sales_stage"/>
+                            <field name="oracle_expiring_date"/>
+                            <field name="oracle_opp_close_date"/>
+                            <field name="oracle_registration_status"/>
+                            <field name="oracle_payment_request_status"/>
+                            <field name="oracle_fusion_status"/>
+                            <field name="oracle_win_loss_reason"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <field name="decline_reason"/>
+                        <field name="revised_value"/>
+                        <field name="revised_reason" attrs="{'invisible': ['|', ('revised_value','=',False),('revised_value','=',0)],
+                                                            'required': [('revised_value','!=',False),('revised_value','!=',0),('omm_required','=','YES')]}"/>
+                        <field name="revised_closure_date"/>
+                        <field name="revised_date_reason" attrs="{'invisible': [('revised_closure_date','=',False)],
+                                                            'required': [('revised_closure_date','!=',False),('omm_required','=','YES')]}"/>
+
+                    </group>
+                    <separator string="Notes"/>
+                    <label for="reg_info_sales"/>
+                    <field name="reg_info_sales"/>
+                    <label for="reg_info_sellers"/>
+                    <field name="reg_info_sellers"/>
+                    <label for="omm_notes"/>
+                    <field name="omm_notes"/>
+                  </sheet>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="crm_case_form_view_oppor_omm" model="ir.ui.view">
+            <field name="name">crm.lead.opportunity.omm</field>
+            <field name="model">crm.lead</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="crm_jmr.crm_case_form_view_oppor_inherit" />
+            <field name="arch" type="xml">
+                <field name="lost_reason" position="after">
+                    <field name="omm_id" readonly="1"/>
+                </field>
+                <field name="omm_sales_stage" position="replace">
+                    <field name="omm_sales_stage" invisible="1"/>
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="hr_department_responsible_omm_form">
+            <field name="name">hr.department.responsible OMM</field>
+            <field name="model">hr.department.responsible</field>
+            <field name="inherit_id" ref="hr_jmr.hr_department_responsible_form"/>
+            <field name="arch" type="xml">
+                <field name="subsidiary_cc_employee_ids" position="after">
+                     <field name="omm_notification_ids" widget="many2many_tags"/>
+                     <field name="omm_updates_ids" widget="many2many_tags"/>
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.cron" id="omm_expiry_mail_trigger_cron">
+           <field name="name">OMM Expiry Mail Notification </field>
+           <field name="interval_number">1</field>
+           <field name="interval_type">days</field>
+           <field name="numbercall">-1</field>
+           <field name="model" eval="'crm.sales.target'"/>
+           <field name="function" eval="'omm_expiry_mail_trigger'"/>
+           <field name="args" eval="'()'"/>
+        </record>
+
+        <record model="ir.cron" id="check_mismatch_records_cron">
+           <field name="name">Checking Mismatch in JMR data vs Oracle Data</field>
+           <field name="interval_number">1</field>
+           <field name="interval_type">days</field>
+           <field name="numbercall">-1</field>
+           <field name="model" eval="'crm.omm'"/>
+           <field name="function" eval="'check_mismatch_omm'"/>
+           <field name="args" eval="'()'"/>
+        </record>
+
+    </data>
+</openerp>
