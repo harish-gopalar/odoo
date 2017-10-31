@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_create_user_wizard_form" model="ir.ui.view">
+            <field name="name">Create User Wizard Form</field>
+            <field name="model">create.user.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Create User Wizard">
+                    <group>
+                        <field name="primary_client" options="{ 'no_create' : True}" required="1"/>
+                        <field name="user_type" options="{ 'no_create' : True}" domain="[('user_type','=',True)]" required="1"/>
+                        <field name="f_name" required="1"/>
+                        <field name="l_name" required="1"/>
+                        <field name="email" required="1"/>
+                        <field name="login" required="1"/>
+                        <field name="password" required="1"/>
+                        <field name="open_user"/>
+                    </group>
+                    <group>
+                    </group>
+                    <group>
+                        <button name="create_user" class="oe_highlight" string="Create User" type="object" />
+                    </group>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="view_create_user_wizard_tree" model="ir.ui.view">
+            <field name="name">Create User Wizard Tree</field>
+            <field name="model">create.user.wizard</field>
+            <field name="arch" type="xml">
+
+                <tree string="Create User Wizard">
+                    <field name="primary_client"/>
+                    <field name="user_type"/>
+                    <field name="f_name"/>
+                    <field name="l_name"/>
+                    <field name="email"/>
+                    <field name="login"/>
+                    <field name="password"/>
+                </tree>
+
+            </field>
+        </record>
+
+        <record id="action_create_user_wizard" model="ir.actions.act_window">
+            <field name="name">Create User Wizard</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">create.user.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="view_create_user_wizard_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="create_user_wizard_menu" name="Create User" parent="base.menu_users"
+                  action ="action_create_user_wizard" groups="base.group_no_one" sequence="3"/>
+
+        <record id="view_groups_form_inherit" model="ir.ui.view">
+          <field name="name">res.groups.form inherit</field>
+          <field name="model">res.groups</field>
+          <field name="inherit_id" ref="base.view_groups_form" />
+          <field name="arch" type="xml">
+            <field name ="name" position="after">
+                <field name="user_type"/>
+            </field>
+          </field>
+        </record>
+
+    </data>
+</openerp>

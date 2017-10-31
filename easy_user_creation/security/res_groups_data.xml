@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="group_admin_user" model="res.groups">
+            <field name="name">Admin User</field>
+            <field name="user_type">True</field>
+        </record>
+
+        <record id="group_categorise_user" model="res.groups">
+            <field name="name">Categorise User</field>
+            <field name="user_type">True</field>
+        </record>
+
+        <record id="group_action_creator" model="res.groups">
+            <field name="name">Action Creator</field>
+            <field name="user_type">True</field>
+        </record>
+
+        <record id="group_content_supervisor" model="res.groups">
+            <field name="name">Content Supervisor</field>
+            <field name="user_type">True</field>
+        </record>
+
+        <record id="group_content_creator_external" model="res.groups">
+            <field name="name">Content Creator (External)</field>
+            <field name="user_type">True</field>
+        </record>
+
+        <record id="group_content_creator_internal" model="res.groups">
+            <field name="name">Content Creator (Internal)</field>
+            <field name="user_type">True</field>
+        </record>
+
+        <record id="group_end_user" model="res.groups">
+            <field name="name">End User</field>
+            <field name="user_type">True</field>
+        </record>
+
+        <record id="group_action_user" model="res.groups">
+            <field name="name">Action User</field>
+            <field name="user_type">True</field>
+        </record>
+
+    </data>
+</openerp>
